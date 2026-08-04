@@ -234,6 +234,14 @@ promptButton.addEventListener("click", () => {
     const randomPrompt =
     prompts[Math.floor(Math.random() * prompts.length)];
 
+if(currentRoom === ""){
+    alert("Create or join a room first.");
+    return;
+}
+
+const randomPrompt =
+    prompts[Math.floor(Math.random() * prompts.length)];
+
 set(ref(database, "rooms/" + currentRoom + "/prompt"), randomPrompt);
 
 });
