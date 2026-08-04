@@ -1,1 +1,44 @@
-# climbbioty.github.io
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Magnet Game</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Ransom Notes</h1>
+
+    <div id="promptBox">
+        Press the button to generate a prompt.
+    </div>
+
+    <button id="promptButton">
+        Generate Prompt
+    </button>
+
+    <div id="answerArea">
+        Drop magnets here
+    </div>
+
+    <h2>Word Bank</h2>
+
+    <div id="wordBank">
+
+    </div>
+
+    <button id="wordButton">
+    Get New Magnets
+</button>
+
+    <script src="script.js"></script>
+
+    
+
+</body>
+
+</html>
