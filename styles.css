@@ -1,0 +1,99 @@
+body{
+    font-family: 'Courier New', Courier, monospace;
+    background:#e77000;
+    text-align:center;
+    margin:40px;
+}
+
+h1{
+  color:rgb(117, 80, 30)
+}
+
+#promptBox{
+    width:70%;
+    margin:auto;
+    padding:10px;
+    background:white;
+
+    border:3px solid black;
+
+    font-size:24px;
+
+    min-height:30px;
+
+    font-family: 'Courier bold', Courier, monospace;
+}
+
+button{
+    margin:20px;
+    padding:12px 25px;
+    font-size:18px;
+    background-color: tan;
+    font-family: 'Courier bold', Courier, monospace;
+}
+
+#answerArea{
+
+    width:80%;
+    height:220px;
+
+    margin:auto;
+
+    background: rgb(0, 0, 0);
+
+    border:3px dashed gray;
+
+    overflow:hidden;
+
+    color: white;
+}
+
+#wordBank{
+
+    width:80%;
+
+    margin:20px auto;
+
+    background:#dddddd;
+
+    border:2px solid black;
+
+    min-height:120px;
+
+    padding:10px;
+}
+
+#wordBank div{
+
+    display:inline-block;
+
+    background:white;
+
+    border:1px solid black;
+
+    padding:8px 12px;
+
+    margin:6px;
+
+    cursor:pointer;
+
+    font-weight:bold;
+
+    user-select:none;
+
+    box-shadow:2px 2px 4px gray;
+}
+
+.magnet {
+    display: inline-block;
+    background: white;
+    border: 1px solid black;
+    padding: 8px 12px;
+    margin: 6px;
+    font-weight: bold;
+    cursor: grab;
+    user-select: none;
+    box-shadow: 2px 2px 6px gray;
+    position: relative;
+    color: rgb(0, 0, 0)
+}
