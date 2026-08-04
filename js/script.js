@@ -1,42 +1,18 @@
-import { initializeApp } from 
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
 import {
-    getDatabase,
+    database,
     ref,
     set,
     get,
     child,
     onValue
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+} from "./firebase.js";
 
 let currentRoom = "";
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyA7PpddeYPWBczMv7z-VHZ0esFwkaBNBms",
-  authDomain: "ransomnoteish.firebaseapp.com",
-  databaseURL: "https://ransomnoteish-default-rtdb.firebaseio.com",
-  projectId: "ransomnoteish",
-  storageBucket: "ransomnoteish.firebasestorage.app",
-  messagingSenderId: "458933010520",
-  appId: "1:458933010520:web:e3e25257bdbec3758aca2d"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-const database = getDatabase(app);
-
-// ---------- Get HTML Elements ----------
 
 const promptBox = document.getElementById("promptBox");
 const promptButton = document.getElementById("promptButton");
 const wordBank = document.getElementById("wordBank");
 const answerArea = document.getElementById("answerArea");
-
-// ---------- Generate Prompt ----------
 
 // Generate a new prompt only
 
@@ -203,20 +179,3 @@ document.getElementById("joinRoomButton")
     }
 
 });
-
-function watchPrompt(){
-
-    onValue(
-        ref(database, "rooms/" + currentRoom + "/prompt"),
-        (snapshot)=>{
-
-            if(snapshot.exists()){
-
-                promptBox.textContent = snapshot.val();
-
-            }
-
-        }
-    );
-
-}
