@@ -372,6 +372,8 @@ document.getElementById("joinRoomButton")
 
         currentRoom = code;
 
+        watchPrompt();
+
         document.getElementById("roomDisplay").textContent =
             "Joined Room: " + code;
 
