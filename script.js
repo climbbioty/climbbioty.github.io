@@ -344,13 +344,15 @@ document.getElementById("roomButton")
 
     currentRoom = roomCode;
 
-    set(ref(database, "rooms/" + roomCode), {
-        prompt: "",
-        state: "lobby"
-    });
+set(ref(database, "rooms/" + roomCode), {
+    prompt: "",
+    state: "lobby"
+});
 
-    document.getElementById("roomDisplay").textContent =
-        "Room Code: " + roomCode;
+watchPrompt();
+
+document.getElementById("roomDisplay").textContent =
+    "Room Code: " + roomCode;
 
 });
 
