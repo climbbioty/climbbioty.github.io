@@ -1,3 +1,34 @@
+import { initializeApp } from 
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+    getDatabase,
+    ref,
+    set,
+    get,
+    child,
+    onValue
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+let currentRoom = "";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyA7PpddeYPWBczMv7z-VHZ0esFwkaBNBms",
+  authDomain: "ransomnoteish.firebaseapp.com",
+  databaseURL: "https://ransomnoteish-default-rtdb.firebaseio.com",
+  projectId: "ransomnoteish",
+  storageBucket: "ransomnoteish.firebasestorage.app",
+  messagingSenderId: "458933010520",
+  appId: "1:458933010520:web:e3e25257bdbec3758aca2d"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+const database = getDatabase(app);
+
 // ---------- Prompt List ----------
 
 const prompts = [
@@ -201,9 +232,9 @@ const answerArea = document.getElementById("answerArea");
 promptButton.addEventListener("click", () => {
 
     const randomPrompt =
-        prompts[Math.floor(Math.random()*prompts.length)];
+    prompts[Math.floor(Math.random() * prompts.length)];
 
-    promptBox.textContent = randomPrompt;
+set(ref(database, "rooms/" + currentRoom + "/prompt"), randomPrompt);
 
 });
 
@@ -290,3 +321,79 @@ answerArea.addEventListener("drop", () => {
     }
 
 });
+
+function generateRoomCode(){
+
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    let code = "";
+
+    for(let i = 0; i < 5; i++){
+        code += characters[
+            Math.floor(Math.random() * characters.length)
+        ];
+    }
+
+    return code;
+}
+
+document.getElementById("roomButton")
+.addEventListener("click", () => {
+
+    const roomCode = generateRoomCode();
+
+    currentRoom = roomCode;
+
+    set(ref(database, "rooms/" + roomCode), {
+        prompt: "",
+        state: "lobby"
+    });
+
+    document.getElementById("roomDisplay").textContent =
+        "Room Code: " + roomCode;
+
+});
+
+document.getElementById("joinRoomButton")
+.addEventListener("click", async () => {
+
+    const code =
+        document.getElementById("roomInput")
+        .value
+        .toUpperCase();
+
+    const snapshot = await get(
+        child(ref(database), "rooms/" + code)
+    );
+
+    if(snapshot.exists()){
+
+        currentRoom = code;
+
+        document.getElementById("roomDisplay").textContent =
+            "Joined Room: " + code;
+
+    }else{
+
+        alert("Room not found.");
+
+    }
+
+});
+
+function watchPrompt(){
+
+    onValue(
+        ref(database, "rooms/" + currentRoom + "/prompt"),
+        (snapshot)=>{
+
+            if(snapshot.exists()){
+
+                promptBox.textContent = snapshot.val();
+
+            }
+
+        }
+    );
+
+}
