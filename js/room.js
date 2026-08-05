@@ -1,5 +1,3 @@
-let currentRoom = "";
-
 export let currentRoom = "";
 
 export function setupRooms() {
