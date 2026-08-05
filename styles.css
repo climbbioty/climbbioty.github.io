@@ -98,7 +98,7 @@ button{
     color: rgb(0, 0, 0)
 }
 
-#nameInput,
+#name,
 #roomInput {
     width: 250px;
     padding: 12px;
