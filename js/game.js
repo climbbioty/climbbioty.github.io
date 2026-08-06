@@ -1,3 +1,12 @@
+import { prompts } from "./prompts.js";
+import { words } from "./words.js";
+import {
+    database,
+    ref,
+    set,
+    onValue
+} from "./firebase.js";
+
 function watchPrompt(){
 
     onValue(
