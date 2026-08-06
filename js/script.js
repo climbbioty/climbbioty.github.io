@@ -1,12 +1,16 @@
-import {
-    database,
-    ref,
-    set,
-    get,
-    child,
-    onValue
-} from "./firebase.js";
-import { watchPrompt} from "./game.js";
-import {prompts} from "./prompts.js";
-import { words } from "./words.js";
-import {currentRoom} from "./room.js";
+import { setupRooms, currentRoom } from "./room.js";
+import { setupGame, watchPrompt } from "./game.js";
+
+setupRooms();
+
+setupGame();
+
+setInterval(() => {
+
+    if (currentRoom !== "") {
+
+        watchPrompt();
+
+    }
+
+}, 500);
