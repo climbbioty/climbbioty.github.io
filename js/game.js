@@ -7,7 +7,7 @@ import {
     onValue
 } from "./firebase.js";
 
-function watchPrompt(){
+export function watchPrompt(){
 
     onValue(
         ref(database, "rooms/" + currentRoom + "/prompt"),
