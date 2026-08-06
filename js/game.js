@@ -2,12 +2,10 @@ import { prompts } from "./prompts.js";
 import { words } from "./words.js";
 
 import {
-
     database,
     ref,
     set,
     onValue
-
 } from "./firebase.js";
 
 import { currentRoom } from "./room.js";
@@ -138,4 +136,3 @@ answerArea.addEventListener("drop", () => {
     }
 
 });
-
