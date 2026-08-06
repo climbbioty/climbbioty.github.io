@@ -1,62 +1,84 @@
+import {
+    database,
+    ref,
+    set,
+    get,
+    child
+} from "./firebase.js";
+
 export let currentRoom = "";
 
-function setupRooms() {
+export function setupRooms() {
 
-    document.getElementById("roomButton")
-.addEventListener("click", () => {
+    const roomButton =
+        document.getElementById("roomButton");
+
+    const joinButton =
+        document.getElementById("joinRoomButton");
+
+    roomButton.addEventListener("click", createRoom);
+
+    joinButton.addEventListener("click", joinRoom);
+
+}
+
+function createRoom() {
 
     const roomCode = generateRoomCode();
 
     currentRoom = roomCode;
 
-set(ref(database, "rooms/" + roomCode), {
-    prompt: "",
-    state: "lobby"
-});
-}
+    set(ref(database, `rooms/${roomCode}`), {
+
+        prompt: "",
+
+        state: "lobby"
+
+    });
+
+    document.getElementById("roomDisplay").textContent =
+        "Room: " + roomCode;
+
 }
 
-    document.getElementById("joinRoomButton")
-.addEventListener("click", async () => {
+async function joinRoom() {
 
     const code =
         document.getElementById("roomInput")
         .value
+        .trim()
         .toUpperCase();
 
-    const snapshot = await get(
-        child(ref(database), "rooms/" + code)
-    );
+    const snapshot =
+        await get(child(ref(database), `rooms/${code}`));
 
-    if(snapshot.exists()){
+    if (snapshot.exists()) {
 
         currentRoom = code;
 
-        watchPrompt();
-
         document.getElementById("roomDisplay").textContent =
-            "Joined Room: " + code;
+            "Room: " + code;
 
-    }else{
+    } else {
 
         alert("Room not found.");
 
     }
 
-});
+}
 
-    function generateRoomCode(){
+function generateRoomCode() {
 
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     let code = "";
 
-    for(let i = 0; i < 5; i++){
-        code += characters[
-            Math.floor(Math.random() * characters.length)
-        ];
+    for (let i = 0; i < 5; i++) {
+
+        code += chars[Math.floor(Math.random() * chars.length)];
+
     }
 
     return code;
-}
 
+}
