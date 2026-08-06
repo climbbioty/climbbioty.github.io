@@ -9,14 +9,7 @@ import {
 
 let currentRoom = "";
 
-promptButton.addEventListener("click", () => {
 
-const randomPrompt =
-    prompts[Math.floor(Math.random() * prompts.length)];
-
-set(ref(database, "rooms/" + currentRoom + "/prompt"), randomPrompt);
-
-});
 
 const wordButton = document.getElementById("wordButton");
 
