@@ -11,26 +11,12 @@ import {} from "./prompts.js";
 import {} from "./words.js";
 import {} from "./room.js";
 
-let currentRoom = "";
-
 const wordButton = document.getElementById("wordButton");
 
 wordButton.addEventListener("click", () => {
 
     generateWords();
 
-});
-
-document.getElementById("roomButton")
-.addEventListener("click", () => {
-
-    const roomCode = generateRoomCode();
-
-    currentRoom = roomCode;
-
-set(ref(database, "rooms/" + roomCode), {
-    prompt: "",
-    state: "lobby"
 });
 
 watchPrompt();
