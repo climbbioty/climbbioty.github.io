@@ -132,7 +132,6 @@ answerArea.addEventListener("drop", () => {
     if (draggedMagnet) {
 
         answerArea.appendChild(draggedMagnet);
-
     }
 
 });
