@@ -110,3 +110,18 @@ const randomPrompt =
 set(ref(database, "rooms/" + currentRoom + "/prompt"), randomPrompt);
 
 });
+
+const wordButton = document.getElementById("wordButton");
+
+wordButton.addEventListener("click", () => {
+
+    generateWords();
+
+});
+
+watchPrompt();
+
+document.getElementById("roomDisplay").textContent =
+    "Room Code: " + roomCode;
+
+});
