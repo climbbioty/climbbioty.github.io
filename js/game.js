@@ -101,3 +101,12 @@ const promptBox = document.getElementById("promptBox");
 const promptButton = document.getElementById("promptButton");
 const wordBank = document.getElementById("wordBank");
 const answerArea = document.getElementById("answerArea");
+
+promptButton.addEventListener("click", () => {
+
+const randomPrompt =
+    prompts[Math.floor(Math.random() * prompts.length)];
+
+set(ref(database, "rooms/" + currentRoom + "/prompt"), randomPrompt);
+
+});
