@@ -138,3 +138,4 @@ answerArea.addEventListener("drop", () => {
     }
 
 });
+
