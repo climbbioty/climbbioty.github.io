@@ -68,3 +68,5 @@ export const words = [
     "really", "almost", "never", "always", "maybe",
     "not", "only", "also", "then", "so"
 ];
+
+
