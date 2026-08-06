@@ -1,4 +1,4 @@
-let currentRoom = "";
+export let currentRoom = "";
 
 function setupRooms() {
 
