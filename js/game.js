@@ -110,3 +110,18 @@ const randomPrompt =
 set(ref(database, "rooms/" + currentRoom + "/prompt"), randomPrompt);
 
 });
+
+export function generateRoomCode(){
+
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    let code = "";
+
+    for(let i = 0; i < 5; i++){
+        code += characters[
+            Math.floor(Math.random() * characters.length)
+        ];
+    }
+
+    return code;
+}
