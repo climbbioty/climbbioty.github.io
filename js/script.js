@@ -9,4 +9,4 @@ import {
 import { watchPrompt} from "./game.js";
 import {prompts} from "./prompts.js";
 import { words } from "./words.js";
-import {setupRooms} from "./room.js";
+import {currentRoom} from "./room.js";
