@@ -7,6 +7,8 @@ import {
     onValue
 } from "./firebase.js";
 
+import { currentRoom } from "./room.js";
+
 export function watchPrompt(){
 
     onValue(
