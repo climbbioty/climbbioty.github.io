@@ -13,6 +13,8 @@ set(ref(database, "rooms/" + roomCode), {
     prompt: "",
     state: "lobby"
 });
+}
+}
 
     document.getElementById("joinRoomButton")
 .addEventListener("click", async () => {
