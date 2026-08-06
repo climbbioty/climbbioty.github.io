@@ -1,6 +1,6 @@
 let currentRoom = "";
 
-export function setupRooms() {
+function setupRooms() {
 
     document.getElementById("roomButton")
 .addEventListener("click", () => {
@@ -42,4 +42,19 @@ set(ref(database, "rooms/" + roomCode), {
     }
 
 });
+
+    function generateRoomCode(){
+
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    let code = "";
+
+    for(let i = 0; i < 5; i++){
+        code += characters[
+            Math.floor(Math.random() * characters.length)
+        ];
+    }
+
+    return code;
+}
 
