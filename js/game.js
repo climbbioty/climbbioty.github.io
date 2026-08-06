@@ -1,36 +1,86 @@
 import { prompts } from "./prompts.js";
 import { words } from "./words.js";
+
 import {
+
     database,
     ref,
     set,
     onValue
+
 } from "./firebase.js";
 
 import { currentRoom } from "./room.js";
 
-export function watchPrompt(){
+const promptBox =
+    document.getElementById("promptBox");
+
+const promptButton =
+    document.getElementById("promptButton");
+
+const wordButton =
+    document.getElementById("wordButton");
+
+const wordBank =
+    document.getElementById("wordBank");
+
+const answerArea =
+    document.getElementById("answerArea");
+
+export function setupGame() {
+
+    promptButton.addEventListener("click", generatePrompt);
+
+    wordButton.addEventListener("click", generateWords);
+
+}
+
+function generatePrompt() {
+
+    if (currentRoom === "") {
+
+        alert("Create or join a room.");
+
+        return;
+
+    }
+
+    const randomPrompt =
+        prompts[Math.floor(Math.random() * prompts.length)];
+
+    set(
+        ref(database, `rooms/${currentRoom}/prompt`),
+        randomPrompt
+    );
+
+}
+
+export function watchPrompt() {
+
+    if (currentRoom === "") return;
 
     onValue(
-        ref(database, "rooms/" + currentRoom + "/prompt"),
-        (snapshot)=>{
 
-            if(snapshot.exists()){
+        ref(database, `rooms/${currentRoom}/prompt`),
+
+        (snapshot) => {
+
+            if (snapshot.exists()) {
 
                 promptBox.textContent = snapshot.val();
 
             }
 
         }
+
     );
 
 }
 
-// ---------- Generate Magnets ----------
-
 function generateWords() {
 
     wordBank.innerHTML = "";
+
     answerArea.innerHTML = "";
 
     const shuffled = [...words];
@@ -57,31 +107,21 @@ function generateWords() {
 
 }
 
-// ---------- Dragging ----------
-
 let draggedMagnet = null;
 
-function dragStart(e){
+function dragStart(e) {
 
     draggedMagnet = e.target;
 
 }
 
-wordBank.addEventListener("dragover", e => {
+wordBank.addEventListener("dragover", e => e.preventDefault());
 
-    e.preventDefault();
-
-});
-
-answerArea.addEventListener("dragover", e => {
-
-    e.preventDefault();
-
-});
+answerArea.addEventListener("dragover", e => e.preventDefault());
 
 wordBank.addEventListener("drop", () => {
 
-    if(draggedMagnet){
+    if (draggedMagnet) {
 
         wordBank.appendChild(draggedMagnet);
 
@@ -91,32 +131,10 @@ wordBank.addEventListener("drop", () => {
 
 answerArea.addEventListener("drop", () => {
 
-    if(draggedMagnet){
+    if (draggedMagnet) {
 
         answerArea.appendChild(draggedMagnet);
 
     }
-
-});
-
-const promptBox = document.getElementById("promptBox");
-const promptButton = document.getElementById("promptButton");
-const wordBank = document.getElementById("wordBank");
-const answerArea = document.getElementById("answerArea");
-
-promptButton.addEventListener("click", () => {
-
-const randomPrompt =
-    prompts[Math.floor(Math.random() * prompts.length)];
-
-set(ref(database, "rooms/" + currentRoom + "/prompt"), randomPrompt);
-
-});
-
-const wordButton = document.getElementById("wordButton");
-
-wordButton.addEventListener("click", () => {
-
-    generateWords();
 
 });
