@@ -6,10 +6,12 @@ import {
     child,
     onValue
 } from "./firebase.js";
+import {} from "./game.js";
+import {} from "./prompts.js";
+import {} from "./words.js";
+import {} from "./room.js";
 
 let currentRoom = "";
-
-
 
 const wordButton = document.getElementById("wordButton");
 
