@@ -1,5 +1,4 @@
 export const words = [
-    // Nouns
     "apple", "banana", "pizza", "dragon", "wizard",
     "pirate", "robot", "alien", "ghost", "monster",
     "unicorn", "castle", "tower", "forest", "mountain",
