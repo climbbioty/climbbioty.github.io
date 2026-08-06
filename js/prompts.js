@@ -113,7 +113,3 @@ export const prompts = [
 "Explain why your younger self made a mistake."
 
 ];
-
-export function getRandomPrompt() {
-    return prompts[Math.floor(Math.random() * prompts.length)];
-}
