@@ -118,10 +118,3 @@ wordButton.addEventListener("click", () => {
     generateWords();
 
 });
-
-watchPrompt();
-
-document.getElementById("roomDisplay").textContent =
-    "Room Code: " + roomCode;
-
-});
