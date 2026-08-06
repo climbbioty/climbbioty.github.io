@@ -9,13 +9,6 @@ import {
 
 let currentRoom = "";
 
-const promptBox = document.getElementById("promptBox");
-const promptButton = document.getElementById("promptButton");
-const wordBank = document.getElementById("wordBank");
-const answerArea = document.getElementById("answerArea");
-
-// Generate a new prompt only
-
 promptButton.addEventListener("click", () => {
 
 const randomPrompt =
