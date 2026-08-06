@@ -1,7 +1,4 @@
-// ---------- Prompt List ----------
-
 export const prompts = [
-
 "Explain why you are banned from a restaurant.",
 "Write a terrible excuse for being late.",
 "Explain why your neighbor is suspicious.",
@@ -12,7 +9,6 @@ export const prompts = [
 "Write an apology to everyone in the room.",
 "Explain why you cannot be trusted.",
 "Write a warning to future generations.",
-
 "Explain why your pet became famous.",
 "Describe your most embarrassing achievement.",
 "Explain why you were removed from a competition.",
@@ -23,7 +19,6 @@ export const prompts = [
 "Write a complaint about your own life.",
 "Explain why you challenged a wizard.",
 "Describe your greatest discovery.",
-
 "Write a message from a confused alien.",
 "Explain why aliens should avoid Earth.",
 "Describe your new invention.",
@@ -34,7 +29,6 @@ export const prompts = [
 "Explain why you cannot leave your house.",
 "Write a letter from your future self.",
 "Explain why your future self is disappointed.",
-
 "Describe your fantasy kingdom.",
 "Explain why your castle has a strange rule.",
 "Write an announcement from a king.",
@@ -45,7 +39,6 @@ export const prompts = [
 "Explain why you joined a quest.",
 "Describe your unusual magical power.",
 "Explain why your spell failed.",
-
 "Write a pirate captain's announcement.",
 "Explain why your pirate crew quit.",
 "Describe your hidden treasure.",
@@ -56,7 +49,6 @@ export const prompts = [
 "Explain why your ship disappeared.",
 "Write a pirate's apology letter.",
 "Explain why you were kicked off your ship.",
-
 "Describe your strange new business.",
 "Explain why nobody should buy your product.",
 "Write an advertisement for something ridiculous.",
@@ -67,7 +59,6 @@ export const prompts = [
 "Describe your unusual job.",
 "Explain why you were fired.",
 "Write a message to your angry customers.",
-
 "Explain why you are being chased.",
 "Describe your escape plan.",
 "Write a message to your enemy.",
@@ -78,7 +69,6 @@ export const prompts = [
 "Explain why you became a villain.",
 "Describe your heroic comeback.",
 "Explain why everyone misunderstood you.",
-
 "Write a message from a ghost.",
 "Explain why a ghost is bothering you.",
 "Describe your haunted house.",
@@ -89,7 +79,6 @@ export const prompts = [
 "Explain why your house moved.",
 "Write a message from a talking animal.",
 "Explain why animals are angry.",
-
 "Describe your weirdest dream.",
 "Explain why your dream became real.",
 "Write a message from the moon.",
@@ -100,7 +89,6 @@ export const prompts = [
 "Explain why you cannot return home.",
 "Describe your new planet.",
 "Explain why your planet needs help.",
-
 "Write a ridiculous excuse.",
 "Explain why everyone is confused.",
 "Describe your greatest failure.",
@@ -111,5 +99,4 @@ export const prompts = [
 "Explain why your hobby scares people.",
 "Write a message to your younger self.",
 "Explain why your younger self made a mistake."
-
 ];
