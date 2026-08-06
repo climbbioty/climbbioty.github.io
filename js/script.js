@@ -9,7 +9,7 @@ import {
 import {} from "./game.js";
 import {} from "./prompts.js";
 import {} from "./words.js";
-import {setUpRooms} from "./room.js";
+import {setupRooms} from "./room.js";
 
 const wordButton = document.getElementById("wordButton");
 
