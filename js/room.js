@@ -80,7 +80,6 @@ function generateRoomCode() {
     }
 
     return code;
-
 }
 
 
