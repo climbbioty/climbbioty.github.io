@@ -8,7 +8,7 @@ import {
 
 export let currentRoom = "";
 
-export function setupRooms(onRoomReady) {
+export function setupRoom(onRoomReady) {
 
     const roomButton =
         document.getElementById("roomButton");
