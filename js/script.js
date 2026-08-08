@@ -1,4 +1,4 @@
-import { setupRooms, currentRoom } from "./room.js";
+import { setupRoom, currentRoom } from "./room.js";
 import { setupGame, watchPrompt } from "./game.js";
 
 setupRoom();
