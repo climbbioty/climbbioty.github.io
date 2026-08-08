@@ -22,7 +22,7 @@ export function setupRoom() {
 
 }
 
-function createRoom() {
+export function createRoom() {
 
     const roomCode = generateRoomCode();
 
