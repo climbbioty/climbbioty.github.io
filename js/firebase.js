@@ -11,6 +11,8 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
+import {prompt} from
+
 const firebaseConfig = {
   apiKey: "AIzaSyA7PpddeYPWBczMv7z-VHZ0esFwkaBNBms",
   authDomain: "ransomnoteish.firebaseapp.com",
@@ -25,6 +27,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const database = getDatabase(app);
+
+set(
+    ref(database, `rooms/${currentRoom}/prompt`),
+    prompt
+);
 
 export {
     database,
