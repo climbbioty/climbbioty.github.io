@@ -40,7 +40,6 @@ function generatePrompt() {
         alert("Create or join a room.");
 
         return;
-
     }
 
     const randomPrompt =
