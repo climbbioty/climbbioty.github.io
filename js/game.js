@@ -33,7 +33,7 @@ export function setupGame() {
 
 }
 
-function generatePrompt() {
+export function generatePrompt() {
 
     if (currentRoom === "") {
 
