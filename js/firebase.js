@@ -11,7 +11,7 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-import {prompt} from
+import {prompt} from "./game.js"
 
 const firebaseConfig = {
   apiKey: "AIzaSyA7PpddeYPWBczMv7z-VHZ0esFwkaBNBms",
