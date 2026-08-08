@@ -81,5 +81,3 @@ function generateRoomCode() {
 
     return code;
 }
-
-
