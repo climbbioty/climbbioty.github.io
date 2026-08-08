@@ -11,6 +11,8 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
+import {currentRoom} from "./room.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyA7PpddeYPWBczMv7z-VHZ0esFwkaBNBms",
   authDomain: "ransomnoteish.firebaseapp.com",
