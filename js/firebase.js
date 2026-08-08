@@ -11,7 +11,7 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-if (currentRoom.exists()){
+if (currentRoom.exists()) {
 import {currentRoom} from "./room.js";
 }
 
