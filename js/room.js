@@ -28,7 +28,7 @@ export function createRoom() {
 
     currentRoom = roomCode;
 
-    set(ref(database, `rooms/${roomCode}`), {
+    set(ref(database, `rooms/${roomCode}/prompt`), {
 
         prompt: "",
 
