@@ -1,16 +1,18 @@
-import { setupRoom, currentRoom } from "./room.js";
-import { setupGame, watchPrompt } from "./game.js";
+import {
+    setupRoom
+} from "./room.js";
 
-setupRooms();
+import {
+    setupGame,
+    watchPrompt
+} from "./game.js";
+
+
+setupRooms(() => {
+
+    watchPrompt();
+
+});
+
 
 setupGame();
-
-setInterval(() => {
-
-    if (currentRoom !== "") {
-
-        watchPrompt();
-
-    }
-
-}, 500);
