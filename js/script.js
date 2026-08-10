@@ -18,13 +18,15 @@ import {
 // ============================================================
 
 const firebaseConfig = {
-    apiKey: "AIzaSyA7PpddeYPWBczMv7z-VHZ0esFwkaBNBms",
-    authDomain: "ransomnoteish.firebaseapp.com",
-    databaseURL: "https://ransomnoteish-default-rtdb.firebaseio.com",
-    projectId: "ransomnoteish",
-    storageBucket: "ransomnoteish.firebasestorage.app",
-    messagingSenderId: "458933010520",
-    appId: "1:458933010520:web:e3e25257bdbec3758aca2d"
+  const firebaseConfig = {
+  apiKey: "AIzaSyA7PpddeYPWBczMv7z-VHZ0esFwkaBNBms",
+  authDomain: "ransomnoteish.firebaseapp.com",
+  databaseURL: "https://ransomnoteish-default-rtdb.firebaseio.com",
+  projectId: "ransomnoteish",
+  storageBucket: "ransomnoteish.firebasestorage.app",
+  messagingSenderId: "458933010520",
+  appId: "1:458933010520:web:e3e25257bdbec3758aca2d"
+};
 };
 
 const app = initializeApp(firebaseConfig);
