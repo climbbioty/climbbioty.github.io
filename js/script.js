@@ -17,7 +17,6 @@ import {
 // FIREBASE
 // ============================================================
 
-const firebaseConfig = {
   const firebaseConfig = {
   apiKey: "AIzaSyA7PpddeYPWBczMv7z-VHZ0esFwkaBNBms",
   authDomain: "ransomnoteish.firebaseapp.com",
@@ -26,7 +25,6 @@ const firebaseConfig = {
   storageBucket: "ransomnoteish.firebasestorage.app",
   messagingSenderId: "458933010520",
   appId: "1:458933010520:web:e3e25257bdbec3758aca2d"
-};
 };
 
 const app = initializeApp(firebaseConfig);
