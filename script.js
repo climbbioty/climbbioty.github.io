@@ -655,151 +655,78 @@ function watchPrompt() {
 }
 
 
-// ============================================================
-// GENERATE MAGNETS
-// ============================================================
-
-if (wordButton) {
-
-    wordButton.addEventListener(
-        "click",
-        generateWords
-    );
-
-}
-
+// ---------- Generate Magnets ----------
 
 function generateWords() {
 
-    if (!wordBank || !answerArea) {
-
-        return;
-
-    }
-
-
     wordBank.innerHTML = "";
-
     answerArea.innerHTML = "";
 
+    const shuffled = [...words];
 
-    const shuffled =
-        [...words];
+    shuffled.sort(() => Math.random() - 0.5);
 
-
-    shuffled.sort(
-        () => Math.random() - 0.5
-    );
-
-
-    const hand =
-        shuffled.slice(0, 20);
-
+    const hand = shuffled.slice(0, 20);
 
     hand.forEach(word => {
 
-        const magnet =
-            document.createElement("div");
+        const magnet = document.createElement("div");
 
+        magnet.textContent = word;
 
-        magnet.textContent =
-            word;
+        magnet.classList.add("magnet");
 
+        magnet.draggable = true;
 
-        magnet.classList.add(
-            "magnet"
-        );
+        magnet.addEventListener("dragstart", dragStart);
 
-
-        magnet.draggable =
-            true;
-
-
-        magnet.addEventListener(
-            "dragstart",
-            dragStart
-        );
-
-
-        wordBank.appendChild(
-            magnet
-        );
+        wordBank.appendChild(magnet);
 
     });
 
 }
 
-
-// ============================================================
-// DRAG AND DROP
-// ============================================================
+// ---------- Dragging ----------
 
 let draggedMagnet = null;
 
+function dragStart(e){
 
-function dragStart(event) {
-
-    draggedMagnet =
-        event.target;
+    draggedMagnet = e.target;
 
 }
 
+wordBank.addEventListener("dragover", e => {
 
-if (wordBank && answerArea) {
+    e.preventDefault();
 
-    wordBank.addEventListener(
-        "dragover",
-        event => {
+});
 
-            event.preventDefault();
+answerArea.addEventListener("dragover", e => {
 
-        }
-    );
+    e.preventDefault();
 
+});
 
-    answerArea.addEventListener(
-        "dragover",
-        event => {
+wordBank.addEventListener("drop", () => {
 
-            event.preventDefault();
+    if(draggedMagnet){
 
-        }
-    );
+        wordBank.appendChild(draggedMagnet);
 
+    }
 
-    wordBank.addEventListener(
-        "drop",
-        () => {
+});
 
-            if (draggedMagnet) {
+answerArea.addEventListener("drop", () => {
 
-                wordBank.appendChild(
-                    draggedMagnet
-                );
+    if(draggedMagnet){
 
-            }
+        answerArea.appendChild(draggedMagnet);
 
-        }
-    );
+    }
 
-
-    answerArea.addEventListener(
-        "drop",
-        () => {
-
-            if (draggedMagnet) {
-
-                answerArea.appendChild(
-                    draggedMagnet
-                );
-
-            }
-
-        }
-    );
-
-}
-
+});
 
 // ============================================================
 // SUBMIT ANSWER
