@@ -503,8 +503,8 @@ function generateRoomCode() {
 
 }
 
-const roomDisplay = document.getElementById("roomCode");
-roomDisplay.textContent = currentRoom;
+const roomCodeDisplay = document.getElementById("roomCode");
+roomCodeDisplay.textContent = currentRoom;
 
 
 // ============================================================
