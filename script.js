@@ -504,7 +504,7 @@ function generateRoomCode() {
 }
 
 const roomCodeDisplay = document.getElementById("roomCode");
-roomCodeDisplay.textContent = currentRoom;
+roomCodeDisplay.textContent = roomCode;
 
 
 // ============================================================
