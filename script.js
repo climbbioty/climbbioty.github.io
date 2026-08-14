@@ -503,9 +503,6 @@ function generateRoomCode() {
 
 }
 
-const roomCodeDisplay = document.getElementById("roomCode");
-roomCodeDisplay.textContent = roomCode;
-
 
 // ============================================================
 // PLAYER ID
@@ -544,7 +541,7 @@ function loadGameInformation() {
 
 
     const roomDisplay =
-        document.getElementById("roomDisplay");
+        document.getElementById("currentRoom");
 
     if (roomDisplay) {
 
