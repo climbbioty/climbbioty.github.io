@@ -526,28 +526,34 @@ function generatePlayerId() {
 
 function loadGameInformation() {
 
+    function loadGameInformation() {
+
     const params =
         new URLSearchParams(
             window.location.search
         );
 
-
     currentRoom =
         params.get("room") || "";
 
-
     playerName =
         params.get("name") || "";
-
 
     playerId =
         params.get("player") || "";
 
 
-    console.log(
-        "Room:",
-        currentRoom
-    );
+    const roomDisplay =
+        document.getElementById("roomDisplay");
+
+    if (roomDisplay) {
+
+        roomDisplay.textContent =
+            "Room Code: " + currentRoom;
+
+    }
+
+}
 
     console.log(
         "Player:",
