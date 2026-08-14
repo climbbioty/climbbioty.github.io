@@ -540,12 +540,12 @@ function loadGameInformation() {
         params.get("player") || "";
 
 
-    const roomDisplay =
+    const roomCodeDisplay =
         document.getElementById("currentRoom");
 
-    if (roomDisplay) {
+    if (roomCodeDisplay) {
 
-        roomDisplay.textContent =
+        roomCodeDisplay.textContent =
             "Room Code: " + currentRoom;
 
     }
