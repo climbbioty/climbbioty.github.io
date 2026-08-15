@@ -950,17 +950,54 @@ if (
 // SUBMISSIONS
 // ====================
 
-// Get the Submit Answer button
-const submitAnswerButton = document.getElementById("submitAnswer");
+const submitAnswerButton =
+    document.getElementById("submitAnswer");
 
-// Submit the player's answer
-submitAnswerButton.addEventListener("click", () => {
-    const magnets = document.querySelectorAll("#answerArea .magnet");
+submitAnswerButton.addEventListener("click", async () => {
 
-const answer = Array.from(magnets)
-    .map(magnet => magnet.textContent.trim())
-    .join(" ");
+    console.log("SUBMIT BUTTON WAS CLICKED");
 
-console.log("Answer:", answer);
-    
+    // Find all magnets
+    const magnets = document.querySelectorAll(".magnet");
+
+    console.log("Magnets:", magnets);
+
+    // Get the text from each magnet
+    const answer = Array.from(magnets)
+        .map(magnet => magnet.textContent.trim())
+        .join(" ");
+
+    console.log("Answer:", answer);
+
+    // Make sure there is an answer
+    if (!answer) {
+        console.log("NO ANSWER");
+        return;
+    }
+
+    // Make sure we have a room
+    if (!roomCode) {
+        console.log("NO ROOM CODE");
+        return;
+    }
+
+    // Make sure we have a player name
+    if (!playerName) {
+        console.log("NO PLAYER NAME");
+        return;
+    }
+
+    console.log("Submitting:", answer);
+    console.log("Room:", roomCode);
+    console.log("Player:", playerName);
+
+    // Send the answer to Firebase
+    await update(
+        ref(database, `rooms/${roomCode}/players/${playerName}`),
+        {
+            answer: answer
+        }
+    );
+
+    console.log("ANSWER SUBMITTED");
 });
