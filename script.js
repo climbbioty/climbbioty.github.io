@@ -955,5 +955,12 @@ const submitAnswerButton = document.getElementById("submitAnswer");
 
 // Submit the player's answer
 submitAnswerButton.addEventListener("click", () => {
-    console.log(document.querySelectorAll(".magnet"));
+    const magnets = document.querySelectorAll("#answerArea .magnet");
+
+const answer = Array.from(magnets)
+    .map(magnet => magnet.textContent.trim())
+    .join(" ");
+
+console.log("Answer:", answer);
+    
 });
