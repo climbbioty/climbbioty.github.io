@@ -501,6 +501,9 @@ function generateRoomCode() {
 
     return code;
 
+        roomCodeDisplay.textContent =
+            "Room Code: " + code;
+
 }
 
 
@@ -515,47 +518,6 @@ function generatePlayerId() {
         .substring(2, 10);
 
 }
-
-
-// ============================================================
-// GET ROOM INFORMATION FROM URL
-// ============================================================
-
-function loadGameInformation() {
-
-    const params =
-        new URLSearchParams(
-            window.location.search
-        );
-
-    currentRoom =
-        params.get("room") || "";
-
-    playerName =
-        params.get("name") || "";
-
-    playerId =
-        params.get("player") || "";
-
-
-    const roomCodeDisplay =
-        document.getElementById("currentRoom");
-
-    if (roomCodeDisplay) {
-
-        roomCodeDisplay.textContent =
-            "Room Code: " + currentRoom;
-
-    }
-
-
-    console.log(
-        "Player:",
-        playerName
-    );
-
-}
-
 
 // ============================================================
 // GENERATE PROMPT
