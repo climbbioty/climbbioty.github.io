@@ -952,6 +952,7 @@ if (
 
 // Get the Submit Answer button
 const submitAnswerButton = document.getElementById("submitAnswer");
+console.log("Submit button:", submitAnswerButton);
 
 // Get the player's name from the URL
 const params = new URLSearchParams(window.location.search);
