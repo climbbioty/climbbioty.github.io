@@ -523,8 +523,6 @@ function generatePlayerId() {
 
 function loadGameInformation() {
 
-    function loadGameInformation() {
-
     const params =
         new URLSearchParams(
             window.location.search
@@ -550,7 +548,6 @@ function loadGameInformation() {
 
     }
 
-}
 
     console.log(
         "Player:",
