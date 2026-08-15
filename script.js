@@ -953,10 +953,6 @@ if (
 // Get the Submit Answer button
 const submitAnswerButton = document.getElementById("submitAnswer");
 
-// Get the player's name from the URL
-const params = new URLSearchParams(window.location.search);
-const playerName = params.get("name");
-
 // Submit the player's answer
 submitAnswerButton.addEventListener("click", () => {
     console.log("SUBMIT BUTTON WAS CLICKED");
