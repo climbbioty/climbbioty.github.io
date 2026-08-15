@@ -353,6 +353,8 @@ async function joinRoom() {
             .trim()
             .toUpperCase();
 
+    return roomcode;
+
 
     playerName =
         nameInput.value.trim();
