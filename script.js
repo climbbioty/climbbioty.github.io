@@ -414,13 +414,8 @@ async function joinRoom() {
     try {
 
         const snapshot =
-            await get(
-                child(
-                    ref(database),
-                    `rooms/${roomCode}`
-                )
+            await get(child(ref(database),`rooms/${roomCode}`));
                 return snapshot.val();
-            );
 
 
         if (!snapshot.exists()) {
