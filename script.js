@@ -419,6 +419,7 @@ async function joinRoom() {
                     ref(database),
                     `rooms/${roomCode}`
                 )
+                return snapshot.val();
             );
 
 
@@ -502,7 +503,7 @@ function generateRoomCode() {
     return code;
 
         roomCodeDisplay.textContent =
-            "Room Code: " + code;
+            "Room Code: " + snapshot.val();
 
 }
 
