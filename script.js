@@ -958,7 +958,7 @@ submitAnswerButton.addEventListener("click", async () => {
     console.log("SUBMIT BUTTON WAS CLICKED");
 
     // Find all magnets
-    const magnets = document.querySelectorAll(".magnet");
+    const magnets = document.querySelectorAll("#answerArea .magnet");
 
     console.log("Magnets:", magnets);
 
@@ -982,7 +982,6 @@ submitAnswerButton.addEventListener("click", async () => {
     }
 
     console.log("Submitting:", answer);
-    console.log("Room:", roomCode);
     console.log("Player:", playerName);
 
     // Send the answer to Firebase
