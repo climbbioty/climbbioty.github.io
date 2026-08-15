@@ -11,7 +11,8 @@ import {
     set,
     get,
     child,
-    onValue
+    onValue,
+    update
 } from
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
@@ -944,3 +945,54 @@ if (
     loadGameInformation();
 
 }
+
+// ====================
+// SUBMISSIONS
+// ====================
+
+// Get the Submit Answer button
+const submitAnswerButton = document.getElementById("submitAnswer");
+
+// Get the player's name from the URL
+const params = new URLSearchParams(window.location.search);
+const playerName = params.get("name");
+
+// Submit the player's answer
+submitAnswerButton.addEventListener("click", async () => {
+
+    // Get the magnets currently in the answer area
+    const magnets = document.querySelectorAll("#answerArea .magnet");
+
+    // Turn the magnets into a sentence
+    const answer = Array.from(magnets)
+        .map(magnet => magnet.textContent.trim())
+        .join(" ");
+
+    // Make sure there is an answer
+    if (!answer) {
+        console.log("No answer to submit.");
+        return;
+    }
+
+    // Make sure we have a room
+    if (!roomCode) {
+        console.log("You are not in a room.");
+        return;
+    }
+
+    // Make sure we know who submitted the answer
+    if (!playerName) {
+        console.log("Player name not found.");
+        return;
+    }
+
+    // Save the answer to Firebase
+    await update(
+        ref(database, `rooms/${roomCode}/players/${playerName}`),
+        {
+            answer: answer
+        }
+    );
+
+    console.log("Answer submitted:", answer);
+});
