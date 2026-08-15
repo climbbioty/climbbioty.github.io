@@ -956,4 +956,4 @@ const submitAnswerButton = document.getElementById("submitAnswer");
 // Submit the player's answer
 submitAnswerButton.addEventListener("click", () => {
     console.log(document.querySelectorAll(".magnet"));
-};
+});
