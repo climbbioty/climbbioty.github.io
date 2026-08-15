@@ -499,11 +499,11 @@ function generateRoomCode() {
 
     }
 
+const params = new URLSearchParams(window.location.search);
+const roomCode = params.get("room");
 
-    return code;
-
-        roomCodeDisplay.textContent =
-            "Room Code: " + snapshot.val();
+roomCodeDisplay.textContent =
+    "Room Code: " + roomCode;
 
 }
 
@@ -980,8 +980,6 @@ if (
         "game.html"
     )
 ) {
-
-    loadGameInformation();
 
     watchPrompt();
 
