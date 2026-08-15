@@ -1,3 +1,7 @@
+// ======================================================
+// FIREBASE
+// ======================================================
+
 import { initializeApp } from
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
@@ -7,228 +11,114 @@ import {
     set,
     get,
     child,
-    onValue,
-    push
+    onValue
 } from
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 
-// ============================================================
-// FIREBASE
-// ============================================================
-
-  const firebaseConfig = {
-  apiKey: "AIzaSyA7PpddeYPWBczMv7z-VHZ0esFwkaBNBms",
-  authDomain: "ransomnoteish.firebaseapp.com",
-  databaseURL: "https://ransomnoteish-default-rtdb.firebaseio.com",
-  projectId: "ransomnoteish",
-  storageBucket: "ransomnoteish.firebasestorage.app",
-  messagingSenderId: "458933010520",
-  appId: "1:458933010520:web:e3e25257bdbec3758aca2d"
+// Your Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyA7PpddeYPWBczMv7z-VHZ0esFwkaBNBms",
+    authDomain: "ransomnoteish.firebaseapp.com",
+    databaseURL: "https://ransomnoteish-default-rtdb.firebaseio.com",
+    projectId: "ransomnoteish",
+    storageBucket: "ransomnoteish.firebasestorage.app",
+    messagingSenderId: "458933010520",
+    appId: "1:458933010520:web:e3e25257bdbec3758aca2d"
 };
 
+
+// Start Firebase
 const app = initializeApp(firebaseConfig);
 
 const database = getDatabase(app);
 
 
-// ============================================================
-// PROMPTS
-// ============================================================
-
-const prompts = [
-"Explain why you are banned from a restaurant.",
-"Write a terrible excuse for being late.",
-"Explain why your neighbor is suspicious.",
-"Write a message found inside a mysterious box.",
-"Explain why you should be the next king.",
-"Describe your evil plan.",
-"Explain why your plan failed.",
-"Write an apology to everyone in the room.",
-"Explain why you cannot be trusted.",
-"Write a warning to future generations.",
-"Explain why your pet became famous.",
-"Describe your most embarrassing achievement.",
-"Explain why you were removed from a competition.",
-"Write a message from your evil twin.",
-"Explain why you accidentally saved the world.",
-"Describe your secret identity.",
-"Explain why you are hiding in a bathroom.",
-"Write a complaint about your own life.",
-"Explain why you challenged a wizard.",
-"Describe your greatest discovery.",
-"Write a message from a confused alien.",
-"Explain why aliens should avoid Earth.",
-"Describe your new invention.",
-"Explain why your invention is dangerous.",
-"Write instructions for using a ridiculous machine.",
-"Explain why your robot malfunctioned.",
-"Describe your dream vacation gone wrong.",
-"Explain why you cannot leave your house.",
-"Write a letter from your future self.",
-"Explain why your future self is disappointed.",
-"Describe your fantasy kingdom.",
-"Explain why your castle has a strange rule.",
-"Write an announcement from a king.",
-"Explain why the dragon chose you.",
-"Describe your legendary weapon.",
-"Explain why your sword is embarrassing.",
-"Write a message from a magical creature.",
-"Explain why you joined a quest.",
-"Describe your unusual magical power.",
-"Explain why your spell failed.",
-"Write a pirate captain's announcement.",
-"Explain why your pirate crew quit.",
-"Describe your hidden treasure.",
-"Explain why your treasure is worthless.",
-"Write a message found in a bottle.",
-"Explain why you became a pirate.",
-"Describe your worst adventure.",
-"Explain why your ship disappeared.",
-"Write a pirate's apology letter.",
-"Explain why you were kicked off your ship.",
-"Describe your strange new business.",
-"Explain why nobody should buy your product.",
-"Write an advertisement for something ridiculous.",
-"Explain why your company went bankrupt.",
-"Describe your terrible invention idea.",
-"Write a five-star review for something awful.",
-"Explain why your restaurant failed.",
-"Describe your unusual job.",
-"Explain why you were fired.",
-"Write a message to your angry customers.",
-"Explain why you are being chased.",
-"Describe your escape plan.",
-"Write a message to your enemy.",
-"Explain why your enemy became your friend.",
-"Describe your secret hideout.",
-"Explain why your hiding place was discovered.",
-"Write a villain's speech.",
-"Explain why you became a villain.",
-"Describe your heroic comeback.",
-"Explain why everyone misunderstood you.",
-"Write a message from a ghost.",
-"Explain why a ghost is bothering you.",
-"Describe your haunted house.",
-"Explain why the monster is friendly.",
-"Write a monster's diary entry.",
-"Explain why you adopted a monster.",
-"Describe your strangest roommate.",
-"Explain why your house moved.",
-"Write a message from a talking animal.",
-"Explain why animals are angry.",
-"Describe your weirdest dream.",
-"Explain why your dream became real.",
-"Write a message from the moon.",
-"Explain why the moon is upset.",
-"Describe your trip through space.",
-"Explain why your spaceship crashed.",
-"Write a message from another planet.",
-"Explain why you cannot return home.",
-"Describe your new planet.",
-"Explain why your planet needs help.",
-"Write a ridiculous excuse.",
-"Explain why everyone is confused.",
-"Describe your greatest failure.",
-"Explain why you celebrated too early.",
-"Write a dramatic announcement.",
-"Explain why something completely normal became dangerous.",
-"Describe your unusual hobby.",
-"Explain why your hobby scares people.",
-"Write a message to your younger self.",
-"Explain why your younger self made a mistake."
-];
-
-
-// ============================================================
-// WORDS
-// ============================================================
-
-const words = [
-    "apple", "banana", "pizza", "dragon", "wizard",
-    "pirate", "robot", "alien", "ghost", "monster",
-    "unicorn", "castle", "tower", "forest", "mountain",
-    "river", "ocean", "island", "cave", "volcano",
-    "moon", "star", "planet", "spaceship", "rocket",
-    "computer", "phone", "book", "map", "key",
-    "door", "chair", "table", "bed", "pillow",
-    "blanket", "shoe", "hat", "sword", "shield",
-    "helmet", "armor", "crown", "ring", "coin",
-    "treasure", "diamond", "gold", "cookie", "cake",
-    "sandwich", "taco", "cheese", "pickle", "chicken",
-    "cow", "dog", "cat", "fish", "bird",
-    "mouse", "frog", "horse", "dragonfly", "bee",
-    "spider", "snake", "turtle", "tree", "flower",
-    "leaf", "rock", "cloud", "storm", "fire",
-    "water", "ice", "shadow", "light", "song",
-    "dance", "movie", "game", "story", "letter",
-    "picture", "camera", "paint", "toy", "ball",
-    "rope", "box", "bag", "keyhole", "clock",
-    "mirror", "mask", "king", "queen", "soldier",
-    "captain", "doctor", "teacher",
-
-    // Verbs
-    "run", "jump", "walk", "fly", "swim",
-    "climb", "crawl", "dance", "sing", "laugh",
-    "cry", "smile", "shout", "whisper", "eat",
-    "drink", "cook", "bake", "burn", "freeze",
-    "explode", "break", "build", "create", "destroy",
-    "fix", "throw", "catch", "kick", "punch",
-    "push", "pull", "open", "close", "lock",
-    "unlock", "find", "hide", "seek", "steal",
-    "give", "take", "buy", "sell", "trade",
-    "carry", "drop", "lift", "fall", "sleep",
-    "wake", "dream", "think", "know", "forget",
-    "remember", "learn", "teach", "read", "write",
-    "draw", "paint", "play", "fight", "win",
-    "lose", "help", "save", "attack", "defend",
-    "protect", "escape", "chase", "follow", "lead",
-    "become", "change", "grow", "shrink", "transform",
-    "discover", "explore", "travel", "visit", "invent",
-    "charge", "control", "summon", "wear", "remove",
-    "mix", "spill",
-
-    // Adjectives
-    "tiny", "giant", "huge", "small", "purple",
-    "green", "blue", "red", "golden", "silver",
-    "ancient", "modern", "magical", "mysterious",
-    "angry", "happy", "sad", "silly", "strange",
-    "weird", "funny", "scary", "friendly", "evil",
-    "good", "lazy", "fast", "slow", "loud",
-    "quiet", "flying", "broken", "secret", "hidden",
-    "bright", "dark", "cold", "hot", "spicy",
-    "sweet", "sticky", "fuzzy", "sharp", "soft",
-    "heavy", "light", "crazy", "wild", "royal",
-    "legendary",
-
-    // Connectors
-    "the", "a", "an", "my", "your",
-    "his", "her", "our", "their", "this",
-    "that", "these", "those", "and", "or",
-    "but", "because", "with", "without", "from",
-    "to", "for", "at", "by", "about",
-    "into", "inside", "outside", "over", "under",
-    "through", "after", "before", "while", "when",
-    "where", "who", "what", "how", "very",
-    "really", "almost", "never", "always", "maybe",
-    "not", "only", "also", "then", "so"
-];
-
-
-// ============================================================
-// ROOM / PLAYER VARIABLES
-// ============================================================
+// ======================================================
+// GAME VARIABLES
+// ======================================================
 
 let currentRoom = "";
-
 let playerName = "";
-
 let playerId = "";
 
 
-// ============================================================
+// ======================================================
+// WORDS AND PROMPTS
+// ======================================================
+
+// Keep your existing arrays here.
+// If you already have large arrays, paste them into these.
+
+const prompts = [
+    "Something you would find in space",
+    "Something that makes you angry",
+    "Something you would bring to a desert island",
+    "Something that should not be in your bedroom",
+    "Something you would say to a teacher",
+    "A terrible superhero",
+    "Something you would find at a pirate ship",
+    "Something that makes no sense",
+    "A bad excuse for being late",
+    "Something you would never want to eat"
+];
+
+
+const words = [
+    "the",
+    "a",
+    "an",
+    "my",
+    "your",
+    "very",
+    "big",
+    "small",
+    "good",
+    "bad",
+    "strange",
+    "funny",
+    "angry",
+    "happy",
+    "run",
+    "jump",
+    "eat",
+    "destroy",
+    "find",
+    "make",
+    "want",
+    "need",
+    "see",
+    "have",
+    "is",
+    "was",
+    "will",
+    "can",
+    "because",
+    "but",
+    "and",
+    "or",
+    "with",
+    "without",
+    "cat",
+    "dog",
+    "house",
+    "car",
+    "pirate",
+    "robot",
+    "dragon",
+    "king",
+    "queen",
+    "wizard",
+    "sword",
+    "mountain",
+    "ocean",
+    "banana"
+];
+
+
+// ======================================================
 // GET HTML ELEMENTS
-// ============================================================
+// ======================================================
 
 const promptBox =
     document.getElementById("promptBox");
@@ -245,38 +135,74 @@ const wordBank =
 const answerArea =
     document.getElementById("answerArea");
 
+const roomDisplay =
+    document.getElementById("roomDisplay");
 
-// ============================================================
-// CREATE ROOM
-// ============================================================
 
-const roomButton =
-    document.getElementById("roomButton");
+// ======================================================
+// GENERATE PLAYER ID
+// ======================================================
 
-if (roomButton) {
+function generatePlayerId() {
 
-    roomButton.addEventListener("click", createRoom);
+    return Math.random()
+        .toString(36)
+        .substring(2, 10);
 
 }
 
 
-async function createRoom() {
+// ======================================================
+// GENERATE ROOM CODE
+// ======================================================
 
-    console.log("Create Room clicked.");
+function generateRoomCode() {
+
+    const characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    let code = "";
+
+    for (let i = 0; i < 5; i++) {
+
+        code +=
+            characters[
+                Math.floor(
+                    Math.random() *
+                    characters.length
+                )
+            ];
+
+    }
+
+    return code;
+
+}
+
+
+// ======================================================
+// CREATE ROOM
+// ======================================================
+
+async function createRoom() {
 
     const nameInput =
         document.getElementById("nameInput");
 
     if (!nameInput) {
 
-        console.error("nameInput was not found.");
+        console.error(
+            "nameInput was not found in the HTML."
+        );
 
         return;
 
     }
 
+
     playerName =
         nameInput.value.trim();
+
 
     if (playerName === "") {
 
@@ -287,27 +213,84 @@ async function createRoom() {
     }
 
 
-    currentRoom =
+    // Generate a room code
+    const roomCode =
         generateRoomCode();
 
-    playerId =
-        generatePlayerId();
+
+    console.log(
+        "Generated room:",
+        roomCode
+    );
 
 
     try {
 
+        // Create the room in Firebase
         await set(
             ref(
                 database,
-                `rooms/${currentRoom}`
+                `rooms/${roomCode}`
             ),
             {
+                code: roomCode,
                 prompt: "",
                 state: "lobby"
             }
         );
 
 
+        console.log(
+            "Room created in Firebase."
+        );
+
+
+        // Make sure the room exists
+        const snapshot =
+            await get(
+                ref(
+                    database,
+                    `rooms/${roomCode}`
+                )
+            );
+
+
+        if (!snapshot.exists()) {
+
+            console.error(
+                "Room was not found after creation."
+            );
+
+            alert(
+                "The room could not be created."
+            );
+
+            return;
+
+        }
+
+
+        // Get room data
+        const roomData =
+            snapshot.val();
+
+
+        currentRoom =
+            roomData.code;
+
+
+        console.log(
+            "Room from Firebase:",
+            currentRoom
+        );
+
+
+        // Create player ID
+        playerId =
+            generatePlayerId();
+
+
+        // Add player to room
         await set(
             ref(
                 database,
@@ -319,51 +302,32 @@ async function createRoom() {
         );
 
 
-        console.log(
-            "Room created:",
-            currentRoom
-        );
-
-
+        // Go to game page
         window.location.href =
             `game.html?room=${currentRoom}&name=${encodeURIComponent(playerName)}&player=${playerId}`;
 
-    }
 
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Error creating room:",
             error
         );
 
-        alert("Could not create room.");
+        alert(
+            "There was an error creating the room."
+        );
 
     }
 
 }
 
 
-// ============================================================
+// ======================================================
 // JOIN ROOM
-// ============================================================
-
-const joinRoomButton =
-    document.getElementById("joinRoomButton");
-
-if (joinRoomButton) {
-
-    joinRoomButton.addEventListener(
-        "click",
-        joinRoom
-    );
-
-}
-
+// ======================================================
 
 async function joinRoom() {
-
-    console.log("Join Room clicked.");
 
     const roomInput =
         document.getElementById("roomInput");
@@ -375,7 +339,7 @@ async function joinRoom() {
     if (!roomInput || !nameInput) {
 
         console.error(
-            "Room or name input not found."
+            "roomInput or nameInput was not found."
         );
 
         return;
@@ -395,7 +359,9 @@ async function joinRoom() {
 
     if (roomCode === "") {
 
-        alert("Enter a room code.");
+        alert(
+            "Enter a room code."
+        );
 
         return;
 
@@ -404,7 +370,9 @@ async function joinRoom() {
 
     if (playerName === "") {
 
-        alert("Enter your name.");
+        alert(
+            "Enter your name."
+        );
 
         return;
 
@@ -413,27 +381,48 @@ async function joinRoom() {
 
     try {
 
+        // Look for the room in Firebase
         const snapshot =
-            await get(child(ref(database),`rooms/${roomCode}`));
-                return snapshot.val();
+            await get(
+                child(
+                    ref(database),
+                    `rooms/${roomCode}`
+                )
+            );
 
 
         if (!snapshot.exists()) {
 
-            alert("Room not found.");
+            alert(
+                "Room not found."
+            );
 
             return;
 
         }
 
 
-        currentRoom =
-            roomCode;
+        // Get the room data
+        const roomData =
+            snapshot.val();
 
+
+        currentRoom =
+            roomData.code;
+
+
+        console.log(
+            "Joined room:",
+            currentRoom
+        );
+
+
+        // Generate player ID
         playerId =
             generatePlayerId();
 
 
+        // Add player to Firebase
         await set(
             ref(
                 database,
@@ -445,91 +434,150 @@ async function joinRoom() {
         );
 
 
-        console.log(
-            "Joined room:",
-            currentRoom
-        );
-
-
+        // Go to game page
         window.location.href =
             `game.html?room=${currentRoom}&name=${encodeURIComponent(playerName)}&player=${playerId}`;
 
-    }
 
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Error joining room:",
             error
         );
 
-        alert("Could not join room.");
+        alert(
+            "There was an error joining the room."
+        );
 
     }
 
 }
 
 
-// ============================================================
-// ROOM CODE
-// ============================================================
+// ======================================================
+// GAME PAGE INFORMATION
+// ======================================================
 
-function generateRoomCode() {
+async function loadGameInformation() {
 
-    const characters =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
 
-    let code = "";
+
+    const roomCode =
+        params.get("room");
 
 
-    for (let i = 0; i < 5; i++) {
+    playerName =
+        params.get("name") || "";
 
-        code +=
-            characters[
-                Math.floor(
-                    Math.random() *
-                    characters.length
+
+    playerId =
+        params.get("player") || "";
+
+
+    if (!roomCode) {
+
+        console.error(
+            "No room code was provided."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        // Get the room directly from Firebase
+        const snapshot =
+            await get(
+                ref(
+                    database,
+                    `rooms/${roomCode}`
                 )
-            ];
+            );
+
+
+        if (!snapshot.exists()) {
+
+            console.error(
+                "That room does not exist."
+            );
+
+            return;
+
+        }
+
+
+        // Get Firebase room data
+        const roomData =
+            snapshot.val();
+
+
+        // Get actual room code from Firebase
+        currentRoom =
+            roomData.code;
+
+
+        console.log(
+            "Current room:",
+            currentRoom
+        );
+
+
+        // Display room code
+        if (roomDisplay) {
+
+            roomDisplay.textContent =
+                "Room Code: " + currentRoom;
+
+        }
+
+
+        // Display player name if you have an element for it
+        const playerDisplay =
+            document.getElementById(
+                "playerDisplay"
+            );
+
+
+        if (playerDisplay) {
+
+            playerDisplay.textContent =
+                "Player: " + playerName;
+
+        }
+
+
+        // Start listening for game changes
+        watchPrompt();
+
+        watchPlayers();
+
+        watchAnswers();
+
+
+    } catch (error) {
+
+        console.error(
+            "Error loading game:",
+            error
+        );
 
     }
 
-const params = new URLSearchParams(window.location.search);
-const roomCode = params.get("room");
-
-roomCodeDisplay.textContent =
-    "Room Code: " + roomCode;
-
 }
 
 
-// ============================================================
-// PLAYER ID
-// ============================================================
+// ======================================================
+// PROMPTS
+// ======================================================
 
-function generatePlayerId() {
-
-    return Math.random()
-        .toString(36)
-        .substring(2, 10);
-
-}
-
-// ============================================================
-// GENERATE PROMPT
-// ============================================================
-
-if (promptButton) {
-
-    promptButton.addEventListener(
-        "click",
-        generatePrompt
-    );
-
-}
-
-
-async function generatePrompt() {
+function generatePrompt() {
 
     if (currentRoom === "") {
 
@@ -551,40 +599,31 @@ async function generatePrompt() {
         ];
 
 
-    try {
+    // Send prompt to Firebase
+    set(
+        ref(
+            database,
+            `rooms/${currentRoom}/prompt`
+        ),
+        randomPrompt
+    );
 
-        await set(
-            ref(
-                database,
-                `rooms/${currentRoom}/prompt`
-            ),
-            randomPrompt
-        );
 
-    }
-
-    catch (error) {
-
-        console.error(
-            "Error sending prompt:",
-            error
-        );
-
-    }
+    console.log(
+        "New prompt:",
+        randomPrompt
+    );
 
 }
 
 
-// ============================================================
+// ======================================================
 // WATCH PROMPT
-// ============================================================
+// ======================================================
 
 function watchPrompt() {
 
-    if (
-        currentRoom === "" ||
-        !promptBox
-    ) {
+    if (currentRoom === "") {
 
         return;
 
@@ -597,9 +636,12 @@ function watchPrompt() {
             `rooms/${currentRoom}/prompt`
         ),
 
-        snapshot => {
+        (snapshot) => {
 
-            if (snapshot.exists()) {
+            if (
+                snapshot.exists() &&
+                promptBox
+            ) {
 
                 promptBox.textContent =
                     snapshot.val();
@@ -607,25 +649,14 @@ function watchPrompt() {
             }
 
         }
-
     );
 
 }
 
 
-// ============================================================
-// GENERATE MAGNETS
-// ============================================================
-
-if (wordButton) {
-
-    wordButton.addEventListener(
-        "click",
-        generateWords
-    );
-
-}
-
+// ======================================================
+// GENERATE WORDS
+// ======================================================
 
 function generateWords() {
 
@@ -641,56 +672,61 @@ function generateWords() {
     answerArea.innerHTML = "";
 
 
+    // Copy words
     const shuffled =
         [...words];
 
 
+    // Shuffle
     shuffled.sort(
         () => Math.random() - 0.5
     );
 
 
+    // Get 20 words
     const hand =
         shuffled.slice(0, 20);
 
 
-    hand.forEach(word => {
+    // Create magnets
+    hand.forEach(
+        (word) => {
 
-        const magnet =
-            document.createElement("div");
-
-
-        magnet.textContent =
-            word;
+            const magnet =
+                document.createElement("div");
 
 
-        magnet.classList.add(
-            "magnet"
-        );
+            magnet.textContent =
+                word;
 
 
-        magnet.draggable =
-            true;
+            magnet.classList.add(
+                "magnet"
+            );
 
 
-        magnet.addEventListener(
-            "dragstart",
-            dragStart
-        );
+            magnet.draggable = true;
 
 
-        wordBank.appendChild(
-            magnet
-        );
+            magnet.addEventListener(
+                "dragstart",
+                dragStart
+            );
 
-    });
+
+            wordBank.appendChild(
+                magnet
+            );
+
+        }
+    );
 
 }
 
 
-// ============================================================
+// ======================================================
 // DRAG AND DROP
-// ============================================================
+// ======================================================
 
 let draggedMagnet = null;
 
@@ -703,21 +739,12 @@ function dragStart(event) {
 }
 
 
-if (wordBank && answerArea) {
+// Word bank accepts drops
+if (wordBank) {
 
     wordBank.addEventListener(
         "dragover",
-        event => {
-
-            event.preventDefault();
-
-        }
-    );
-
-
-    answerArea.addEventListener(
-        "dragover",
-        event => {
+        (event) => {
 
             event.preventDefault();
 
@@ -736,6 +763,21 @@ if (wordBank && answerArea) {
                 );
 
             }
+
+        }
+    );
+
+}
+
+
+// Answer area accepts drops
+if (answerArea) {
+
+    answerArea.addEventListener(
+        "dragover",
+        (event) => {
+
+            event.preventDefault();
 
         }
     );
@@ -759,216 +801,139 @@ if (wordBank && answerArea) {
 }
 
 
+// ======================================================
+// WATCH PLAYERS
+// ======================================================
 
-// ============================================================
-// SUBMIT ANSWER
-// ============================================================
+function watchPlayers() {
 
-const submitButton =
-    document.getElementById(
-        "submitButton"
-    );
-
-
-if (submitButton) {
-
-    submitButton.addEventListener(
-        "click",
-        submitAnswer
-    );
-
-}
-
-
-async function submitAnswer() {
-
-    if (
-        currentRoom === "" ||
-        playerId === ""
-    ) {
-
-        alert(
-            "You are not in a room."
-        );
+    if (currentRoom === "") {
 
         return;
 
     }
 
 
-    if (!answerArea) {
-
-        return;
-
-    }
-
-
-    const magnets =
-        answerArea.querySelectorAll(
-            ".magnet"
+    const playersRef =
+        ref(
+            database,
+            `rooms/${currentRoom}/players`
         );
-
-
-    if (magnets.length === 0) {
-
-        alert(
-            "Create an answer first."
-        );
-
-        return;
-
-    }
-
-
-    const answerWords =
-        Array.from(magnets)
-            .map(
-                magnet =>
-                    magnet.textContent
-            );
-
-
-    const answer =
-        answerWords.join(" ");
-
-
-    try {
-
-        await set(
-            ref(
-                database,
-                `rooms/${currentRoom}/answers/${playerId}`
-            ),
-            {
-                name: playerName,
-                text: answer,
-                words: answerWords
-            }
-        );
-
-
-        console.log(
-            "Answer submitted."
-        );
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Error submitting answer:",
-            error
-        );
-
-    }
-
-}
-
-
-// ============================================================
-// WATCH ANSWERS
-// ============================================================
-
-function watchAnswers() {
-
-    const answersArea =
-        document.getElementById(
-            "answers"
-        );
-
-
-    if (
-        !answersArea ||
-        currentRoom === ""
-    ) {
-
-        return;
-
-    }
 
 
     onValue(
-        ref(
-            database,
-            `rooms/${currentRoom}/answers`
-        ),
+        playersRef,
+        (snapshot) => {
 
-        snapshot => {
-
-            answersArea.innerHTML = "";
-
-
-            if (!snapshot.exists()) {
-
-                return;
-
-            }
-
-
-            const answers =
-                snapshot.val();
-
-
-            Object.values(answers)
-                .forEach(answer => {
-
-                    const answerElement =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    answerElement.classList.add(
-                        "submitted-answer"
-                    );
-
-
-                    const nameElement =
-                        document.createElement(
-                            "strong"
-                        );
-
-
-                    nameElement.textContent =
-                        answer.name + ": ";
-
-
-                    const textElement =
-                        document.createElement(
-                            "span"
-                        );
-
-
-                    textElement.textContent =
-                        answer.text;
-
-
-                    answerElement.appendChild(
-                        nameElement
-                    );
-
-
-                    answerElement.appendChild(
-                        textElement
-                    );
-
-
-                    answersArea.appendChild(
-                        answerElement
-                    );
-
-                });
+            console.log(
+                "Players:",
+                snapshot.val()
+            );
 
         }
-
     );
 
 }
 
 
-// ============================================================
+// ======================================================
+// WATCH ANSWERS
+// ======================================================
+
+function watchAnswers() {
+
+    if (currentRoom === "") {
+
+        return;
+
+    }
+
+
+    const answersRef =
+        ref(
+            database,
+            `rooms/${currentRoom}/answers`
+        );
+
+
+    onValue(
+        answersRef,
+        (snapshot) => {
+
+            console.log(
+                "Answers:",
+                snapshot.val()
+            );
+
+        }
+    );
+
+}
+
+
+// ======================================================
+// BUTTONS
+// ======================================================
+
+// CREATE ROOM
+const roomButton =
+    document.getElementById(
+        "roomButton"
+    );
+
+
+if (roomButton) {
+
+    roomButton.addEventListener(
+        "click",
+        createRoom
+    );
+
+}
+
+
+// JOIN ROOM
+const joinRoomButton =
+    document.getElementById(
+        "joinRoomButton"
+    );
+
+
+if (joinRoomButton) {
+
+    joinRoomButton.addEventListener(
+        "click",
+        joinRoom
+    );
+
+}
+
+
+// GENERATE PROMPT
+if (promptButton) {
+
+    promptButton.addEventListener(
+        "click",
+        generatePrompt
+    );
+
+}
+
+
+// GENERATE WORDS
+if (wordButton) {
+
+    wordButton.addEventListener(
+        "click",
+        generateWords
+    );
+
+}
+
+
+// ======================================================
 // STARTUP
-// ============================================================
+// ======================================================
 
 if (
     window.location.pathname.endsWith(
@@ -976,8 +941,6 @@ if (
     )
 ) {
 
-    watchPrompt();
-
-    watchAnswers();
+    loadGameInformation();
 
 }
