@@ -634,10 +634,7 @@ function watchPrompt() {
 
 
     onValue(
-        ref(
-            database,
-            `rooms/${currentRoom}/prompt`
-        ),
+        ref(database,`rooms/${currentRoom}/prompt`),
 
         (snapshot) => {
 
@@ -957,36 +954,28 @@ const submitAnswerButton =
 
 submitAnswerButton.addEventListener("click", async () => {
 
-    console.log("SUBMIT BUTTON WAS CLICKED");
-
-    // Find all magnets
     const magnets = document.querySelectorAll("#answerArea .magnet");
 
-    console.log("Magnets:", magnets);
-
-    // Get the text from each magnet
     const answer = Array.from(magnets)
         .map(magnet => magnet.textContent.trim())
         .join(" ");
 
     console.log("Answer:", answer);
 
-    // Make sure there is an answer
-    if (!answer) {
-        console.log("NO ANSWER");
+    if (!roomCode) {
+        console.log("NO ROOM CODE");
         return;
     }
 
-    // Make sure we have a player name
     if (!playerName) {
         console.log("NO PLAYER NAME");
         return;
     }
 
-    console.log("Submitting:", answer);
+    console.log("Room:", roomCode);
     console.log("Player:", playerName);
+    console.log("Submitting:", answer);
 
-    // Send the answer to Firebase
     await update(
         ref(database, `rooms/${roomCode}/players/${playerName}`),
         {
