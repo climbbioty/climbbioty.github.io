@@ -975,12 +975,6 @@ submitAnswerButton.addEventListener("click", async () => {
         return;
     }
 
-    // Make sure we have a room
-    if (!roomCode) {
-        console.log("NO ROOM CODE");
-        return;
-    }
-
     // Make sure we have a player name
     if (!playerName) {
         console.log("NO PLAYER NAME");
