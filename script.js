@@ -564,6 +564,8 @@ async function loadGameInformation() {
 
         watchAnswers();
 
+        watchJudge();
+
 
     } catch (error) {
 
