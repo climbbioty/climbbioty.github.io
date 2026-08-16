@@ -940,7 +940,7 @@ submitAnswerButton.addEventListener("click", async () => {
 
     console.log("Answer:", answer);
 
-    if (!roomCode) {
+    if (!currentRoom) {
         console.log("NO ROOM CODE");
         return;
     }
@@ -950,7 +950,7 @@ submitAnswerButton.addEventListener("click", async () => {
         return;
     }
 
-    console.log("Room:", roomCode);
+    console.log("Room:", currentRoom);
     console.log("Player:", playerName);
     console.log("Submitting:", answer);
 
