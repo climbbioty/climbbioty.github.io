@@ -354,7 +354,7 @@ async function joinRoom() {
             .trim()
             .toUpperCase();
 
-    return roomcode;
+    return roomCode;
 
 
     playerName =
@@ -993,7 +993,7 @@ submitAnswerButton.addEventListener("click", async () => {
 
     console.log("Answer:", answer);
 
-    if (!currentRoom) {
+    if (!roomCode) {
         console.log("NO ROOM CODE");
         return;
     }
@@ -1003,12 +1003,12 @@ submitAnswerButton.addEventListener("click", async () => {
         return;
     }
 
-    console.log("Room:", currentRoom);
+    console.log("Room:", roomCode);
     console.log("Player:", playerName);
     console.log("Submitting:", answer);
 
     await update(
-        ref(database, `rooms/${currentRoom}/players/${playerName}`),
+        ref(database, `rooms/${roomCode}/players/${playerName}`),
         {
             answer: answer
         }
