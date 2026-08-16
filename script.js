@@ -1021,6 +1021,46 @@ submitAnswerButton.addEventListener("click", async () => {
 }
 
 // ======================================================
+// WATCH JUDGE
+// ======================================================
+
+function watchJudge() {
+
+    if (currentRoom === "" || playerId === "") {
+        return;
+    }
+
+    const roomRef =
+        ref(database, `rooms/${currentRoom}`);
+
+    onValue(roomRef, (snapshot) => {
+
+        const room = snapshot.val();
+
+        if (!room) {
+            return;
+        }
+
+        const judgeId = room.judgeId;
+
+        console.log("Current judge:", judgeId);
+
+        // Am I the judge?
+        if (
+            judgeId === playerId &&
+            room.state === "answering"
+        ) {
+
+            console.log("I am the judge!");
+
+            window.location.href =
+                `judge.html?room=${currentRoom}&player=${playerId}`;
+        }
+
+    });
+}
+
+// ======================================================
 // JUDGE ROOM
 // ======================================================
 
