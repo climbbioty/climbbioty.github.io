@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Judge Room</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <h1>You're the Judge</h1>
+
+     <div id="promptBox"> </div>
+
+    <p id="answerStatus">
+        Waiting for players...
+    </p>
+
+    <div id="answersContainer"></div>
+
+
+    <!-- Template for ONE answer -->
+    <template id="answerTemplate">
+
+        <div class="answerCard">
+
+            <p class="answerText"></p>
+
+            <button class="chooseAnswer">
+                Choose This Answer
+            </button>
+
+        </div>
+
+    </template>
+
+
+    <script type="module" src="script.js"></script>
+
+</body>
+</html>
