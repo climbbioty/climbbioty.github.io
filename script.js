@@ -1019,3 +1019,38 @@ submitAnswerButton.addEventListener("click", async () => {
     console.log("ANSWER SUBMITTED");
 });
 }
+
+// ======================================================
+// JUDGE ROOM
+// ======================================================
+
+async function loadJudgeRoom() {
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const roomCode =
+        params.get("room");
+
+    const judgePlayerId =
+        params.get("player");
+
+    if (!roomCode || !judgePlayerId) {
+
+        console.error(
+            "Missing room or player information."
+        );
+
+        return;
+    }
+
+    console.log("Judge room:", roomCode);
+    console.log("Judge:", judgePlayerId);
+
+    watchJudgeRoom(
+        roomCode,
+        judgePlayerId
+    );
+}
