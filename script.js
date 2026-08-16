@@ -962,5 +962,4 @@ submitAnswerButton.addEventListener("click", async () => {
     );
 
     console.log("ANSWER SUBMITTED");
-    return;
 });
