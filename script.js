@@ -40,7 +40,7 @@ const database = getDatabase(app);
 let currentRoom = "";
 let playerName = "";
 let playerId = "";
-
+let roomCode = "";
 
 // ======================================================
 // WORDS AND PROMPTS
