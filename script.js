@@ -849,28 +849,6 @@ function watchAnswers() {
     }
 
 
-    const answersRef =
-        ref(
-            database,
-            `rooms/${currentRoom}/answers`
-        );
-
-
-    onValue(
-        answersRef,
-        (snapshot) => {
-
-            console.log(
-                "Answers:",
-                snapshot.val()
-            );
-
-        }
-    );
-
-}
-
-
 // ======================================================
 // BUTTONS
 // ======================================================
