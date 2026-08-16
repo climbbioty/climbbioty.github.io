@@ -1049,7 +1049,7 @@ async function loadJudgeRoom() {
     console.log("Judge room:", roomCode);
     console.log("Judge:", judgePlayerId);
 
-    watchJudgeRoom(
+    watchJudge(
         roomCode,
         judgePlayerId
     );
