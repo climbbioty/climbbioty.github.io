@@ -955,7 +955,7 @@ submitAnswerButton.addEventListener("click", async () => {
     console.log("Submitting:", answer);
 
     await update(
-        ref(database, `rooms/${roomCode}/players/${playerName}`),
+        ref(database, `rooms/${currentRoom}/players/${playerName}`),
         {
             answer: answer
         }
