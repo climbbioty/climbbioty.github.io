@@ -12,7 +12,8 @@ import {
     get,
     child,
     onValue,
-    update
+    update,
+    runTransaction
 } from
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
@@ -576,47 +577,99 @@ async function loadGameInformation() {
 }
 
 
-// ======================================================
-// PROMPTS
+/// ======================================================
+// GENERATE PROMPT AND ASSIGN JUDGE
 // ======================================================
 
-function generatePrompt() {
+async function generatePrompt() {
 
     if (currentRoom === "") {
-
-        alert(
-            "You are not in a room."
-        );
-
+        alert("You are not in a room.");
         return;
-
     }
 
+    try {
 
-    const randomPrompt =
-        prompts[
-            Math.floor(
-                Math.random() *
-                prompts.length
+        // Get all players currently in the room
+        const playersSnapshot = await get(
+            ref(
+                database,
+                `rooms/${currentRoom}/players`
             )
-        ];
+        );
 
+        const players = playersSnapshot.val();
 
-    // Send prompt to Firebase
-    set(
-        ref(
-            database,
-            `rooms/${currentRoom}/prompt`
-        ),
-        randomPrompt
-    );
+        if (!players) {
+            alert("There are no players in the room.");
+            return;
+        }
 
+        // Get player IDs
+        const playerIds = Object.keys(players);
 
-    console.log(
-        "New prompt:",
-        randomPrompt
-    );
+        if (playerIds.length < 2) {
+            alert("You need at least two players.");
+            return;
+        }
 
+        // Randomly select a judge
+        const randomIndex =
+            Math.floor(Math.random() * playerIds.length);
+
+        const judgeId =
+            playerIds[randomIndex];
+
+        // Select random prompt
+        const randomPrompt =
+            prompts[
+                Math.floor(
+                    Math.random() * prompts.length
+                )
+            ];
+
+        // Reset every player's answer
+        const answerUpdates = {};
+
+        playerIds.forEach((id) => {
+
+            answerUpdates[
+                `rooms/${currentRoom}/players/${id}/answer`
+            ] = null;
+
+        });
+
+        // Save the new round
+        await update(
+            ref(database),
+            {
+                [`rooms/${currentRoom}/prompt`]:
+                    randomPrompt,
+
+                [`rooms/${currentRoom}/judgeId`]:
+                    judgeId,
+
+                [`rooms/${currentRoom}/state`]:
+                    "answering",
+
+                [`rooms/${currentRoom}/winner`]:
+                    null,
+
+                ...answerUpdates
+            }
+        );
+
+        console.log("New prompt:", randomPrompt);
+        console.log("Judge:", judgeId);
+
+    } catch (error) {
+
+        console.error(
+            "Error generating prompt:",
+            error
+        );
+
+    }
 }
 
 
