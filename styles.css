@@ -119,3 +119,28 @@ button{
     text-align: center;
     outline: none;
 }
+
+#answersContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 700px;
+    margin: 20px auto;
+}
+
+.answerCard {
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    background: white;
+}
+
+.answerText {
+    font-size: 24px;
+    margin: 0 0 15px 0;
+}
+
+.chooseAnswer {
+    padding: 10px 20px;
+    cursor: pointer;
+}
