@@ -17,7 +17,6 @@ import {
 } from
 	"https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-
 // Your Firebase configuration
 const firebaseConfig = {
 	apiKey: "AIzaSyA7PpddeYPWBczMv7z-VHZ0esFwkaBNBms",
@@ -29,12 +28,10 @@ const firebaseConfig = {
 	appId: "1:458933010520:web:e3e25257bdbec3758aca2d"
 };
 
-
 // Start Firebase
 const app = initializeApp(firebaseConfig);
 
 const database = getDatabase(app);
-
 
 // ======================================================
 // GAME VARIABLES
@@ -64,7 +61,6 @@ const prompts = [
 	"A bad excuse for being late",
 	"Something you would never want to eat"
 ];
-
 
 const words = [
 	"the",
@@ -117,7 +113,6 @@ const words = [
 	"banana"
 ];
 
-
 // ======================================================
 // GET HTML ELEMENTS
 // ======================================================
@@ -153,7 +148,6 @@ function generatePlayerId() {
 
 }
 
-
 // ======================================================
 // GENERATE ROOM CODE
 // ======================================================
@@ -176,11 +170,8 @@ function generateRoomCode() {
 			];
 
 	}
-
 	return code;
-
 }
-
 
 // ======================================================
 // CREATE ROOM
@@ -201,30 +192,22 @@ async function createRoom() {
 
 	}
 
-
 	playerName =
 		nameInput.value.trim();
 
-
 	if (playerName === "") {
-
 		alert("Enter your name.");
-
 		return;
-
 	}
-
 
 	// Generate a room code
 	const roomCode =
 		generateRoomCode();
 
-
 	console.log(
 		"Generated room:",
 		roomCode
 	);
-
 
 	try {
 
@@ -241,11 +224,9 @@ async function createRoom() {
 			}
 		);
 
-
 		console.log(
 			"Room created in Firebase."
 		);
-
 
 		// Make sure the room exists
 		const snapshot =
@@ -607,11 +588,6 @@ async function generatePrompt() {
 
 		// Get player IDs
 		const playerIds = Object.keys(players);
-
-		if (playerIds.length < 2) {
-			alert("You need at least two players.");
-			return;
-		}
 
 		// Randomly select a judge
 		const randomIndex =
@@ -1078,7 +1054,7 @@ async function loadJudgeRoom() {
 	const judgePlayerId =
 		params.get("player");
 
-	const promptElement = document.getElementById("judgePrompt");
+	const promptElement = document.getElementById("prompt");
 	promptElement.textContent = prompt;
 
 	if (!roomCode || !judgePlayerId) {
