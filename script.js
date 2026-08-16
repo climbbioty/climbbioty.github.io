@@ -1054,7 +1054,9 @@ async function loadJudgeRoom() {
 	const judgePlayerId =
 		params.get("player");
 
-	promptBox.textContent = prompt;
+	const promptElement = document.getElementById("promptBox");
+
+promptElement.textContent = prompt;
 
 	if (!roomCode || !judgePlayerId) {
 
