@@ -983,6 +983,8 @@ if (
 const submitAnswerButton =
     document.getElementById("submitAnswer");
 
+if (submitAnswerButton) {
+
 submitAnswerButton.addEventListener("click", async () => {
 
     const magnets = document.querySelectorAll("#answerArea .magnet");
@@ -1016,3 +1018,4 @@ submitAnswerButton.addEventListener("click", async () => {
 
     console.log("ANSWER SUBMITTED");
 });
+}
