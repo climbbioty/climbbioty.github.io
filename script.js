@@ -590,11 +590,11 @@ async function generatePrompt() {
 		const playerIds = Object.keys(players);
 
 		// Randomly select a judge
-	//	const randomIndex =
-		//	Math.floor(Math.random() * playerIds.length);
+		const randomIndex =
+			Math.floor(Math.random() * playerIds.length);
 
-	//	const judgeId =
-		//	playerIds[randomIndex];
+		const judgeId =
+			playerIds[randomIndex];
 
 		// Select random prompt
 		const randomPrompt =
@@ -622,8 +622,8 @@ async function generatePrompt() {
 				[`rooms/${currentRoom}/prompt`]:
 					randomPrompt,
 
-				//[`rooms/${currentRoom}/judgeId`]:
-					//judgeId,
+				[`rooms/${currentRoom}/judgeId`]:
+					judgeId,
 
 				[`rooms/${currentRoom}/state`]:
 					"answering",
@@ -636,7 +636,7 @@ async function generatePrompt() {
 		);
 
 		console.log("New prompt:", randomPrompt);
-		//console.log("Judge:", judgeId);
+		console.log("Judge:", judgeId);
 
 	} catch (error) {
 
