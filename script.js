@@ -952,6 +952,10 @@ if (
 
 }
 
+if (window.location.pathname.endsWith("judge.html")) {
+    loadJudgeRoom();
+}
+
 // ====================
 // SUBMISSIONS
 // ====================
@@ -1073,4 +1077,5 @@ promptElement.textContent = prompt;
 		roomCode,
 		judgePlayerId
 	);
+	watchPrompt();
 }
