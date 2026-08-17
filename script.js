@@ -590,11 +590,11 @@ async function generatePrompt() {
 		const playerIds = Object.keys(players);
 
 		// Randomly select a judge
-		const randomIndex =
-			Math.floor(Math.random() * playerIds.length);
+	//	const randomIndex =
+		//	Math.floor(Math.random() * playerIds.length);
 
-		const judgeId =
-			playerIds[randomIndex];
+	//	const judgeId =
+		//	playerIds[randomIndex];
 
 		// Select random prompt
 		const randomPrompt =
