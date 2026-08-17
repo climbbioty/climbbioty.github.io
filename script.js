@@ -622,8 +622,8 @@ async function generatePrompt() {
 				[`rooms/${currentRoom}/prompt`]:
 					randomPrompt,
 
-				[`rooms/${currentRoom}/judgeId`]:
-					judgeId,
+				//[`rooms/${currentRoom}/judgeId`]:
+					//judgeId,
 
 				[`rooms/${currentRoom}/state`]:
 					"answering",
@@ -636,7 +636,7 @@ async function generatePrompt() {
 		);
 
 		console.log("New prompt:", randomPrompt);
-		console.log("Judge:", judgeId);
+		//console.log("Judge:", judgeId);
 
 	} catch (error) {
 
