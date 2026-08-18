@@ -519,17 +519,20 @@ async function generatePrompt() {
 
     try {
 
-        // Get all players in the room
-        const playersSnapshot = await get(
-            ref(
-                database,
-                `rooms/${currentRoom}/players`
-            )
-        );
+        // Get all players
+        const playersSnapshot =
+            await get(
+                ref(
+                    database,
+                    `rooms/${currentRoom}/players`
+                )
+            );
 
         if (!playersSnapshot.exists()) {
 
-            alert("There are no players in the room.");
+            alert(
+                "There are no players in the room."
+            );
 
             return;
         }
@@ -540,7 +543,7 @@ async function generatePrompt() {
         const playerIds =
             Object.keys(players);
 
-        // Need at least 2 players
+        // Need at least two players
         if (playerIds.length < 2) {
 
             alert(
@@ -549,6 +552,107 @@ async function generatePrompt() {
 
             return;
         }
+
+
+        // ==============================================
+        // RANDOMLY SELECT JUDGE
+        // ==============================================
+
+        const randomIndex =
+            Math.floor(
+                Math.random() *
+                playerIds.length
+            );
+
+        const selectedJudge =
+            playerIds[randomIndex];
+
+
+        // ==============================================
+        // SELECT NEW PROMPT
+        // ==============================================
+
+        const newPrompt =
+            prompts[
+                Math.floor(
+                    Math.random() *
+                    prompts.length
+                )
+            ];
+
+
+        // ==============================================
+        // CLEAR PREVIOUS ROUND
+        // ==============================================
+
+        const updates = {};
+
+
+        // Delete every player's previous answer
+        playerIds.forEach((id) => {
+
+            updates[
+                `rooms/${currentRoom}/players/${id}/answer`
+            ] = null;
+
+        });
+
+
+        // Delete previous winner
+        updates[
+            `rooms/${currentRoom}/winner`
+        ] = null;
+
+
+        // ==============================================
+        // START NEW ROUND
+        // ==============================================
+
+        updates[
+            `rooms/${currentRoom}/prompt`
+        ] = newPrompt;
+
+        updates[
+            `rooms/${currentRoom}/judgeId`
+        ] = selectedJudge;
+
+        updates[
+            `rooms/${currentRoom}/state`
+        ] = "answering";
+
+
+        // Write the entire new round at once
+        await update(
+            ref(database),
+            updates
+        );
+
+
+        console.log(
+            "New round started."
+        );
+
+        console.log(
+            "Prompt:",
+            newPrompt
+        );
+
+        console.log(
+            "Judge:",
+            selectedJudge
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Error generating prompt:",
+            error
+        );
+
+    }
+
+}
 
 
 // ======================================================
@@ -567,6 +671,7 @@ function watchPrompt() {
             `rooms/${currentRoom}/prompt`
         );
 
+
     onValue(
         promptRef,
         (snapshot) => {
@@ -578,8 +683,8 @@ function watchPrompt() {
             const promptText =
                 snapshot.val();
 
-            // Find the prompt element again.
-            // This works on game.html and judge.html.
+
+            // Find prompt element
             const promptElement =
                 document.getElementById(
                     "promptBox"
@@ -590,6 +695,7 @@ function watchPrompt() {
                 document.getElementById(
                     "judgePrompt"
                 );
+
 
             if (promptElement) {
 
@@ -614,22 +720,27 @@ function generateWords() {
         return;
     }
 
+
     wordBank.innerHTML = "";
 
     answerArea.innerHTML = "";
 
+
     // Copy words
     const shuffled =
         [...words];
+
 
     // Shuffle
     shuffled.sort(
         () => Math.random() - 0.5
     );
 
+
     // Get 20 words
     const hand =
         shuffled.slice(0, 20);
+
 
     // Create magnets
     hand.forEach(
@@ -640,20 +751,25 @@ function generateWords() {
                     "div"
                 );
 
+
             magnet.textContent =
                 word;
+
 
             magnet.classList.add(
                 "magnet"
             );
 
+
             magnet.draggable =
                 true;
+
 
             magnet.addEventListener(
                 "dragstart",
                 dragStart
             );
+
 
             wordBank.appendChild(
                 magnet
@@ -702,6 +818,7 @@ if (wordBank) {
 
             event.preventDefault();
 
+
             if (draggedMagnet) {
 
                 wordBank.appendChild(
@@ -709,6 +826,7 @@ if (wordBank) {
                 );
 
             }
+
 
             draggedMagnet = null;
 
@@ -740,6 +858,7 @@ if (answerArea) {
 
             event.preventDefault();
 
+
             if (draggedMagnet) {
 
                 answerArea.appendChild(
@@ -747,6 +866,7 @@ if (answerArea) {
                 );
 
             }
+
 
             draggedMagnet = null;
 
@@ -766,11 +886,13 @@ function watchPlayers() {
         return;
     }
 
+
     const playersRef =
         ref(
             database,
             `rooms/${currentRoom}/players`
         );
+
 
     onValue(
         playersRef,
@@ -785,6 +907,7 @@ function watchPlayers() {
     );
 
 }
+
 
 // ======================================================
 // SUBMIT ANSWER
@@ -806,6 +929,7 @@ if (submitAnswerButton) {
                 "SUBMIT BUTTON CLICKED"
             );
 
+
             if (currentRoom === "") {
 
                 console.log(
@@ -814,6 +938,7 @@ if (submitAnswerButton) {
 
                 return;
             }
+
 
             if (playerId === "") {
 
@@ -824,17 +949,13 @@ if (submitAnswerButton) {
                 return;
             }
 
-            // Only get magnets that are
-            // actually inside the answer area.
+
+            // Only get magnets inside answer area
             const magnets =
                 document.querySelectorAll(
                     "#answerArea .magnet"
                 );
 
-            console.log(
-                "Answer magnets:",
-                magnets
-            );
 
             const answer =
                 Array.from(magnets)
@@ -844,10 +965,12 @@ if (submitAnswerButton) {
                     )
                     .join(" ");
 
+
             console.log(
                 "Answer:",
                 answer
             );
+
 
             if (answer === "") {
 
@@ -857,6 +980,7 @@ if (submitAnswerButton) {
 
                 return;
             }
+
 
             try {
 
@@ -870,15 +994,19 @@ if (submitAnswerButton) {
                     }
                 );
 
+
                 console.log(
                     "ANSWER SUBMITTED"
                 );
 
+
                 submitAnswerButton.disabled =
                     true;
 
+
                 submitAnswerButton.textContent =
                     "Answer Submitted";
+
 
             } catch (error) {
 
@@ -893,102 +1021,6 @@ if (submitAnswerButton) {
     );
 
 }
-        // ==============================================
-        // RANDOMLY SELECT JUDGE
-        // ==============================================
-
-        const randomIndex =
-            Math.floor(
-                Math.random() * playerIds.length
-            );
-
-        const selectedJudge =
-            playerIds[randomIndex];
-
-
-        // ==============================================
-        // SELECT NEW PROMPT
-        // ==============================================
-
-        const newPrompt =
-            prompts[
-                Math.floor(
-                    Math.random() * prompts.length
-                )
-            ];
-
-
-        // ==============================================
-        // CLEAR PREVIOUS ROUND
-        // ==============================================
-
-        const updates = {};
-
-        // Delete every player's previous answer
-        playerIds.forEach((id) => {
-
-            updates[
-                `rooms/${currentRoom}/players/${id}/answer`
-            ] = null;
-
-        });
-
-        // Clear previous winner
-        updates[
-            `rooms/${currentRoom}/winner`
-        ] = null;
-
-
-        // ==============================================
-        // START NEW ROUND
-        // ==============================================
-
-        updates[
-            `rooms/${currentRoom}/prompt`
-        ] = newPrompt;
-
-        updates[
-            `rooms/${currentRoom}/judgeId`
-        ] = selectedJudge;
-
-        updates[
-            `rooms/${currentRoom}/state`
-        ] = "answering";
-
-
-        // Write everything at once
-        await update(
-            ref(database),
-            updates
-        );
-
-
-        console.log(
-            "New round started."
-        );
-
-        console.log(
-            "Prompt:",
-            newPrompt
-        );
-
-        console.log(
-            "Judge:",
-            selectedJudge
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Error generating prompt:",
-            error
-        );
-
-    }
-
-}
-
 
 // ======================================================
 // WATCH JUDGE
