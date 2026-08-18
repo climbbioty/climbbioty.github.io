@@ -16,6 +16,7 @@ import {
 } from
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
+
 // ======================================================
 // FIREBASE CONFIGURATION
 // ======================================================
@@ -326,7 +327,6 @@ async function joinRoom() {
             enteredRoomCode
         );
 
-        // Find room
         const snapshot =
             await get(
                 child(
@@ -348,11 +348,9 @@ async function joinRoom() {
         currentRoom =
             roomData.code;
 
-        // Generate player ID
         playerId =
             generatePlayerId();
 
-        // Add player
         await set(
             ref(
                 database,
@@ -369,7 +367,6 @@ async function joinRoom() {
             currentRoom
         );
 
-        // Go to game
         window.location.href =
             `game.html?room=${currentRoom}` +
             `&name=${encodeURIComponent(playerName)}` +
@@ -459,7 +456,6 @@ async function loadGameInformation() {
             currentRoom
         );
 
-        // Display room code
         if (roomDisplay) {
 
             roomDisplay.textContent =
@@ -468,7 +464,6 @@ async function loadGameInformation() {
 
         }
 
-        // Display player name
         const playerDisplay =
             document.getElementById(
                 "playerDisplay"
@@ -482,13 +477,9 @@ async function loadGameInformation() {
 
         }
 
-        // Start listeners
         watchPrompt();
-
         watchPlayers();
-
         watchJudge();
-
         watchWinner();
 
     } catch (error) {
@@ -511,14 +502,15 @@ async function generatePrompt() {
 
     if (currentRoom === "") {
 
-        alert("You are not in a room.");
+        alert(
+            "You are not in a room."
+        );
 
         return;
     }
 
     try {
 
-        // Get all players
         const playersSnapshot =
             await get(
                 ref(
@@ -542,7 +534,6 @@ async function generatePrompt() {
         const playerIds =
             Object.keys(players);
 
-        // Need at least two players
         if (playerIds.length < 2) {
 
             alert(
@@ -553,10 +544,7 @@ async function generatePrompt() {
         }
 
 
-        // ==============================================
-        // RANDOMLY SELECT JUDGE
-        // ==============================================
-
+        // Select random judge
         const randomIndex =
             Math.floor(
                 Math.random() *
@@ -567,10 +555,7 @@ async function generatePrompt() {
             playerIds[randomIndex];
 
 
-        // ==============================================
-        // SELECT NEW PROMPT
-        // ==============================================
-
+        // Select random prompt
         const newPrompt =
             prompts[
                 Math.floor(
@@ -580,33 +565,25 @@ async function generatePrompt() {
             ];
 
 
-        // ==============================================
-        // CLEAR PREVIOUS ROUND
-        // ==============================================
-
+        // Clear old round
         const updates = {};
 
+        playerIds.forEach(
+            (id) => {
 
-        // Delete every player's previous answer
-        playerIds.forEach((id) => {
+                updates[
+                    `rooms/${currentRoom}/players/${id}/answer`
+                ] = null;
 
-            updates[
-                `rooms/${currentRoom}/players/${id}/answer`
-            ] = null;
+            }
+        );
 
-        });
-
-
-        // Delete previous winner
         updates[
             `rooms/${currentRoom}/winner`
         ] = null;
 
 
-        // ==============================================
-        // START NEW ROUND
-        // ==============================================
-
+        // Start new round
         updates[
             `rooms/${currentRoom}/prompt`
         ] = newPrompt;
@@ -620,7 +597,6 @@ async function generatePrompt() {
         ] = "answering";
 
 
-        // Write the entire new round at once
         await update(
             ref(database),
             updates
@@ -640,7 +616,6 @@ async function generatePrompt() {
             "Judge:",
             selectedJudge
         );
-
 
     } catch (error) {
 
@@ -670,7 +645,6 @@ function watchPrompt() {
             `rooms/${currentRoom}/prompt`
         );
 
-
     onValue(
         promptRef,
         (snapshot) => {
@@ -682,8 +656,6 @@ function watchPrompt() {
             const promptText =
                 snapshot.val();
 
-
-            // Find prompt element
             const promptElement =
                 document.getElementById(
                     "promptBox"
@@ -694,7 +666,6 @@ function watchPrompt() {
                 document.getElementById(
                     "judgePrompt"
                 );
-
 
             if (promptElement) {
 
@@ -719,29 +690,19 @@ function generateWords() {
         return;
     }
 
-
     wordBank.innerHTML = "";
-
     answerArea.innerHTML = "";
 
-
-    // Copy words
     const shuffled =
         [...words];
 
-
-    // Shuffle
     shuffled.sort(
         () => Math.random() - 0.5
     );
 
-
-    // Get 20 words
     const hand =
         shuffled.slice(0, 20);
 
-
-    // Create magnets
     hand.forEach(
         (word) => {
 
@@ -750,25 +711,20 @@ function generateWords() {
                     "div"
                 );
 
-
             magnet.textContent =
                 word;
-
 
             magnet.classList.add(
                 "magnet"
             );
 
-
             magnet.draggable =
                 true;
-
 
             magnet.addEventListener(
                 "dragstart",
                 dragStart
             );
-
 
             wordBank.appendChild(
                 magnet
@@ -810,13 +766,11 @@ if (wordBank) {
         }
     );
 
-
     wordBank.addEventListener(
         "drop",
         (event) => {
 
             event.preventDefault();
-
 
             if (draggedMagnet) {
 
@@ -825,7 +779,6 @@ if (wordBank) {
                 );
 
             }
-
 
             draggedMagnet = null;
 
@@ -850,13 +803,11 @@ if (answerArea) {
         }
     );
 
-
     answerArea.addEventListener(
         "drop",
         (event) => {
 
             event.preventDefault();
-
 
             if (draggedMagnet) {
 
@@ -865,7 +816,6 @@ if (answerArea) {
                 );
 
             }
-
 
             draggedMagnet = null;
 
@@ -885,13 +835,11 @@ function watchPlayers() {
         return;
     }
 
-
     const playersRef =
         ref(
             database,
             `rooms/${currentRoom}/players`
         );
-
 
     onValue(
         playersRef,
@@ -917,7 +865,6 @@ const submitAnswerButton =
         "submitAnswer"
     );
 
-
 if (submitAnswerButton) {
 
     submitAnswerButton.addEventListener(
@@ -928,7 +875,6 @@ if (submitAnswerButton) {
                 "SUBMIT BUTTON CLICKED"
             );
 
-
             if (currentRoom === "") {
 
                 console.log(
@@ -937,7 +883,6 @@ if (submitAnswerButton) {
 
                 return;
             }
-
 
             if (playerId === "") {
 
@@ -948,13 +893,10 @@ if (submitAnswerButton) {
                 return;
             }
 
-
-            // Only get magnets inside answer area
             const magnets =
                 document.querySelectorAll(
                     "#answerArea .magnet"
                 );
-
 
             const answer =
                 Array.from(magnets)
@@ -964,12 +906,10 @@ if (submitAnswerButton) {
                     )
                     .join(" ");
 
-
             console.log(
                 "Answer:",
                 answer
             );
-
 
             if (answer === "") {
 
@@ -979,7 +919,6 @@ if (submitAnswerButton) {
 
                 return;
             }
-
 
             try {
 
@@ -993,19 +932,15 @@ if (submitAnswerButton) {
                     }
                 );
 
-
                 console.log(
                     "ANSWER SUBMITTED"
                 );
 
-
                 submitAnswerButton.disabled =
                     true;
 
-
                 submitAnswerButton.textContent =
                     "Answer Submitted";
-
 
             } catch (error) {
 
@@ -1021,6 +956,7 @@ if (submitAnswerButton) {
 
 }
 
+
 // ======================================================
 // WATCH JUDGE
 // ======================================================
@@ -1031,7 +967,6 @@ function watchJudge() {
         currentRoom === "" ||
         playerId === ""
     ) {
-
         return;
     }
 
@@ -1052,20 +987,13 @@ function watchJudge() {
                 return;
             }
 
-
             const selectedJudge =
                 room.judgeId;
-
 
             console.log(
                 "Current judge:",
                 selectedJudge
             );
-
-
-            // ==========================================
-            // SEND JUDGE TO JUDGE ROOM
-            // ==========================================
 
             if (
                 selectedJudge === playerId &&
@@ -1081,7 +1009,8 @@ function watchJudge() {
 
                 window.location.replace(
                     `judge.html?room=${currentRoom}` +
-                    `&player=${playerId}`
+                    `&player=${playerId}` +
+                    `&name=${encodeURIComponent(playerName)}`
                 );
 
             }
@@ -1103,7 +1032,6 @@ async function loadJudgeRoom() {
             window.location.search
         );
 
-    // Get information from URL
     currentRoom =
         params.get("room");
 
@@ -1112,7 +1040,6 @@ async function loadJudgeRoom() {
 
     playerName =
         params.get("name") || "";
-
 
     console.log(
         "Loading judge room:",
@@ -1123,7 +1050,6 @@ async function loadJudgeRoom() {
         "Judge player ID:",
         playerId
     );
-
 
     if (
         !currentRoom ||
@@ -1137,153 +1063,65 @@ async function loadJudgeRoom() {
         return;
     }
 
+    try {
 
-    // ==============================================
-    // GET ROOM
-    // ==============================================
-
-    const snapshot =
-        await get(
-            ref(
-                database,
-                `rooms/${currentRoom}`
-            )
-        );
-
-
-    if (!snapshot.exists()) {
-
-        console.error(
-            "Room does not exist."
-        );
-
-        return;
-    }
-
-
-    const room =
-        snapshot.val();
-
-
-    // ==============================================
-    // MAKE SURE THIS PLAYER IS THE JUDGE
-    // ==============================================
-
-    if (
-        room.judgeId !== playerId
-    ) {
-
-        console.error(
-            "This player is not the judge."
-        );
-
-        return;
-    }
-
-
-    console.log(
-        "Confirmed: this player is the judge."
-    );
-
-
-    // ==============================================
-    // WATCH PROMPT
-    // ==============================================
-
-    watchJudgePrompt(
-        currentRoom
-    );
-
-
-    // ==============================================
-    // WATCH ANSWERS
-    // ==============================================
-
-    watchJudgeAnswers(
-        currentRoom,
-        playerId
-    );
-
-
-    // ==============================================
-    // WATCH FOR WINNER
-    // ==============================================
-
-    watchJudgeWinner();
-
-}
-
-// ======================================================
-// WATCH JUDGE WINNER
-// ======================================================
-
-function watchJudgeWinner() {
-
-    if (
-        currentRoom === "" ||
-        playerId === ""
-    ) {
-
-        return;
-    }
-
-
-    const roomRef =
-        ref(
-            database,
-            `rooms/${currentRoom}`
-        );
-
-
-    onValue(
-        roomRef,
-        (snapshot) => {
-
-            const room =
-                snapshot.val();
-
-
-            if (!room) {
-                return;
-            }
-
-
-            // Only act after a winner
-            // has been selected.
-            if (
-                room.state !== "winner"
-            ) {
-
-                return;
-            }
-
-
-            console.log(
-                "Judge detected winner."
+        const snapshot =
+            await get(
+                ref(
+                    database,
+                    `rooms/${currentRoom}`
+                )
             );
 
+        if (!snapshot.exists()) {
 
-            // ==========================================
-            // RETURN JUDGE TO GAME ROOM
-            // ==========================================
-
-            setTimeout(
-                () => {
-
-                    window.location.replace(
-                        `game.html?room=${currentRoom}` +
-                        `&name=${encodeURIComponent(playerName)}` +
-                        `&player=${playerId}`
-                    );
-
-                },
-                3000
+            console.error(
+                "Room does not exist."
             );
 
+            return;
         }
-    );
+
+        const room =
+            snapshot.val();
+
+        if (
+            room.judgeId !== playerId
+        ) {
+
+            console.error(
+                "This player is not the judge."
+            );
+
+            return;
+        }
+
+        console.log(
+            "Confirmed: this player is the judge."
+        );
+
+        watchJudgePrompt(
+            currentRoom
+        );
+
+        watchJudgeAnswers(
+            currentRoom,
+            playerId
+        );
+
+        watchJudgeWinner();
+
+    } catch (error) {
+
+        console.error(
+            "Error loading judge room:",
+            error
+        );
+
+    }
 
 }
+
 
 // ======================================================
 // WATCH JUDGE PROMPT
@@ -1299,7 +1137,6 @@ function watchJudgePrompt(
             `rooms/${judgeRoomCode}/prompt`
         );
 
-
     onValue(
         promptRef,
         (snapshot) => {
@@ -1308,10 +1145,8 @@ function watchJudgePrompt(
                 return;
             }
 
-
             const promptText =
                 snapshot.val();
-
 
             const promptElement =
                 document.getElementById(
@@ -1324,14 +1159,12 @@ function watchJudgePrompt(
                     "promptText"
                 );
 
-
             if (promptElement) {
 
                 promptElement.textContent =
                     promptText;
 
             }
-
 
             console.log(
                 "Judge prompt:",
@@ -1359,7 +1192,6 @@ function watchJudgeAnswers(
             `rooms/${judgeRoomCode}/players`
         );
 
-
     onValue(
         playersRef,
         (snapshot) => {
@@ -1367,28 +1199,20 @@ function watchJudgeAnswers(
             const players =
                 snapshot.val();
 
-
             if (!players) {
                 return;
             }
 
-
-            // ==========================================
-            // REMOVE JUDGE FROM CONTESTANTS
-            // ==========================================
-
+            // Everyone except judge
             const contestants =
-                Object.entries(players)
-                    .filter(
-                        ([id]) =>
-                            id !== judgePlayerId
-                    );
+                Object.entries(
+                    players
+                ).filter(
+                    ([id]) =>
+                        id !== judgePlayerId
+                );
 
-
-            // ==========================================
-            // FIND SUBMITTED ANSWERS
-            // ==========================================
-
+            // Only players with answers
             const submittedPlayers =
                 contestants.filter(
                     ([id, player]) =>
@@ -1398,16 +1222,10 @@ function watchJudgeAnswers(
                             .trim() !== ""
                 );
 
-
-            // ==========================================
-            // UPDATE STATUS
-            // ==========================================
-
             const statusElement =
                 document.getElementById(
                     "answerStatus"
                 );
-
 
             if (statusElement) {
 
@@ -1417,7 +1235,6 @@ function watchJudgeAnswers(
 
             }
 
-
             console.log(
                 "Submitted:",
                 submittedPlayers.length,
@@ -1425,11 +1242,7 @@ function watchJudgeAnswers(
                 contestants.length
             );
 
-
-            // ==========================================
-            // NOT EVERYONE HAS SUBMITTED
-            // ==========================================
-
+            // Wait until everyone answers
             if (
                 submittedPlayers.length <
                 contestants.length
@@ -1438,14 +1251,9 @@ function watchJudgeAnswers(
                 clearJudgeAnswers();
 
                 return;
-
             }
 
-
-            // ==========================================
-            // EVERYONE HAS SUBMITTED
-            // ==========================================
-
+            // Everyone answered
             displayJudgeAnswers(
                 submittedPlayers,
                 judgeRoomCode
@@ -1468,11 +1276,9 @@ function clearJudgeAnswers() {
             "answersContainer"
         );
 
-
     if (!container) {
         return;
     }
-
 
     container.innerHTML = "";
 
@@ -1493,7 +1299,6 @@ function displayJudgeAnswers(
             "answersContainer"
         );
 
-
     if (!container) {
 
         console.error(
@@ -1503,15 +1308,12 @@ function displayJudgeAnswers(
         return;
     }
 
-
     const template =
         document.getElementById(
             "answerTemplate"
         );
 
-
     container.innerHTML = "";
-
 
     submittedPlayers.forEach(
         ([playerId, player]) => {
@@ -1519,10 +1321,7 @@ function displayJudgeAnswers(
             let answerCard;
 
 
-            // ==========================================
-            // USE HTML TEMPLATE IF IT EXISTS
-            // ==========================================
-
+            // Use template if available
             if (template) {
 
                 answerCard =
@@ -1532,10 +1331,7 @@ function displayJudgeAnswers(
             }
 
 
-            // ==========================================
-            // OTHERWISE CREATE CARD WITH JAVASCRIPT
-            // ==========================================
-
+            // Otherwise build one
             else {
 
                 answerCard =
@@ -1547,7 +1343,6 @@ function displayJudgeAnswers(
                     "answerCard"
                 );
 
-
                 const answerText =
                     document.createElement(
                         "p"
@@ -1556,7 +1351,6 @@ function displayJudgeAnswers(
                 answerText.classList.add(
                     "answerText"
                 );
-
 
                 const chooseButton =
                     document.createElement(
@@ -1570,7 +1364,6 @@ function displayJudgeAnswers(
                 chooseButton.textContent =
                     "Choose This Answer";
 
-
                 answerCard.appendChild(
                     answerText
                 );
@@ -1582,25 +1375,16 @@ function displayJudgeAnswers(
             }
 
 
-            // ==========================================
-            // GET CARD ELEMENTS
-            // ==========================================
-
             const answerText =
                 answerCard.querySelector(
                     ".answerText"
                 );
-
 
             const chooseButton =
                 answerCard.querySelector(
                     ".chooseAnswer"
                 );
 
-
-            // ==========================================
-            // SET ANSWER TEXT
-            // ==========================================
 
             if (answerText) {
 
@@ -1609,10 +1393,6 @@ function displayJudgeAnswers(
 
             }
 
-
-            // ==========================================
-            // SELECT WINNER
-            // ==========================================
 
             if (chooseButton) {
 
@@ -1630,10 +1410,6 @@ function displayJudgeAnswers(
 
             }
 
-
-            // ==========================================
-            // ADD CARD TO PAGE
-            // ==========================================
 
             container.appendChild(
                 answerCard
@@ -1670,20 +1446,15 @@ async function chooseWinner(
             }
         );
 
-
         console.log(
             "Winner selected:",
             winningPlayerId
         );
 
-
-        // Disable buttons so the judge
-        // cannot select multiple winners
         const buttons =
             document.querySelectorAll(
                 ".chooseAnswer"
             );
-
 
         buttons.forEach(
             (button) => {
@@ -1693,7 +1464,6 @@ async function chooseWinner(
 
             }
         );
-
 
     } catch (error) {
 
@@ -1721,13 +1491,11 @@ function watchWinner() {
         return;
     }
 
-
     const roomRef =
         ref(
             database,
             `rooms/${currentRoom}`
         );
-
 
     onValue(
         roomRef,
@@ -1736,16 +1504,11 @@ function watchWinner() {
             const room =
                 snapshot.val();
 
-
             if (!room) {
                 return;
             }
 
-
-            // ==========================================
-            // WAIT FOR JUDGE
-            // ==========================================
-
+            // Only act after a winner is chosen
             if (
                 room.state !== "winner"
             ) {
@@ -1753,22 +1516,18 @@ function watchWinner() {
                 return;
             }
 
-
             const winningPlayerId =
                 room.winner;
-
 
             if (!winningPlayerId) {
                 return;
             }
-
 
             const winningPlayer =
                 room.players &&
                 room.players[
                     winningPlayerId
                 ];
-
 
             if (!winningPlayer) {
 
@@ -1779,41 +1538,31 @@ function watchWinner() {
                 return;
             }
 
-
+            // These variables are created INSIDE
+            // the function where they are used.
             const winningPlayerName =
                 winningPlayer.name;
 
-
             const winningAnswer =
                 winningPlayer.answer;
-
 
             console.log(
                 "Winner:",
                 winningPlayerName
             );
 
-
             console.log(
                 "Winning answer:",
                 winningAnswer
             );
 
-
-            // ==========================================
-            // SHOW WINNER
-            // ==========================================
-
+            // Display winner
             showWinner(
                 winningPlayerName,
                 winningAnswer
             );
 
-
-            // ==========================================
-            // JUDGE RETURNS TO GAME
-            // ==========================================
-
+            // Send judge back to game
             if (
                 room.judgeId === playerId
             ) {
@@ -1821,7 +1570,6 @@ function watchWinner() {
                 console.log(
                     "I am the judge. Returning to game room..."
                 );
-
 
                 setTimeout(
                     () => {
@@ -1843,38 +1591,66 @@ function watchWinner() {
 
 }
 
-            // ==========================================
-            // DISPLAY WINNER
-            // ==========================================
 
-            showWinner(
-                winningPlayerName,
-                winningAnswer
-            );
+// ======================================================
+// WATCH JUDGE WINNER
+// ======================================================
 
+function watchJudgeWinner() {
 
-            // ==========================================
-            // SEND JUDGE BACK TO GAME ROOM
-            // ==========================================
+    if (
+        currentRoom === "" ||
+        playerId === ""
+    ) {
+
+        return;
+    }
+
+    const roomRef =
+        ref(
+            database,
+            `rooms/${currentRoom}`
+        );
+
+    onValue(
+        roomRef,
+        (snapshot) => {
+
+            const room =
+                snapshot.val();
+
+            if (!room) {
+                return;
+            }
 
             if (
-                room.judgeId === playerId
+                room.state !== "winner"
             ) {
 
-                setTimeout(
-                    () => {
-
-                        window.location.replace(
-                            `game.html?room=${currentRoom}` +
-                            `&name=${encodeURIComponent(playerName)}` +
-                            `&player=${playerId}`
-                        );
-
-                    },
-                    3000
-                );
-
+                return;
             }
+
+            console.log(
+                "Judge detected winner. Returning to game."
+            );
+
+            setTimeout(
+                () => {
+
+                    window.location.replace(
+                        `game.html?room=${currentRoom}` +
+                        `&name=${encodeURIComponent(playerName)}` +
+                        `&player=${playerId}`
+                    );
+
+                },
+                3000
+            );
+
+        }
+    );
+
+}
 
 
 // ======================================================
@@ -1892,10 +1668,7 @@ function showWinner(
         );
 
 
-    // ==============================================
-    // CREATE WINNER DISPLAY IF IT DOESN'T EXIST
-    // ==============================================
-
+    // Create it automatically if needed
     if (!winnerDisplay) {
 
         winnerDisplay =
@@ -1906,8 +1679,6 @@ function showWinner(
         winnerDisplay.id =
             "winnerDisplay";
 
-
-        // Put it at the top of the page
         document.body.prepend(
             winnerDisplay
         );
@@ -1915,16 +1686,8 @@ function showWinner(
     }
 
 
-    // ==============================================
-    // CLEAR OLD WINNER
-    // ==============================================
-
     winnerDisplay.innerHTML = "";
 
-
-    // ==============================================
-    // WINNER TITLE
-    // ==============================================
 
     const title =
         document.createElement(
@@ -1935,10 +1698,6 @@ function showWinner(
         "Winner!";
 
 
-    // ==============================================
-    // WINNER NAME
-    // ==============================================
-
     const name =
         document.createElement(
             "h3"
@@ -1948,10 +1707,6 @@ function showWinner(
         winningPlayerName;
 
 
-    // ==============================================
-    // WINNING ANSWER
-    // ==============================================
-
     const answer =
         document.createElement(
             "p"
@@ -1960,10 +1715,6 @@ function showWinner(
     answer.textContent =
         `"${winningAnswer}"`;
 
-
-    // ==============================================
-    // ADD EVERYTHING
-    // ==============================================
 
     winnerDisplay.appendChild(
         title
@@ -1979,17 +1730,17 @@ function showWinner(
 
 
     console.log(
-        "Winner displayed on game page."
+        "Winner displayed."
     );
 
 }
+
+
 // ======================================================
 // BUTTONS
 // ======================================================
 
-
 // CREATE ROOM
-
 const roomButton =
     document.getElementById(
         "roomButton"
@@ -2006,7 +1757,6 @@ if (roomButton) {
 
 
 // JOIN ROOM
-
 const joinRoomButton =
     document.getElementById(
         "joinRoomButton"
@@ -2023,7 +1773,6 @@ if (joinRoomButton) {
 
 
 // GENERATE PROMPT
-
 if (promptButton) {
 
     promptButton.addEventListener(
@@ -2035,7 +1784,6 @@ if (promptButton) {
 
 
 // GENERATE WORDS
-
 if (wordButton) {
 
     wordButton.addEventListener(
@@ -2050,9 +1798,7 @@ if (wordButton) {
 // STARTUP
 // ======================================================
 
-
 // GAME PAGE
-
 if (
     window.location.pathname.endsWith(
         "game.html"
@@ -2065,7 +1811,6 @@ if (
 
 
 // JUDGE PAGE
-
 if (
     window.location.pathname.endsWith(
         "judge.html"
