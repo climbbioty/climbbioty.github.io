@@ -1077,5 +1077,5 @@ promptElement.textContent = prompt;
 		roomCode,
 		judgePlayerId
 	);
-	watchPrompt();
+	watchPrompt(roomCode);
 }
