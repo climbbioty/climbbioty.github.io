@@ -1104,16 +1104,31 @@ async function loadJudgeRoom() {
             window.location.search
         );
 
-    const judgeRoomCode =
+    // Get information from URL
+    currentRoom =
         params.get("room");
 
-    const judgePlayerId =
+    playerId =
         params.get("player");
+
+    playerName =
+        params.get("name") || "";
+
+
+    console.log(
+        "Loading judge room:",
+        currentRoom
+    );
+
+    console.log(
+        "Judge player ID:",
+        playerId
+    );
 
 
     if (
-        !judgeRoomCode ||
-        !judgePlayerId
+        !currentRoom ||
+        !playerId
     ) {
 
         console.error(
@@ -1124,23 +1139,15 @@ async function loadJudgeRoom() {
     }
 
 
-    console.log(
-        "Judge room:",
-        judgeRoomCode
-    );
+    // ==============================================
+    // GET ROOM
+    // ==============================================
 
-    console.log(
-        "Judge:",
-        judgePlayerId
-    );
-
-
-    // Verify the player is actually the judge
     const snapshot =
         await get(
             ref(
                 database,
-                `rooms/${judgeRoomCode}`
+                `rooms/${currentRoom}`
             )
         );
 
@@ -1159,8 +1166,12 @@ async function loadJudgeRoom() {
         snapshot.val();
 
 
+    // ==============================================
+    // MAKE SURE THIS PLAYER IS THE JUDGE
+    // ==============================================
+
     if (
-        room.judgeId !== judgePlayerId
+        room.judgeId !== playerId
     ) {
 
         console.error(
@@ -1171,20 +1182,109 @@ async function loadJudgeRoom() {
     }
 
 
-    // Watch prompt
+    console.log(
+        "Confirmed: this player is the judge."
+    );
+
+
+    // ==============================================
+    // WATCH PROMPT
+    // ==============================================
+
     watchJudgePrompt(
-        judgeRoomCode
+        currentRoom
     );
 
 
-    // Watch answers
+    // ==============================================
+    // WATCH ANSWERS
+    // ==============================================
+
     watchJudgeAnswers(
-        judgeRoomCode,
-        judgePlayerId
+        currentRoom,
+        playerId
     );
+
+
+    // ==============================================
+    // WATCH FOR WINNER
+    // ==============================================
+
+    watchJudgeWinner();
 
 }
 
+// ======================================================
+// WATCH JUDGE WINNER
+// ======================================================
+
+function watchJudgeWinner() {
+
+    if (
+        currentRoom === "" ||
+        playerId === ""
+    ) {
+
+        return;
+    }
+
+
+    const roomRef =
+        ref(
+            database,
+            `rooms/${currentRoom}`
+        );
+
+
+    onValue(
+        roomRef,
+        (snapshot) => {
+
+            const room =
+                snapshot.val();
+
+
+            if (!room) {
+                return;
+            }
+
+
+            // Only act after a winner
+            // has been selected.
+            if (
+                room.state !== "winner"
+            ) {
+
+                return;
+            }
+
+
+            console.log(
+                "Judge detected winner."
+            );
+
+
+            // ==========================================
+            // RETURN JUDGE TO GAME ROOM
+            // ==========================================
+
+            setTimeout(
+                () => {
+
+                    window.location.replace(
+                        `game.html?room=${currentRoom}` +
+                        `&name=${encodeURIComponent(playerName)}` +
+                        `&player=${playerId}`
+                    );
+
+                },
+                3000
+            );
+
+        }
+    );
+
+}
 
 // ======================================================
 // WATCH JUDGE PROMPT
@@ -1643,14 +1743,15 @@ function watchWinner() {
             }
 
 
-            // Don't do anything until the judge
-            // selects a winner.
+            // ==========================================
+            // WAIT FOR JUDGE
+            // ==========================================
+
             if (
                 room.state !== "winner"
             ) {
 
                 return;
-
             }
 
 
@@ -1671,6 +1772,11 @@ function watchWinner() {
 
 
             if (!winningPlayer) {
+
+                console.error(
+                    "Winning player could not be found."
+                );
+
                 return;
             }
 
@@ -1694,6 +1800,49 @@ function watchWinner() {
                 winningAnswer
             );
 
+
+            // ==========================================
+            // SHOW WINNER
+            // ==========================================
+
+            showWinner(
+                winningPlayerName,
+                winningAnswer
+            );
+
+
+            // ==========================================
+            // JUDGE RETURNS TO GAME
+            // ==========================================
+
+            if (
+                room.judgeId === playerId
+            ) {
+
+                console.log(
+                    "I am the judge. Returning to game room..."
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        window.location.replace(
+                            `game.html?room=${currentRoom}` +
+                            `&name=${encodeURIComponent(playerName)}` +
+                            `&player=${playerId}`
+                        );
+
+                    },
+                    3000
+                );
+
+            }
+
+        }
+    );
+
+}
 
             // ==========================================
             // DISPLAY WINNER
@@ -1743,19 +1892,45 @@ function showWinner(
     winningAnswer
 ) {
 
-    const winnerDisplay =
+    let winnerDisplay =
         document.getElementById(
             "winnerDisplay"
         );
 
 
+    // ==============================================
+    // CREATE WINNER DISPLAY IF IT DOESN'T EXIST
+    // ==============================================
+
     if (!winnerDisplay) {
-        return;
+
+        winnerDisplay =
+            document.createElement(
+                "div"
+            );
+
+        winnerDisplay.id =
+            "winnerDisplay";
+
+
+        // Put it at the top of the page
+        document.body.prepend(
+            winnerDisplay
+        );
+
     }
 
 
+    // ==============================================
+    // CLEAR OLD WINNER
+    // ==============================================
+
     winnerDisplay.innerHTML = "";
 
+
+    // ==============================================
+    // WINNER TITLE
+    // ==============================================
 
     const title =
         document.createElement(
@@ -1766,6 +1941,10 @@ function showWinner(
         "Winner!";
 
 
+    // ==============================================
+    // WINNER NAME
+    // ==============================================
+
     const name =
         document.createElement(
             "h3"
@@ -1775,31 +1954,41 @@ function showWinner(
         winningPlayerName;
 
 
+    // ==============================================
+    // WINNING ANSWER
+    // ==============================================
+
     const answer =
         document.createElement(
             "p"
         );
 
     answer.textContent =
-        winningAnswer;
+        `"${winningAnswer}"`;
 
+
+    // ==============================================
+    // ADD EVERYTHING
+    // ==============================================
 
     winnerDisplay.appendChild(
         title
     );
 
-
     winnerDisplay.appendChild(
         name
     );
-
 
     winnerDisplay.appendChild(
         answer
     );
 
-}
 
+    console.log(
+        "Winner displayed on game page."
+    );
+
+}
 // ======================================================
 // BUTTONS
 // ======================================================
