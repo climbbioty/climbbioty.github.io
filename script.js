@@ -1876,7 +1876,6 @@ function watchWinner() {
                 );
 
             }
-    );
 }
 }
 
