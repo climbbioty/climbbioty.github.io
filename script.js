@@ -1523,6 +1523,10 @@ onValue(roomRef, (snapshot) => {
 
     const winningPlayerId = room.winner;
 
+    if (!winningPlayerId) {
+        return;
+    }
+
     if (winningPlayerId === lastWinnerId) {
         return;
     }
