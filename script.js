@@ -42,6 +42,7 @@ const database = getDatabase(app);
 let currentRoom = "";
 let playerName = "";
 let playerId = "";
+let lastWinnerId = null;
 
 
 // ======================================================
@@ -499,6 +500,8 @@ async function loadGameInformation() {
 // ======================================================
 
 async function generatePrompt() {
+
+    lastWinnerId = null;
 
     if (currentRoom === "") {
 
@@ -1518,6 +1521,12 @@ function watchWinner() {
 
             const winningPlayerId =
                 room.winner;
+
+            if (winningPlayerId === lastWinnerId) {
+    return;
+}
+
+lastWinnerId = winningPlayerId;
 
             if (!winningPlayerId) {
                 return;
