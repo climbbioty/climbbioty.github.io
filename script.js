@@ -564,6 +564,7 @@ async function generatePrompt() {
                 )
             ];
 
+      displayedWinnerId = null;
 
         // Clear old round
         const updates = {};
@@ -1474,71 +1475,55 @@ async function chooseWinner(
 // WATCH WINNER
 // ======================================================
 
+let displayedWinnerId = null;
+
 function watchWinner() {
 
     if (
         currentRoom === "" ||
         playerId === ""
     ) {
-
         return;
     }
 
-    const roomRef =
-        ref(
-            database,
-            `rooms/${currentRoom}`
-        );
+    const winnerRef = ref(
+        database,
+        `rooms/${currentRoom}/winner`
+    );
 
     onValue(
-        roomRef,
-        (snapshot) => {
+        winnerRef,
+        async (snapshot) => {
 
-            const room =
+            const winningPlayerId =
                 snapshot.val();
 
-            if (!room) {
-                return;
-            }
-
-            // Only act after a winner is chosen
-            if (
-                room.state !== "winner"
-            ) {
-
-                return;
-            }
-
-         let lastWinnerId = null;
-
-onValue(roomRef, (snapshot) => {
-    const room = snapshot.val();
-
-    const winningPlayerId = room.winner;
-
-    if (!winningPlayerId) {
-        return;
-    }
-
-    if (winningPlayerId === lastWinnerId) {
-        return;
-    }
-
-    lastWinnerId = winningPlayerId;
-
-
+            // No winner yet
             if (!winningPlayerId) {
                 return;
             }
 
-            const winningPlayer =
-                room.players &&
-                room.players[
-                    winningPlayerId
-                ];
+            // Already displayed this winner
+            if (
+                winningPlayerId ===
+                displayedWinnerId
+            ) {
+                return;
+            }
 
-            if (!winningPlayer) {
+            displayedWinnerId =
+                winningPlayerId;
 
+            // Get the player's information
+            const playerSnapshot =
+                await get(
+                    ref(
+                        database,
+                        `rooms/${currentRoom}/players/${winningPlayerId}`
+                    )
+                );
+
+            if (!playerSnapshot.exists()) {
                 console.error(
                     "Winning player could not be found."
                 );
@@ -1546,45 +1531,28 @@ onValue(roomRef, (snapshot) => {
                 return;
             }
 
-            // These variables are created INSIDE
-            // the function where they are used.
-            const winningPlayerName =
-                winningPlayer.name;
-
-            const winningAnswer =
-                winningPlayer.answer;
+            const winningPlayer =
+                playerSnapshot.val();
 
             console.log(
                 "Winner:",
-                winningPlayerName
+                winningPlayer.name
             );
 
             console.log(
                 "Winning answer:",
-                winningAnswer
+                winningPlayer.answer
             );
 
-            // Display winner
             showWinner(
-                winningPlayerName,
-                winningAnswer
+                winningPlayer.name,
+                winningPlayer.answer
             );
-
-            // Send judge back to game
-            if (room.judgeId === playerId) {
-
-    window.location.replace(
-        `game.html?room=${currentRoom}` +
-        `&name=${encodeURIComponent(playerName)}` +
-        `&player=${playerId}`
-    );
-
-}
 
         }
     );
 
-})}
+}
 
 // ======================================================
 // SHOW WINNER
