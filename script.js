@@ -509,6 +509,8 @@ async function generatePrompt() {
         return;
     }
 
+      winnerAlreadyShown = false;
+
     try {
 
         const playersSnapshot =
