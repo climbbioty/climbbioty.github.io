@@ -42,7 +42,6 @@ const database = getDatabase(app);
 let currentRoom = "";
 let playerName = "";
 let playerId = "";
-let lastWinnerId = null;
 
 
 // ======================================================
@@ -500,8 +499,6 @@ async function loadGameInformation() {
 // ======================================================
 
 async function generatePrompt() {
-
-    lastWinnerId = null;
 
     if (currentRoom === "") {
 
@@ -1608,7 +1605,7 @@ function watchJudgeWinner() {
             `rooms/${currentRoom}`
         );
 
-    onValue(
+    get(
         roomRef,
         (snapshot) => {
 
