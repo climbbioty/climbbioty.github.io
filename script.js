@@ -509,8 +509,6 @@ async function generatePrompt() {
         return;
     }
 
-      winnerAlreadyShown = false;
-
     try {
 
         const playersSnapshot =
@@ -1483,14 +1481,13 @@ async function chooseWinner(
 // WATCH WINNER
 // ======================================================
 
-let winnerAlreadyShown = false;
-
 function watchWinner() {
 
     if (
         currentRoom === "" ||
         playerId === ""
     ) {
+
         return;
     }
 
@@ -1512,7 +1509,10 @@ function watchWinner() {
             }
 
             // Only act after a winner is chosen
-            if (room.state !== "winner") {
+            if (
+                room.state !== "winner"
+            ) {
+
                 return;
             }
 
@@ -1525,20 +1525,21 @@ function watchWinner() {
 
             const winningPlayer =
                 room.players &&
-                room.players[winningPlayerId];
+                room.players[
+                    winningPlayerId
+                ];
 
             if (!winningPlayer) {
+
+                console.error(
+                    "Winning player could not be found."
+                );
+
                 return;
             }
 
-            // Prevent the same winner from being
-            // displayed again and again.
-            if (winnerAlreadyShown) {
-                return;
-            }
-
-            winnerAlreadyShown = true;
-
+            // These variables are created INSIDE
+            // the function where they are used.
             const winningPlayerName =
                 winningPlayer.name;
 
@@ -1555,40 +1556,29 @@ function watchWinner() {
                 winningAnswer
             );
 
-            // Display winner once
+            // Display winner
             showWinner(
                 winningPlayerName,
                 winningAnswer
             );
 
-            // If I am the judge, return to the game
-            if (
-                room.judgeId === playerId
-            ) {
+            // Send judge back to game
+            if (room.judgeId === playerId) {
 
-                console.log(
-                    "I am the judge. Returning to game room..."
-                );
+    window.location.replace(
+        `game.html?room=${currentRoom}` +
+        `&name=${encodeURIComponent(playerName)}` +
+        `&player=${playerId}`
+    );
 
-                setTimeout(
-                    () => {
-
-                        window.location.replace(
-                            `game.html?room=${currentRoom}` +
-                            `&name=${encodeURIComponent(playerName)}` +
-                            `&player=${playerId}`
-                        );
-
-                    },
-                    3000
-                );
-
-            }
+}
 
         }
     );
 
 }
+
+
 // ======================================================
 // WATCH JUDGE WINNER
 // ======================================================
