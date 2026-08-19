@@ -1589,7 +1589,7 @@ lastWinnerId = winningPlayerId;
 // WATCH JUDGE WINNER
 // ======================================================
 
-function watchJudgeWinner() {
+async function watchJudgeWinner() {
 
     if (
         currentRoom === "" ||
