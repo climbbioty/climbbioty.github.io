@@ -1,7 +1,7 @@
 // ======================================================
 // FIREBASE
 // ======================================================
- 
+  
 import { initializeApp } from
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
@@ -1516,14 +1516,15 @@ function watchWinner() {
                 return;
             }
 
-            const winningPlayerId =
-                room.winner;
+         const lastWinnerId = winningPlayerId;
+           
 
             if (winningPlayerId === lastWinnerId) {
     return;
 }
+ const winningPlayerId =
+                room.winner;
 
-lastWinnerId = winningPlayerId;
 
             if (!winningPlayerId) {
                 return;
