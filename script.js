@@ -1,7 +1,7 @@
 // ======================================================
 // FIREBASE
 // ======================================================
-
+ 
 import { initializeApp } from
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
@@ -1605,12 +1605,9 @@ function watchJudgeWinner() {
             `rooms/${currentRoom}`
         );
 
-    get(
-        roomRef,
-        (snapshot) => {
+    const snapshot = await get(roomRef);
 
-            const room =
-                snapshot.val();
+const room = snapshot.val();
 
             if (!room) {
                 return;
