@@ -675,6 +675,17 @@ function watchPrompt() {
 
             }
 
+            // Reset submit button for new round
+            if (submitAnswerButton) {
+
+                submitAnswerButton.disabled =
+                    false;
+
+                submitAnswerButton.textContent =
+                    "Submit Answer";
+
+            }
+
         }
     );
 
