@@ -1516,14 +1516,18 @@ function watchWinner() {
                 return;
             }
 
-         const lastWinnerId = winningPlayerId;
-           
+         let lastWinnerId = null;
 
-            if (winningPlayerId === lastWinnerId) {
-    return;
-}
- const winningPlayerId =
-                room.winner;
+onValue(roomRef, (snapshot) => {
+    const room = snapshot.val();
+
+    const winningPlayerId = room.winner;
+
+    if (winningPlayerId === lastWinnerId) {
+        return;
+    }
+
+    lastWinnerId = winningPlayerId;
 
 
             if (!winningPlayerId) {
