@@ -1109,8 +1109,6 @@ async function loadJudgeRoom() {
             playerId
         );
 
-        watchJudgeWinner();
-
     } catch (error) {
 
         console.error(
@@ -1438,11 +1436,8 @@ async function chooseWinner(
                 `rooms/${judgeRoomCode}`
             ),
             {
-                winner:
-                    winningPlayerId,
-
-                state:
-                    "winner"
+                winner: winningPlayerId,
+                state: "winner"
             }
         );
 
@@ -1451,18 +1446,16 @@ async function chooseWinner(
             winningPlayerId
         );
 
-        const buttons =
-            document.querySelectorAll(
-                ".chooseAnswer"
-            );
+        document
+            .querySelectorAll(".chooseAnswer")
+            .forEach((button) => {
+                button.disabled = true;
+            });
 
-        buttons.forEach(
-            (button) => {
-
-                button.disabled =
-                    true;
-
-            }
+        window.location.replace(
+            `game.html?room=${judgeRoomCode}` +
+            `&name=${encodeURIComponent(playerName)}` +
+            `&player=${playerId}`
         );
 
     } catch (error) {
@@ -1592,62 +1585,6 @@ onValue(roomRef, (snapshot) => {
     );
 
 })}
-
-
-// ======================================================
-// WATCH JUDGE WINNER
-// ======================================================
-
-async function watchJudgeWinner() {
-
-    if (
-        currentRoom === "" ||
-        playerId === ""
-    ) {
-
-        return;
-    }
-
-    const roomRef =
-        ref(
-            database,
-            `rooms/${currentRoom}`
-        );
-
-    const snapshot = await get(roomRef);
-
-const room = snapshot.val();
-
-            if (!room) {
-                return;
-            }
-
-            if (
-                room.state !== "winner"
-            ) {
-
-                return;
-            }
-
-            console.log(
-                "Judge detected winner. Returning to game."
-            );
-
-            setTimeout(
-                () => {
-
-                    window.location.replace(
-                        `game.html?room=${currentRoom}` +
-                        `&name=${encodeURIComponent(playerName)}` +
-                        `&player=${playerId}`
-                    );
-
-                },
-                3000
-            );
-
-        }
-
 
 // ======================================================
 // SHOW WINNER
