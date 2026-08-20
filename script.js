@@ -815,24 +815,43 @@ if (answerArea) {
         }
     );
 
-    answerArea.addEventListener(
-        "drop",
-        (event) => {
+   answerArea.addEventListener("drop", (event) => {
+    event.preventDefault();
 
-            event.preventDefault();
+    if (!draggedMagnet) return;
 
-            if (draggedMagnet) {
+    const magnets = [
+        ...answerArea.querySelectorAll(".magnet")
+    ];
 
-                answerArea.appendChild(
-                    draggedMagnet
-                );
+    let insertBefore = null;
 
-            }
+    for (const magnet of magnets) {
 
-            draggedMagnet = null;
+        const rect = magnet.getBoundingClientRect();
 
+        const midpoint =
+            rect.left + rect.width / 2;
+
+        if (event.clientX < midpoint) {
+            insertBefore = magnet;
+            break;
         }
-    );
+    }
+
+    if (insertBefore) {
+        answerArea.insertBefore(
+            draggedMagnet,
+            insertBefore
+        );
+    } else {
+        answerArea.appendChild(
+            draggedMagnet
+        );
+    }
+
+    draggedMagnet = null;
+});
 
 }
 
