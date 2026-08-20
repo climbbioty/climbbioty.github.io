@@ -1065,20 +1065,12 @@ function endMagnetDrag(event) {
 
 
     // Reset styles
-    draggedMagnet.style.position =
-        "";
-
-    draggedMagnet.style.zIndex =
-        "";
-
-    draggedMagnet.style.pointerEvents =
-        "";
-
-    draggedMagnet.style.left =
-        "";
-
-    draggedMagnet.style.top =
-        "";
+draggedMagnet.style.position = "";
+draggedMagnet.style.zIndex = "";
+draggedMagnet.style.pointerEvents = "";
+draggedMagnet.style.left = "";
+draggedMagnet.style.top = "";
+draggedMagnet.style.color = "";
 
 
     // Remove placeholder
