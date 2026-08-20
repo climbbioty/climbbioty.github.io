@@ -1095,6 +1095,35 @@ function endMagnetDrag(event) {
 
 }
 
+// ======================================================
+// WATCH PLAYERS
+// ======================================================
+
+function watchPlayers() {
+
+    if (currentRoom === "") {
+        return;
+    }
+
+    const playersRef =
+        ref(
+            database,
+            `rooms/${currentRoom}/players`
+        );
+
+    onValue(
+        playersRef,
+        (snapshot) => {
+
+            console.log(
+                "Players:",
+                snapshot.val()
+            );
+
+        }
+    );
+
+}
 
 // ======================================================
 // SUBMIT ANSWER
