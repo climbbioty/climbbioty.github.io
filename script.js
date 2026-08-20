@@ -883,16 +883,12 @@ magnet.addEventListener(
 // DRAG AND DROP
 // ======================================================
 
-let draggedMagnet = null;
-
-
 function dragStart(event) {
 
     draggedMagnet =
         event.target;
 
 }
-
 
 let draggedMagnet = null;
 let dropPlaceholder = null;
