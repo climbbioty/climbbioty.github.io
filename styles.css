@@ -104,6 +104,10 @@ button{
     box-shadow: 2px 2px 6px gray;
     position: relative;
     color: rgb(0, 0, 0)
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: grab;
 }
 
 #nameInput,
@@ -143,4 +147,15 @@ button{
 .chooseAnswer {
     padding: 10px 20px;
     cursor: pointer;
+}
+
+.magnet:active {
+    cursor: grabbing;
+}
+
+.magnet-placeholder {
+    border: 2px dashed #888;
+    border-radius: 6px;
+    box-sizing: border-box;
+    opacity: 0.5;
 }
