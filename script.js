@@ -849,13 +849,25 @@ function generateWords() {
                 "magnet"
             );
 
-            magnet.draggable =
-                true;
-
             magnet.addEventListener(
-                "dragstart",
-                dragStart
-            );
+    "pointerdown",
+    startMagnetDrag
+);
+
+magnet.addEventListener(
+    "pointermove",
+    moveMagnet
+);
+
+magnet.addEventListener(
+    "pointerup",
+    endMagnetDrag
+);
+
+magnet.addEventListener(
+    "pointercancel",
+    endMagnetDrag
+);
 
             wordBank.appendChild(
                 magnet
@@ -882,126 +894,208 @@ function dragStart(event) {
 }
 
 
-// ======================================================
-// WORD BANK DROP
-// ======================================================
-
-if (wordBank) {
-
-    wordBank.addEventListener(
-        "dragover",
-        (event) => {
-
-            event.preventDefault();
-
-        }
-    );
-
-    wordBank.addEventListener(
-        "drop",
-        (event) => {
-
-            event.preventDefault();
-
-            if (draggedMagnet) {
-
-                wordBank.appendChild(
-                    draggedMagnet
-                );
-
-            }
-
-            draggedMagnet = null;
-
-        }
-    );
-
-}
+let draggedMagnet = null;
+let dropPlaceholder = null;
+let offsetX = 0;
+let offsetY = 0;
+let isDragging = false;
 
 
 // ======================================================
-// ANSWER AREA DROP
+// START DRAG
 // ======================================================
 
-if (answerArea) {
+function startMagnetDrag(event) {
 
-    answerArea.addEventListener(
-        "dragover",
-        (event) => {
+    const magnet =
+        event.currentTarget;
 
-            event.preventDefault();
+    draggedMagnet = magnet;
+    isDragging = true;
 
-        }
-    );
-
-   answerArea.addEventListener("drop", (event) => {
+    // Prevent the phone from scrolling while dragging
     event.preventDefault();
 
-    if (!draggedMagnet) return;
+    // Remember where on the magnet the user grabbed it
+    const rect =
+        magnet.getBoundingClientRect();
 
-    const magnets = [
-        ...answerArea.querySelectorAll(".magnet")
-    ];
+    offsetX =
+        event.clientX - rect.left;
 
-    let insertBefore = null;
+    offsetY =
+        event.clientY - rect.top;
 
-    for (const magnet of magnets) {
+    // Create placeholder
+    dropPlaceholder =
+        document.createElement("div");
 
-        const rect = magnet.getBoundingClientRect();
+    dropPlaceholder.classList.add(
+        "magnet-placeholder"
+    );
 
-        const midpoint =
-            rect.left + rect.width / 2;
+    dropPlaceholder.style.width =
+        rect.width + "px";
 
-        if (event.clientX < midpoint) {
-            insertBefore = magnet;
-            break;
-        }
-    }
+    dropPlaceholder.style.height =
+        rect.height + "px";
 
-    if (insertBefore) {
-        answerArea.insertBefore(
-            draggedMagnet,
-            insertBefore
-        );
-    } else {
-        answerArea.appendChild(
-            draggedMagnet
-        );
-    }
+    // Put placeholder where magnet was
+    magnet.parentNode.insertBefore(
+        dropPlaceholder,
+        magnet
+    );
 
-    draggedMagnet = null;
-});
+    // Make magnet follow finger
+    magnet.style.position =
+        "fixed";
 
+    magnet.style.zIndex =
+        "1000";
+
+    magnet.style.pointerEvents =
+        "none";
+
+    magnet.style.left =
+        (event.clientX - offsetX) + "px";
+
+    magnet.style.top =
+        (event.clientY - offsetY) + "px";
+
+
+    magnet.setPointerCapture(
+        event.pointerId
+    );
 }
 
 
 // ======================================================
-// WATCH PLAYERS
+// DRAGGING
 // ======================================================
 
-function watchPlayers() {
+function moveMagnet(event) {
 
-    if (currentRoom === "") {
+    if (
+        !isDragging ||
+        !draggedMagnet
+    ) {
         return;
     }
 
-    const playersRef =
-        ref(
-            database,
-            `rooms/${currentRoom}/players`
-        );
+    event.preventDefault();
 
-    onValue(
-        playersRef,
-        (snapshot) => {
+    // Move magnet with finger
+    draggedMagnet.style.left =
+        (event.clientX - offsetX) + "px";
 
-            console.log(
-                "Players:",
-                snapshot.val()
+    draggedMagnet.style.top =
+        (event.clientY - offsetY) + "px";
+
+
+    // Find where placeholder should go
+    const magnets = [
+        ...answerArea.querySelectorAll(
+            ".magnet"
+        )
+    ].filter(
+        magnet =>
+            magnet !== draggedMagnet
+    );
+
+
+    let inserted = false;
+
+
+    for (const magnet of magnets) {
+
+        const rect =
+            magnet.getBoundingClientRect();
+
+        const midpoint =
+            rect.left +
+            rect.width / 2;
+
+
+        if (
+            event.clientX <
+            midpoint
+        ) {
+
+            answerArea.insertBefore(
+                dropPlaceholder,
+                magnet
             );
 
+            inserted = true;
+
+            break;
         }
+
+    }
+
+
+    if (!inserted) {
+
+        answerArea.appendChild(
+            dropPlaceholder
+        );
+
+    }
+
+}
+
+
+// ======================================================
+// END DRAG
+// ======================================================
+
+function endMagnetDrag(event) {
+
+    if (
+        !isDragging ||
+        !draggedMagnet
+    ) {
+        return;
+    }
+
+    event.preventDefault();
+
+
+    // Put magnet where placeholder is
+    answerArea.insertBefore(
+        draggedMagnet,
+        dropPlaceholder
     );
+
+
+    // Reset styles
+    draggedMagnet.style.position =
+        "";
+
+    draggedMagnet.style.zIndex =
+        "";
+
+    draggedMagnet.style.pointerEvents =
+        "";
+
+    draggedMagnet.style.left =
+        "";
+
+    draggedMagnet.style.top =
+        "";
+
+
+    // Remove placeholder
+    if (dropPlaceholder) {
+
+        dropPlaceholder.remove();
+
+    }
+
+
+    dropPlaceholder = null;
+    draggedMagnet = null;
+    isDragging = false;
 
 }
 
