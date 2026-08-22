@@ -851,22 +851,22 @@ function generateWords() {
 
             magnet.addEventListener(
     "pointerdown",
-    startMagnetDrag
+    mobileStart
 );
 
 magnet.addEventListener(
     "pointermove",
-    moveMagnet
+    mobileMove
 );
 
 magnet.addEventListener(
     "pointerup",
-    endMagnetDrag
+    mobileMove
 );
 
 magnet.addEventListener(
     "pointercancel",
-    endMagnetDrag
+    mobileMove
 );
 
             wordBank.appendChild(
