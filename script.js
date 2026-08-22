@@ -824,8 +824,7 @@ function generateWords() {
     wordBank.innerHTML = "";
     answerArea.innerHTML = "";
 
-    const shuffled =
-        [...words];
+    const shuffled = [...words];
 
     shuffled.sort(
         () => Math.random() - 0.5
@@ -834,137 +833,141 @@ function generateWords() {
     const hand =
         shuffled.slice(0, 20);
 
-    hand.forEach(
-        (word) => {
+    hand.forEach((word) => {
 
-            const magnet =
-                document.createElement(
-                    "div"
-                );
+        const magnet =
+            document.createElement("div");
 
-            magnet.textContent =
-                word;
+        magnet.textContent = word;
 
-            magnet.classList.add(
-                "magnet"
-            );
+        magnet.classList.add("magnet");
 
-            magnet.addEventListener(
-    "pointerdown",
-    mobileStart
-);
+        // IMPORTANT:
+        // We are using pointer events instead
+        // of HTML5 drag-and-drop.
+        magnet.addEventListener(
+            "pointerdown",
+            startMagnetDrag
+        );
 
-magnet.addEventListener(
-    "pointermove",
-    mobileMove
-);
+        wordBank.appendChild(magnet);
 
-magnet.addEventListener(
-    "pointerup",
-    mobileMove
-);
-
-magnet.addEventListener(
-    "pointercancel",
-    mobileMove
-);
-
-            wordBank.appendChild(
-                magnet
-            );
-
-        }
-    );
-
+    });
 }
 
 
 // ======================================================
-// DRAG AND DROP
+// MAGNET DRAGGING
+// WORKS ON COMPUTER AND MOBILE
 // ======================================================
-
-function dragStart(event) {
-
-    draggedMagnet =
-        event.target;
-
-}
 
 let draggedMagnet = null;
+let draggedClone = null;
 let dropPlaceholder = null;
-let offsetX = 0;
-let offsetY = 0;
-let isDragging = false;
+let pointerId = null;
 
 
 // ======================================================
-// MOBILE MAGNET DRAGGING
+// START DRAG
 // ======================================================
 
-let mobileMagnet = null;
-let mobileClone = null;
-let mobileDragging = false;
-
-
-// Start touching a magnet
-function mobileStart(event) {
-
-    // Only use this on touch screens
-    if (event.pointerType !== "touch") {
-        return;
-    }
+function startMagnetDrag(event) {
 
     event.preventDefault();
 
-    mobileMagnet =
+    draggedMagnet =
         event.currentTarget;
 
-    mobileDragging = true;
+    pointerId =
+        event.pointerId;
+
 
     const rect =
-        mobileMagnet.getBoundingClientRect();
+        draggedMagnet.getBoundingClientRect();
 
 
-    // Make a copy that follows the finger
-    mobileClone =
-        mobileMagnet.cloneNode(true);
+    // ==============================================
+    // CREATE PLACEHOLDER
+    // ==============================================
 
-    mobileClone.style.position =
-        "fixed";
+    dropPlaceholder =
+        document.createElement("div");
 
-    mobileClone.style.left =
-        rect.left + "px";
+    dropPlaceholder.classList.add(
+        "magnet-placeholder"
+    );
 
-    mobileClone.style.top =
-        rect.top + "px";
-
-    mobileClone.style.width =
+    dropPlaceholder.style.width =
         rect.width + "px";
 
-    mobileClone.style.zIndex =
-        "9999";
+    dropPlaceholder.style.height =
+        rect.height + "px";
 
-    mobileClone.style.pointerEvents =
-        "none";
 
-    document.body.appendChild(
-        mobileClone
+    // Put placeholder where the magnet started
+    draggedMagnet.parentNode.insertBefore(
+        dropPlaceholder,
+        draggedMagnet
     );
 
 
-    // Hide the original while dragging
-    mobileMagnet.style.visibility =
+    // ==============================================
+    // CREATE DRAGGING COPY
+    // ==============================================
+
+    draggedClone =
+        draggedMagnet.cloneNode(true);
+
+    draggedClone.style.position =
+        "fixed";
+
+    draggedClone.style.left =
+        rect.left + "px";
+
+    draggedClone.style.top =
+        rect.top + "px";
+
+    draggedClone.style.width =
+        rect.width + "px";
+
+    draggedClone.style.height =
+        rect.height + "px";
+
+    draggedClone.style.zIndex =
+        "9999";
+
+    draggedClone.style.pointerEvents =
+        "none";
+
+
+    document.body.appendChild(
+        draggedClone
+    );
+
+
+    // Hide original without changing
+    // its appearance or layout.
+    draggedMagnet.style.visibility =
         "hidden";
+
+
+    // Keep receiving pointer events
+    draggedMagnet.setPointerCapture(
+        pointerId
+    );
 
 }
 
 
-// Move the clone with the finger
-function mobileMove(event) {
+// ======================================================
+// MOVE DRAG
+// ======================================================
+
+function moveMagnet(event) {
 
     if (
-        !mobileDragging ||
-        !mobileClone
+        !draggedMagnet ||
+        !draggedClone
     ) {
         return;
     }
@@ -972,24 +975,31 @@ function mobileMove(event) {
     event.preventDefault();
 
 
-    const rect =
-        mobileClone.getBoundingClientRect();
+    // ==============================================
+    // MOVE CLONE WITH POINTER
+    // ==============================================
+
+    const cloneRect =
+        draggedClone.getBoundingClientRect();
 
 
-    mobileClone.style.left =
+    draggedClone.style.left =
         (
             event.clientX -
-            rect.width / 2
+            cloneRect.width / 2
         ) + "px";
 
-    mobileClone.style.top =
+    draggedClone.style.top =
         (
             event.clientY -
-            rect.height / 2
+            cloneRect.height / 2
         ) + "px";
 
 
-    // Find what the finger is over
+    // ==============================================
+    // FIND WHAT IS UNDER POINTER
+    // ==============================================
+
     const elements =
         document.elementsFromPoint(
             event.clientX,
@@ -997,24 +1007,26 @@ function mobileMove(event) {
         );
 
 
-    const target =
+    const hoveredMagnet =
         elements.find(
-            element =>
+            (element) =>
                 element.classList &&
                 element.classList.contains(
                     "magnet"
                 ) &&
-                element !== mobileMagnet
+                element !== draggedMagnet
         );
 
 
-    if (
-        target &&
-        answerArea.contains(target)
-    ) {
+    // ==============================================
+    // OVER A MAGNET
+    // ==============================================
+
+    if (hoveredMagnet) {
 
         const rect =
-            target.getBoundingClientRect();
+            hoveredMagnet.getBoundingClientRect();
+
 
         const midpoint =
             rect.left +
@@ -1026,103 +1038,172 @@ function mobileMove(event) {
             midpoint
         ) {
 
-            answerArea.insertBefore(
-                mobileMagnet,
-                target
+            hoveredMagnet.parentNode.insertBefore(
+                dropPlaceholder,
+                hoveredMagnet
             );
 
         } else {
 
-            answerArea.insertBefore(
-                mobileMagnet,
-                target.nextSibling
+            hoveredMagnet.parentNode.insertBefore(
+                dropPlaceholder,
+                hoveredMagnet.nextSibling
             );
 
         }
+
+        return;
+    }
+
+
+    // ==============================================
+    // OVER ANSWER AREA
+    // ==============================================
+
+    if (
+        answerArea &&
+        (
+            elements.includes(answerArea) ||
+            answerArea.contains(
+                elements[0]
+            )
+        )
+    ) {
+
+        // If there are no magnets under us,
+        // put placeholder at the end.
+        answerArea.appendChild(
+            dropPlaceholder
+        );
+
+        return;
+    }
+
+
+    // ==============================================
+    // OVER WORD BANK
+    // ==============================================
+
+    if (
+        wordBank &&
+        (
+            elements.includes(wordBank) ||
+            wordBank.contains(
+                elements[0]
+            )
+        )
+    ) {
+
+        wordBank.appendChild(
+            dropPlaceholder
+        );
 
     }
 
 }
 
 
-// Finish the drag
-function mobileEnd(event) {
+// ======================================================
+// END DRAG
+// ======================================================
 
-    if (!mobileDragging) {
+function endMagnetDrag(event) {
+
+    if (!draggedMagnet) {
         return;
     }
 
     event.preventDefault();
 
 
-    const elements =
-        document.elementsFromPoint(
-            event.clientX,
-            event.clientY
-        );
+    // ==============================================
+    // PLACE ORIGINAL MAGNET
+    // ==============================================
 
+    if (dropPlaceholder) {
 
-    const overAnswerArea =
-        elements.some(
-            element =>
-                element === answerArea ||
-                answerArea.contains(element)
-        );
-
-
-    const overWordBank =
-        elements.some(
-            element =>
-                element === wordBank ||
-                wordBank.contains(element)
-        );
-
-
-    if (overAnswerArea) {
-
-        // The magnet has already been
-        // positioned while dragging.
-
-        if (
-            !answerArea.contains(
-                mobileMagnet
-            )
-        ) {
-
-            answerArea.appendChild(
-                mobileMagnet
-            );
-
-        }
-
-    }
-
-    else if (overWordBank) {
-
-        wordBank.appendChild(
-            mobileMagnet
+        dropPlaceholder.parentNode.insertBefore(
+            draggedMagnet,
+            dropPlaceholder
         );
 
     }
 
 
-    // Show original again
-    mobileMagnet.style.visibility =
+    // ==============================================
+    // RESTORE ORIGINAL MAGNET
+    // ==============================================
+
+    draggedMagnet.style.visibility =
         "";
 
-    // Remove the clone
-    if (mobileClone) {
 
-        mobileClone.remove();
+    // ==============================================
+    // REMOVE CLONE
+    // ==============================================
+
+    if (draggedClone) {
+
+        draggedClone.remove();
 
     }
 
 
-    mobileClone = null;
-    mobileMagnet = null;
-    mobileDragging = false;
+    // ==============================================
+    // REMOVE PLACEHOLDER
+    // ==============================================
+
+    if (dropPlaceholder) {
+
+        dropPlaceholder.remove();
+
+    }
+
+
+    // ==============================================
+    // RELEASE POINTER
+    // ==============================================
+
+    if (
+        pointerId !== null &&
+        draggedMagnet.hasPointerCapture(
+            pointerId
+        )
+    ) {
+
+        draggedMagnet.releasePointerCapture(
+            pointerId
+        );
+
+    }
+
+
+    draggedMagnet = null;
+    draggedClone = null;
+    dropPlaceholder = null;
+    pointerId = null;
 
 }
+
+
+// ======================================================
+// POINTER EVENTS
+// ======================================================
+
+document.addEventListener(
+    "pointermove",
+    moveMagnet
+);
+
+document.addEventListener(
+    "pointerup",
+    endMagnetDrag
+);
+
+document.addEventListener(
+    "pointercancel",
+    endMagnetDrag
+);
 
 // ======================================================
 // WATCH PLAYERS
