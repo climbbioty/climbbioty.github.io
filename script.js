@@ -898,114 +898,123 @@ let isDragging = false;
 
 
 // ======================================================
-// START DRAG
+// MOBILE MAGNET DRAGGING
 // ======================================================
 
-function startMagnetDrag(event) {
+let mobileMagnet = null;
+let mobileClone = null;
+let mobileDragging = false;
 
-    const magnet =
-        event.currentTarget;
 
-    draggedMagnet = magnet;
-    isDragging = true;
+// Start touching a magnet
+function mobileStart(event) {
 
-    // Prevent the phone from scrolling while dragging
+    // Only use this on touch screens
+    if (event.pointerType !== "touch") {
+        return;
+    }
+
     event.preventDefault();
 
-    // Remember where on the magnet the user grabbed it
+    mobileMagnet =
+        event.currentTarget;
+
+    mobileDragging = true;
+
     const rect =
-        magnet.getBoundingClientRect();
+        mobileMagnet.getBoundingClientRect();
 
-    offsetX =
-        event.clientX - rect.left;
 
-    offsetY =
-        event.clientY - rect.top;
+    // Make a copy that follows the finger
+    mobileClone =
+        mobileMagnet.cloneNode(true);
 
-    // Create placeholder
-    dropPlaceholder =
-        document.createElement("div");
-
-    dropPlaceholder.classList.add(
-        "magnet-placeholder"
-    );
-
-    dropPlaceholder.style.width =
-        rect.width + "px";
-
-    dropPlaceholder.style.height =
-        rect.height + "px";
-
-    // Put placeholder where magnet was
-    magnet.parentNode.insertBefore(
-        dropPlaceholder,
-        magnet
-    );
-
-    // Make magnet follow finger
-    magnet.style.position =
+    mobileClone.style.position =
         "fixed";
 
-    magnet.style.zIndex =
-        "1000";
+    mobileClone.style.left =
+        rect.left + "px";
 
-    magnet.style.pointerEvents =
+    mobileClone.style.top =
+        rect.top + "px";
+
+    mobileClone.style.width =
+        rect.width + "px";
+
+    mobileClone.style.zIndex =
+        "9999";
+
+    mobileClone.style.pointerEvents =
         "none";
 
-    magnet.style.left =
-        (event.clientX - offsetX) + "px";
-
-    magnet.style.top =
-        (event.clientY - offsetY) + "px";
-
-
-    magnet.setPointerCapture(
-        event.pointerId
+    document.body.appendChild(
+        mobileClone
     );
+
+
+    // Hide the original while dragging
+    mobileMagnet.style.visibility =
+        "hidden";
+
 }
 
 
-// ======================================================
-// DRAGGING
-// ======================================================
-
-function moveMagnet(event) {
+// Move the clone with the finger
+function mobileMove(event) {
 
     if (
-        !isDragging ||
-        !draggedMagnet
+        !mobileDragging ||
+        !mobileClone
     ) {
         return;
     }
 
     event.preventDefault();
 
-    // Move magnet with finger
-    draggedMagnet.style.left =
-        (event.clientX - offsetX) + "px";
 
-    draggedMagnet.style.top =
-        (event.clientY - offsetY) + "px";
+    const rect =
+        mobileClone.getBoundingClientRect();
 
 
-    // Find where placeholder should go
-    const magnets = [
-        ...answerArea.querySelectorAll(
-            ".magnet"
-        )
-    ].filter(
-        magnet =>
-            magnet !== draggedMagnet
-    );
+    mobileClone.style.left =
+        (
+            event.clientX -
+            rect.width / 2
+        ) + "px";
+
+    mobileClone.style.top =
+        (
+            event.clientY -
+            rect.height / 2
+        ) + "px";
 
 
-    let inserted = false;
+    // Find what the finger is over
+    const elements =
+        document.elementsFromPoint(
+            event.clientX,
+            event.clientY
+        );
 
 
-    for (const magnet of magnets) {
+    const target =
+        elements.find(
+            element =>
+                element.classList &&
+                element.classList.contains(
+                    "magnet"
+                ) &&
+                element !== mobileMagnet
+        );
+
+
+    if (
+        target &&
+        answerArea.contains(target)
+    ) {
 
         const rect =
-            magnet.getBoundingClientRect();
+            target.getBoundingClientRect();
 
         const midpoint =
             rect.left +
@@ -1018,72 +1027,100 @@ function moveMagnet(event) {
         ) {
 
             answerArea.insertBefore(
-                dropPlaceholder,
-                magnet
+                mobileMagnet,
+                target
             );
 
-            inserted = true;
+        } else {
 
-            break;
+            answerArea.insertBefore(
+                mobileMagnet,
+                target.nextSibling
+            );
+
         }
-
-    }
-
-
-    if (!inserted) {
-
-        answerArea.appendChild(
-            dropPlaceholder
-        );
 
     }
 
 }
 
 
-// ======================================================
-// END DRAG
-// ======================================================
+// Finish the drag
+function mobileEnd(event) {
 
-function endMagnetDrag(event) {
-
-    if (
-        !isDragging ||
-        !draggedMagnet
-    ) {
+    if (!mobileDragging) {
         return;
     }
 
     event.preventDefault();
 
 
-    // Put magnet where placeholder is
-    answerArea.insertBefore(
-        draggedMagnet,
-        dropPlaceholder
-    );
+    const elements =
+        document.elementsFromPoint(
+            event.clientX,
+            event.clientY
+        );
 
 
-    // Reset styles
-draggedMagnet.style.position = "";
-draggedMagnet.style.zIndex = "";
-draggedMagnet.style.pointerEvents = "";
-draggedMagnet.style.left = "";
-draggedMagnet.style.top = "";
-draggedMagnet.style.color = "";
+    const overAnswerArea =
+        elements.some(
+            element =>
+                element === answerArea ||
+                answerArea.contains(element)
+        );
 
 
-    // Remove placeholder
-    if (dropPlaceholder) {
+    const overWordBank =
+        elements.some(
+            element =>
+                element === wordBank ||
+                wordBank.contains(element)
+        );
 
-        dropPlaceholder.remove();
+
+    if (overAnswerArea) {
+
+        // The magnet has already been
+        // positioned while dragging.
+
+        if (
+            !answerArea.contains(
+                mobileMagnet
+            )
+        ) {
+
+            answerArea.appendChild(
+                mobileMagnet
+            );
+
+        }
+
+    }
+
+    else if (overWordBank) {
+
+        wordBank.appendChild(
+            mobileMagnet
+        );
 
     }
 
 
-    dropPlaceholder = null;
-    draggedMagnet = null;
-    isDragging = false;
+    // Show original again
+    mobileMagnet.style.visibility =
+        "";
+
+    // Remove the clone
+    if (mobileClone) {
+
+        mobileClone.remove();
+
+    }
+
+
+    mobileClone = null;
+    mobileMagnet = null;
+    mobileDragging = false;
 
 }
 
