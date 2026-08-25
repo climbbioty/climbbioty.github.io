@@ -1677,11 +1677,6 @@ function watchJudge() {
 
 async function loadJudgeRoom() {
 
-  if (room.judgeId !== playerId) {
-    console.error("This player is not the judge.");
-    return;
-}
-
     const params =
         new URLSearchParams(
             window.location.search
