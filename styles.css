@@ -177,3 +177,12 @@ input[type="submit"] {
     appearance: none;
 }
 
+button,
+button *,
+input[type="button"],
+input[type="button"] *,
+input[type="submit"],
+input[type="submit"] * {
+    color: black !important;
+    -webkit-text-fill-color: black !important;
+}
