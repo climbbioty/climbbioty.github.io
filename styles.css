@@ -151,9 +151,3 @@ button{
     cursor: grabbing;
 }
 
-.magnet-placeholder {
-    border: 2px dashed #888;
-    border-radius: 6px;
-    box-sizing: border-box;
-    opacity: 0.5;
-}
