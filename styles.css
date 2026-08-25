@@ -159,7 +159,7 @@ button{
     box-shadow: none !important;
     outline: none !important;
     padding: 0 !important;
-    margin: 0 !important;
+    margin: 6px !important;
     color: transparent !important;
     -webkit-text-fill-color: transparent !important;
 }
