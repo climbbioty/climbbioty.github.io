@@ -1677,6 +1677,11 @@ function watchJudge() {
 
 async function loadJudgeRoom() {
 
+  if (room.judgeId !== playerId) {
+    console.error("This player is not the judge.");
+    return;
+}
+
     const params =
         new URLSearchParams(
             window.location.search
@@ -1750,6 +1755,8 @@ async function loadJudgeRoom() {
             "Confirmed: this player is the judge."
         );
 
+      watchCurrentJudge();
+
         watchJudgePrompt(
             currentRoom
         );
@@ -1770,6 +1777,58 @@ async function loadJudgeRoom() {
 
 }
 
+// ======================================================
+// WATCH CURRENT JUDGE
+// ======================================================
+
+function watchCurrentJudge() {
+
+    if (
+        currentRoom === "" ||
+        playerId === ""
+    ) {
+        return;
+    }
+
+    const roomRef = ref(
+        database,
+        `rooms/${currentRoom}`
+    );
+
+    onValue(
+        roomRef,
+        (snapshot) => {
+
+            const room = snapshot.val();
+
+            if (!room) {
+                return;
+            }
+
+            const currentJudgeId =
+                room.judgeId;
+
+            // This player is no longer the judge
+            if (
+                currentJudgeId !== playerId
+            ) {
+
+                console.log(
+                    "This player is no longer the judge."
+                );
+
+                window.location.replace(
+                    `game.html?room=${currentRoom}` +
+                    `&name=${encodeURIComponent(playerName)}` +
+                    `&player=${playerId}`
+                );
+
+            }
+
+        }
+    );
+
+}
 
 // ======================================================
 // WATCH JUDGE PROMPT
