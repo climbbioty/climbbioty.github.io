@@ -776,6 +776,10 @@ function watchPrompt() {
             const promptText =
                 snapshot.val();
 
+          if (!promptText || promptText.toString().trim() === "") {
+                return;
+            }
+
             const promptElement =
                 document.getElementById(
                     "promptBox"
