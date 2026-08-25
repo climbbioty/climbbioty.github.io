@@ -865,7 +865,7 @@ let dragging = false;
 // BEGIN DRAG
 // ======================================================
 
-function startMagnetDrag(event) {
+function beginDrag(event) {
 
     event.preventDefault();
 
