@@ -840,7 +840,7 @@ function generateWords() {
 
         magnet.classList.add("magnet");
 
-        /const isTouchDevice =
+        const isTouchDevice =
     window.matchMedia("(pointer: coarse)").matches;
 
 if (isTouchDevice) {
