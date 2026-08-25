@@ -1014,107 +1014,201 @@ if (wordBank) {
 // ======================================================
 
 let mobileDraggedMagnet = null;
-let mobilePlaceholder = null;
 let mobileDragging = false;
 let mobilePointerId = null;
 
 let mobileOffsetX = 0;
 let mobileOffsetY = 0;
 
+let mobileOriginalParent = null;
+let mobileOriginalNextSibling = null;
 
-// ------------------------------------------------------
-// START PHONE DRAG
-// ------------------------------------------------------
+let mobileDropContainer = null;
+let mobileDropBefore = null;
+
+
+// ======================================================
+// FIND WHERE THE MAGNET SHOULD BE DROPPED
+// ======================================================
+
+function findMobileDropPosition(
+    container,
+    x,
+    y,
+    draggedMagnet
+) {
+
+    const magnets = [
+        ...container.querySelectorAll(".magnet")
+    ].filter(
+        magnet =>
+            magnet !== draggedMagnet
+    );
+
+    if (magnets.length === 0) {
+
+        return {
+            container: container,
+            before: null
+        };
+
+    }
+
+
+    // ----------------------------------------------
+    // First find magnets on the same row
+    // ----------------------------------------------
+
+    const sameRow = magnets.filter(
+        magnet => {
+
+            const rect =
+                magnet.getBoundingClientRect();
+
+            return (
+                y >= rect.top - rect.height * 0.4 &&
+                y <= rect.bottom + rect.height * 0.4
+            );
+
+        }
+    );
+
+
+    const candidates =
+        sameRow.length > 0
+            ? sameRow
+            : magnets;
+
+
+    // ----------------------------------------------
+    // Find first magnet whose center is
+    // to the right of the finger
+    // ----------------------------------------------
+
+    for (const magnet of candidates) {
+
+        const rect =
+            magnet.getBoundingClientRect();
+
+        const centerX =
+            rect.left +
+            rect.width / 2;
+
+        if (x < centerX) {
+
+            return {
+                container: container,
+                before: magnet
+            };
+
+        }
+
+    }
+
+
+    // Nothing is to the right,
+    // so put it at the end
+    return {
+        container: container,
+        before: null
+    };
+
+}
+
+
+// ======================================================
+// START MOBILE DRAG
+// ======================================================
 
 function mobileDragStart(event) {
 
-    // Only handle touch
     if (event.pointerType !== "touch") {
         return;
     }
 
     event.preventDefault();
 
-    mobileDraggedMagnet =
+    const magnet =
         event.currentTarget;
 
+
+    // Prevent browser's native drag
+    magnet.draggable = false;
+
+
+    mobileDraggedMagnet =
+        magnet;
+
     mobileDragging = true;
-    mobilePointerId = event.pointerId;
+    mobilePointerId =
+        event.pointerId;
 
 
-    // Get the magnet's current position
+    // Remember where the finger grabbed it
     const rect =
-        mobileDraggedMagnet.getBoundingClientRect();
+        magnet.getBoundingClientRect();
 
-
-    // Remember where on the magnet the finger grabbed it
     mobileOffsetX =
-        event.clientX - rect.left;
+        event.clientX -
+        rect.left;
 
     mobileOffsetY =
-        event.clientY - rect.top;
+        event.clientY -
+        rect.top;
 
 
-    // Create placeholder so the layout
-    // does not collapse when the magnet is removed
-    mobilePlaceholder =
-        document.createElement("div");
+    // Remember original location
+    mobileOriginalParent =
+        magnet.parentNode;
 
-    mobilePlaceholder.className =
-        "magnet-placeholder";
-
-    mobilePlaceholder.style.width =
-        rect.width + "px";
-
-    mobilePlaceholder.style.height =
-        rect.height + "px";
+    mobileOriginalNextSibling =
+        magnet.nextSibling;
 
 
-    mobileDraggedMagnet.before(
-        mobilePlaceholder
-    );
+    // Start with its current location
+    mobileDropContainer =
+        mobileOriginalParent;
+
+    mobileDropBefore =
+        mobileOriginalNextSibling;
 
 
-    // Take the REAL magnet out of normal layout
-    mobileDraggedMagnet.style.position =
+    // Take magnet out of normal layout
+    magnet.style.position =
         "fixed";
 
-    mobileDraggedMagnet.style.left =
+    magnet.style.left =
         rect.left + "px";
 
-    mobileDraggedMagnet.style.top =
+    magnet.style.top =
         rect.top + "px";
 
-    mobileDraggedMagnet.style.width =
+    magnet.style.width =
         rect.width + "px";
 
-    mobileDraggedMagnet.style.height =
+    magnet.style.height =
         rect.height + "px";
 
-    mobileDraggedMagnet.style.zIndex =
+    magnet.style.zIndex =
         "10000";
 
-    mobileDraggedMagnet.style.opacity =
+    magnet.style.opacity =
         "1";
 
-    // Don't let the dragged magnet block
-    // elementFromPoint()
-    mobileDraggedMagnet.style.pointerEvents =
+    magnet.style.pointerEvents =
         "none";
 
 
-    // Keep the browser from turning this
-    // into scrolling/pinch behavior
-    mobileDraggedMagnet.setPointerCapture(
+    magnet.setPointerCapture(
         event.pointerId
     );
 
 }
 
 
-// ------------------------------------------------------
-// MOVE PHONE DRAG
-// ------------------------------------------------------
+// ======================================================
+// MOVE MOBILE DRAG
+// ======================================================
 
 function mobileDragMove(event) {
 
@@ -1127,15 +1221,28 @@ function mobileDragMove(event) {
 
     event.preventDefault();
 
-    // Move the dragged magnet
+
+    // ----------------------------------------------
+    // Move ONLY the dragged magnet
+    // ----------------------------------------------
+
     mobileDraggedMagnet.style.left =
-        (event.clientX - mobileOffsetX) + "px";
+        (
+            event.clientX -
+            mobileOffsetX
+        ) + "px";
 
     mobileDraggedMagnet.style.top =
-        (event.clientY - mobileOffsetY) + "px";
+        (
+            event.clientY -
+            mobileOffsetY
+        ) + "px";
 
 
-    // Determine whether we're over the answer area
+    // ----------------------------------------------
+    // Find what's underneath the finger
+    // ----------------------------------------------
+
     const element =
         document.elementFromPoint(
             event.clientX,
@@ -1147,191 +1254,66 @@ function mobileDragMove(event) {
     }
 
 
+    // ----------------------------------------------
+    // Determine which container we're over
+    // ----------------------------------------------
+
+    let container = null;
+
+
     if (
         answerArea &&
         answerArea.contains(element)
     ) {
 
-        const magnets = [
-            ...answerArea.querySelectorAll(".magnet")
-        ].filter(
-            magnet =>
-                magnet !== mobileDraggedMagnet
-        );
+        container =
+            answerArea;
 
-
-        let targetIndex = magnets.length;
-
-
-        for (let i = 0; i < magnets.length; i++) {
-
-            const rect =
-                magnets[i].getBoundingClientRect();
-
-            const midpoint =
-                rect.left +
-                rect.width / 2;
-
-            if (
-                event.clientX <
-                midpoint
-            ) {
-
-                targetIndex = i;
-                break;
-
-            }
-
-        }
-
-
-        // Figure out where the placeholder currently is
-        const currentChildren =
-            [
-                ...answerArea.children
-            ];
-
-        const currentIndex =
-            currentChildren.indexOf(
-                mobilePlaceholder
-            );
-
-
-        // Only move the placeholder if
-        // the intended position changed
-        if (
-            currentIndex !== targetIndex
-        ) {
-
-            if (
-                targetIndex >=
-                answerArea.children.length
-            ) {
-
-                answerArea.appendChild(
-                    mobilePlaceholder
-                );
-
-            } else {
-
-                const target =
-                    magnets[targetIndex];
-
-                if (target) {
-
-                    target.before(
-                        mobilePlaceholder
-                    );
-
-                } else {
-
-                    answerArea.appendChild(
-                        mobilePlaceholder
-                    );
-
-                }
-
-            }
-
-        }
-
-        return;
     }
 
-
-    // WORD BANK
-    if (
+    else if (
         wordBank &&
         wordBank.contains(element)
     ) {
 
-        const magnets = [
-            ...wordBank.querySelectorAll(".magnet")
-        ].filter(
-            magnet =>
-                magnet !== mobileDraggedMagnet
-        );
-
-
-        let targetIndex = magnets.length;
-
-
-        for (let i = 0; i < magnets.length; i++) {
-
-            const rect =
-                magnets[i].getBoundingClientRect();
-
-            const midpoint =
-                rect.left +
-                rect.width / 2;
-
-            if (
-                event.clientX <
-                midpoint
-            ) {
-
-                targetIndex = i;
-                break;
-
-            }
-
-        }
-
-
-        const currentChildren =
-            [
-                ...wordBank.children
-            ];
-
-        const currentIndex =
-            currentChildren.indexOf(
-                mobilePlaceholder
-            );
-
-
-        if (
-            currentIndex !== targetIndex
-        ) {
-
-            if (
-                targetIndex >=
-                wordBank.children.length
-            ) {
-
-                wordBank.appendChild(
-                    mobilePlaceholder
-                );
-
-            } else {
-
-                const target =
-                    magnets[targetIndex];
-
-                if (target) {
-
-                    target.before(
-                        mobilePlaceholder
-                    );
-
-                } else {
-
-                    wordBank.appendChild(
-                        mobilePlaceholder
-                    );
-
-                }
-
-            }
-
-        }
+        container =
+            wordBank;
 
     }
 
+
+    // Not over either container
+    if (!container) {
+        return;
+    }
+
+
+    // ----------------------------------------------
+    // Calculate drop position
+    // WITHOUT changing the DOM
+    // ----------------------------------------------
+
+    const position =
+        findMobileDropPosition(
+            container,
+            event.clientX,
+            event.clientY,
+            mobileDraggedMagnet
+        );
+
+
+    mobileDropContainer =
+        position.container;
+
+    mobileDropBefore =
+        position.before;
+
 }
 
-// ------------------------------------------------------
-// END PHONE DRAG
-// ------------------------------------------------------
+
+// ======================================================
+// END MOBILE DRAG
+// ======================================================
 
 function mobileDragEnd(event) {
 
@@ -1345,66 +1327,117 @@ function mobileDragEnd(event) {
     event.preventDefault();
 
 
+    const magnet =
+        mobileDraggedMagnet;
+
+
+    // ----------------------------------------------
+    // Put magnet where it belongs
+    // ----------------------------------------------
+
     if (
-        mobileDraggedMagnet &&
-        mobilePlaceholder
+        magnet &&
+        mobileDropContainer
     ) {
 
-        // Put the real magnet exactly
-        // where the placeholder currently is
-        mobilePlaceholder.before(
-            mobileDraggedMagnet
-        );
+        if (
+            mobileDropBefore &&
+            mobileDropBefore.parentNode ===
+                mobileDropContainer
+        ) {
+
+            mobileDropContainer.insertBefore(
+                magnet,
+                mobileDropBefore
+            );
+
+        }
+
+        else {
+
+            mobileDropContainer.appendChild(
+                magnet
+            );
+
+        }
+
+    }
+
+    // ----------------------------------------------
+    // If released somewhere invalid,
+    // put it back where it came from
+    // ----------------------------------------------
+
+    else if (
+        magnet &&
+        mobileOriginalParent
+    ) {
+
+        if (
+            mobileOriginalNextSibling &&
+            mobileOriginalNextSibling.parentNode ===
+                mobileOriginalParent
+        ) {
+
+            mobileOriginalParent.insertBefore(
+                magnet,
+                mobileOriginalNextSibling
+            );
+
+        }
+
+        else {
+
+            mobileOriginalParent.appendChild(
+                magnet
+            );
+
+        }
 
     }
 
 
-    // Return magnet to normal CSS
-    mobileDraggedMagnet.style.position =
-        "";
+    // ----------------------------------------------
+    // Reset magnet's CSS
+    // ----------------------------------------------
 
-    mobileDraggedMagnet.style.left =
-        "";
+    if (magnet) {
 
-    mobileDraggedMagnet.style.top =
-        "";
-
-    mobileDraggedMagnet.style.width =
-        "";
-
-    mobileDraggedMagnet.style.height =
-        "";
-
-    mobileDraggedMagnet.style.zIndex =
-        "";
-
-    mobileDraggedMagnet.style.opacity =
-        "";
-
-    mobileDraggedMagnet.style.pointerEvents =
-        "";
-
-
-    if (mobilePlaceholder) {
-
-        mobilePlaceholder.remove();
+        magnet.style.position = "";
+        magnet.style.left = "";
+        magnet.style.top = "";
+        magnet.style.width = "";
+        magnet.style.height = "";
+        magnet.style.zIndex = "";
+        magnet.style.opacity = "";
+        magnet.style.pointerEvents = "";
 
     }
 
+
+    // ----------------------------------------------
+    // Reset drag variables
+    // ----------------------------------------------
 
     mobileDraggedMagnet = null;
-    mobilePlaceholder = null;
     mobileDragging = false;
     mobilePointerId = null;
+
+    mobileOriginalParent = null;
+    mobileOriginalNextSibling = null;
+
+    mobileDropContainer = null;
+    mobileDropBefore = null;
+
     mobileOffsetX = 0;
     mobileOffsetY = 0;
 
 }
 
 
-// ------------------------------------------------------
-// CANCEL PHONE DRAG
-// ------------------------------------------------------
+// ======================================================
+// CANCEL MOBILE DRAG
+// ======================================================
 
 function mobileDragCancel(event) {
 
@@ -1420,9 +1453,9 @@ function mobileDragCancel(event) {
 }
 
 
-// ------------------------------------------------------
+// ======================================================
 // POINTER EVENTS
-// ------------------------------------------------------
+// ======================================================
 
 document.addEventListener(
     "pointermove",
