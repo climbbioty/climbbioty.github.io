@@ -170,8 +170,8 @@ button:active,
 button:focus,
 input[type="button"],
 input[type="submit"] {
-    color: white !important;
-    -webkit-text-fill-color: white !important;
+    color: black !important;
+    -webkit-text-fill-color: black !important;
     text-decoration: none !important;
     -webkit-appearance: none;
     appearance: none;
