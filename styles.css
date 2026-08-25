@@ -102,12 +102,10 @@ button{
     cursor: grab;
     user-select: none;
     box-shadow: 2px 2px 6px gray;
-    position: relative;
     color: black;
     touch-action: none;
     user-select: none;
     -webkit-user-select: none;
-    cursor: grab;
 }
 
 #nameInput,
