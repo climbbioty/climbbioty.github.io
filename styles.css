@@ -43,7 +43,7 @@ span{
 
     border:3px dashed gray;
 
-    overflow:hidden;
+    overflow: visible;
 
     color: white;
 }
@@ -180,5 +180,5 @@ button{
     font-size:18px;
     background-color: tan;
     font-family: 'Courier bold', Courier, monospace;
-    border: 2px solid black;
+    border: 2px solid white;
 }
