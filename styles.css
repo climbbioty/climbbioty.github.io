@@ -32,15 +32,6 @@ span{
     font-family: 'Courier bold', Courier, monospace;
 }
 
-button{
-    margin:20px;
-    padding:12px 25px;
-    font-size:18px;
-    background-color: tan;
-    font-family: 'Courier bold', Courier, monospace;
-    border: 2px solid white;
-}
-
 #answerArea{
 
     width:80%;
@@ -172,8 +163,8 @@ button:focus,
 button:focus-visible,
 input[type="button"],
 input[type="submit"] {
-    color: #FFFFFF !important;
-    -webkit-text-fill-color: #FFFFFF !important;
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
     text-shadow: none !important;
     border: 2px solid black;
     background: tan;
