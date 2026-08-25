@@ -186,3 +186,22 @@ input[type="submit"] * {
     color: black !important;
     -webkit-text-fill-color: black !important;
 }
+
+button,
+button:visited,
+button:hover,
+button:active,
+button:focus,
+button:focus-visible,
+input[type="button"],
+input[type="submit"] {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+    text-shadow: none !important;
+
+    background: tan;
+    -webkit-appearance: none;
+    appearance: none;
+
+    color-scheme: light;
+}
