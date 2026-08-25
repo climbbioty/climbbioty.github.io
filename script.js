@@ -865,7 +865,7 @@ let dragging = false;
 // BEGIN DRAG
 // ======================================================
 
-function beginDrag(event) {
+function startMagnetDrag(event) {
 
     event.preventDefault();
 
@@ -874,16 +874,6 @@ function beginDrag(event) {
 
     dragging = true;
 
-    // Reset any old positioning that may
-    // have been left on the magnet.
-    draggedMagnet.style.position = "";
-    draggedMagnet.style.left = "";
-    draggedMagnet.style.top = "";
-    draggedMagnet.style.transform = "";
-    draggedMagnet.style.zIndex = "";
-    draggedMagnet.style.visibility = "";
-
-    // Create placeholder
     placeholder =
         document.createElement("div");
 
@@ -899,10 +889,12 @@ function beginDrag(event) {
     placeholder.style.height =
         rect.height + "px";
 
-    // Put placeholder where magnet was
     draggedMagnet.before(
         placeholder
     );
+
+    // Keep the magnet visible
+    draggedMagnet.style.opacity = "0.6";
 
     draggedMagnet.setPointerCapture(
         event.pointerId
@@ -926,96 +918,78 @@ function handleDragMove(event) {
 
     event.preventDefault();
 
+    // Get all magnets except the one being dragged
+    const magnets = [
+        ...answerArea.querySelectorAll(".magnet")
+    ].filter(
+        magnet => magnet !== draggedMagnet
+    );
+
+    let newTarget = null;
+
+    for (const magnet of magnets) {
+
+        const rect =
+            magnet.getBoundingClientRect();
+
+        const midpoint =
+            rect.left +
+            rect.width / 2;
+
+        if (event.clientX < midpoint) {
+
+            newTarget = magnet;
+            break;
+        }
+    }
+
+    // Decide where the placeholder should go
+    let newParent = answerArea;
+    let newBefore = newTarget;
+
+    // If we are over the word bank,
+    // use the word bank instead.
     const element =
         document.elementFromPoint(
             event.clientX,
             event.clientY
         );
 
-    if (!element) {
-        return;
-    }
-
-    const target =
-        element.closest(".magnet");
-
-
-    // ==============================================
-    // MOVING OVER ANOTHER MAGNET
-    // ==============================================
-
     if (
-        target &&
-        target !== draggedMagnet
-    ) {
-
-        const rect =
-            target.getBoundingClientRect();
-
-        const middle =
-            rect.left +
-            rect.width / 2;
-
-        if (
-            event.clientX < middle
-        ) {
-
-            target.before(
-                placeholder
-            );
-
-        } else {
-
-            target.after(
-                placeholder
-            );
-
-        }
-
-        return;
-    }
-
-
-    // ==============================================
-    // MOVING OVER ANSWER AREA
-    // ==============================================
-
-    if (
-        answerArea &&
-        (
-            element === answerArea ||
-            answerArea.contains(element)
-        )
-    ) {
-
-        // Put it at the end if we're
-        // over empty space.
-        answerArea.appendChild(
-            placeholder
-        );
-
-        return;
-    }
-
-
-    // ==============================================
-    // MOVING OVER WORD BANK
-    // ==============================================
-
-    if (
+        element &&
         wordBank &&
-        (
-            element === wordBank ||
-            wordBank.contains(element)
-        )
+        wordBank.contains(element)
     ) {
-
-        wordBank.appendChild(
-            placeholder
-        );
-
+        newParent = wordBank;
+        newBefore = null;
     }
 
+    // Check whether the placeholder is
+    // already in the correct position.
+    if (
+        placeholder.parentNode === newParent &&
+        (
+            newBefore === placeholder.nextElementSibling ||
+            (!newBefore && placeholder.nextElementSibling === null)
+        )
+    ) {
+        return;
+    }
+
+    // Move placeholder only when necessary
+    if (newBefore) {
+
+        newParent.insertBefore(
+            placeholder,
+            newBefore
+        );
+
+    } else {
+
+        newParent.appendChild(
+            placeholder
+        );
+    }
 }
 
 
@@ -1034,38 +1008,30 @@ function finishDrag(event) {
 
     event.preventDefault();
 
-    // Put the REAL magnet into the
-    // placeholder's location.
-    placeholder.before(
-        draggedMagnet
-    );
+    if (placeholder) {
 
-    // Restore it completely.
-    draggedMagnet.style.position = "";
-    draggedMagnet.style.left = "";
-    draggedMagnet.style.top = "";
-    draggedMagnet.style.transform = "";
-    draggedMagnet.style.zIndex = "";
-    draggedMagnet.style.visibility = "";
+        placeholder.before(
+            draggedMagnet
+        );
+
+        placeholder.remove();
+    }
+
+    draggedMagnet.style.opacity = "";
 
     if (
         draggedMagnet.hasPointerCapture(
             event.pointerId
         )
     ) {
-
         draggedMagnet.releasePointerCapture(
             event.pointerId
         );
-
     }
-
-    placeholder.remove();
 
     draggedMagnet = null;
     placeholder = null;
     dragging = false;
-
 }
 
 
