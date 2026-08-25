@@ -152,15 +152,28 @@ button{
 }
 
 .magnet-placeholder {
-    visibility: hidden;
+    visibility: hidden !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
 }
 
 button,
 button:visited,
 button:hover,
 button:active,
-button:focus {
-    color: black;
-    -webkit-text-fill-color: black;
+button:focus,
+input[type="button"],
+input[type="submit"] {
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+    text-decoration: none !important;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
