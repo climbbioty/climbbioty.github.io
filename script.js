@@ -904,10 +904,6 @@ function beginDrag(event) {
         placeholder
     );
 
-    // Hide original
-    draggedMagnet.style.visibility =
-        "hidden";
-
     draggedMagnet.setPointerCapture(
         event.pointerId
     );
