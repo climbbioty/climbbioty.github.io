@@ -1125,148 +1125,126 @@ function mobileDragMove(event) {
 
     // Move the actual magnet with the finger
     mobileDraggedMagnet.style.left =
-        (
-            event.clientX -
-            mobileOffsetX
-        ) + "px";
+        (event.clientX - mobileOffsetX) + "px";
 
     mobileDraggedMagnet.style.top =
-        (
-            event.clientY -
-            mobileOffsetY
-        ) + "px";
+        (event.clientY - mobileOffsetY) + "px";
 
 
-    // Find what is underneath the finger
-    const element =
-        document.elementFromPoint(
-            event.clientX,
-            event.clientY
-        );
-
+    // Find the element below the finger
+    const element = document.elementFromPoint(
+        event.clientX,
+        event.clientY
+    );
 
     if (!element) {
         return;
     }
 
 
-    // ==================================================
+    // ----------------------------------------------
     // ANSWER AREA
-    // ==================================================
+    // ----------------------------------------------
 
-    if (
-        answerArea &&
-        answerArea.contains(element)
-    ) {
+    if (answerArea && answerArea.contains(element)) {
 
         const magnets = [
-            ...answerArea.querySelectorAll(
-                ".magnet"
-            )
+            ...answerArea.querySelectorAll(".magnet")
         ].filter(
             magnet =>
                 magnet !== mobileDraggedMagnet
         );
 
+        let newParent = answerArea;
+        let newBefore = null;
 
-        let inserted = false;
-
-
-        // Find the first magnet whose center
-        // is to the right of the finger
         for (const magnet of magnets) {
 
             const rect =
                 magnet.getBoundingClientRect();
 
+            const midpoint =
+                rect.left + rect.width / 2;
 
-            const centerX =
-                rect.left +
-                rect.width / 2;
+            if (event.clientX < midpoint) {
 
-
-            if (
-                event.clientX <
-                centerX
-            ) {
-
-                magnet.before(
-                    mobilePlaceholder
-                );
-
-                inserted = true;
-
+                newBefore = magnet;
                 break;
+
             }
 
         }
 
+        // Only move the placeholder if its
+        // position actually needs to change
+        if (
+            newBefore &&
+            mobilePlaceholder.nextSibling !== newBefore
+        ) {
 
-        // If nothing is to the right,
-        // put it at the end
-        if (!inserted) {
+            newBefore.before(mobilePlaceholder);
+
+        }
+        else if (
+            !newBefore &&
+            mobilePlaceholder.parentNode !== answerArea
+        ) {
 
             answerArea.appendChild(
                 mobilePlaceholder
             );
 
         }
-
-        return;
     }
 
 
-    // ==================================================
+    // ----------------------------------------------
     // WORD BANK
-    // ==================================================
+    // ----------------------------------------------
 
-    if (
+    else if (
         wordBank &&
         wordBank.contains(element)
     ) {
 
         const magnets = [
-            ...wordBank.querySelectorAll(
-                ".magnet"
-            )
+            ...wordBank.querySelectorAll(".magnet")
         ].filter(
             magnet =>
                 magnet !== mobileDraggedMagnet
         );
 
-
-        let inserted = false;
-
+        let newBefore = null;
 
         for (const magnet of magnets) {
 
             const rect =
                 magnet.getBoundingClientRect();
 
+            const midpoint =
+                rect.left + rect.width / 2;
 
-            const centerX =
-                rect.left +
-                rect.width / 2;
+            if (event.clientX < midpoint) {
 
-
-            if (
-                event.clientX <
-                centerX
-            ) {
-
-                magnet.before(
-                    mobilePlaceholder
-                );
-
-                inserted = true;
-
+                newBefore = magnet;
                 break;
+
             }
 
         }
 
+        if (
+            newBefore &&
+            mobilePlaceholder.nextSibling !== newBefore
+        ) {
 
-        if (!inserted) {
+            newBefore.before(mobilePlaceholder);
+
+        }
+        else if (
+            !newBefore &&
+            mobilePlaceholder.parentNode !== wordBank
+        ) {
 
             wordBank.appendChild(
                 mobilePlaceholder
@@ -1277,8 +1255,6 @@ function mobileDragMove(event) {
     }
 
 }
-
-
 // ------------------------------------------------------
 // END PHONE DRAG
 // ------------------------------------------------------
