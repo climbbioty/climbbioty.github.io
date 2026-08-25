@@ -840,19 +840,30 @@ function generateWords() {
 
         magnet.classList.add("magnet");
 
-        // COMPUTER
-        magnet.draggable = true;
+        /const isTouchDevice =
+    window.matchMedia("(pointer: coarse)").matches;
 
-        magnet.addEventListener(
-            "dragstart",
-            desktopDragStart
-        );
+if (isTouchDevice) {
 
-        // PHONE
-        magnet.addEventListener(
-            "pointerdown",
-            mobileDragStart
-        );
+    // Let Pointer Events handle dragging
+    magnet.draggable = false;
+
+    magnet.addEventListener(
+        "pointerdown",
+        mobileDragStart
+    );
+
+} else {
+
+    // Let HTML drag-and-drop handle desktop
+    magnet.draggable = true;
+
+    magnet.addEventListener(
+        "dragstart",
+        desktopDragStart
+    );
+
+}
 
         wordBank.appendChild(magnet);
 
