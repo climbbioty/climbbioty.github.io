@@ -1127,7 +1127,7 @@ function mobileDragMove(event) {
 
     event.preventDefault();
 
-    // Move the actual magnet with the finger
+    // Move the dragged magnet
     mobileDraggedMagnet.style.left =
         (event.clientX - mobileOffsetX) + "px";
 
@@ -1135,22 +1135,22 @@ function mobileDragMove(event) {
         (event.clientY - mobileOffsetY) + "px";
 
 
-    // Find the element below the finger
-    const element = document.elementFromPoint(
-        event.clientX,
-        event.clientY
-    );
+    // Determine whether we're over the answer area
+    const element =
+        document.elementFromPoint(
+            event.clientX,
+            event.clientY
+        );
 
     if (!element) {
         return;
     }
 
 
-    // ----------------------------------------------
-    // ANSWER AREA
-    // ----------------------------------------------
-
-    if (answerArea && answerArea.contains(element)) {
+    if (
+        answerArea &&
+        answerArea.contains(element)
+    ) {
 
         const magnets = [
             ...answerArea.querySelectorAll(".magnet")
@@ -1159,54 +1159,88 @@ function mobileDragMove(event) {
                 magnet !== mobileDraggedMagnet
         );
 
-        let newParent = answerArea;
-        let newBefore = null;
 
-        for (const magnet of magnets) {
+        let targetIndex = magnets.length;
+
+
+        for (let i = 0; i < magnets.length; i++) {
 
             const rect =
-                magnet.getBoundingClientRect();
+                magnets[i].getBoundingClientRect();
 
             const midpoint =
-                rect.left + rect.width / 2;
+                rect.left +
+                rect.width / 2;
 
-            if (event.clientX < midpoint) {
+            if (
+                event.clientX <
+                midpoint
+            ) {
 
-                newBefore = magnet;
+                targetIndex = i;
                 break;
 
             }
 
         }
 
-        // Only move the placeholder if its
-        // position actually needs to change
-        if (
-            newBefore &&
-            mobilePlaceholder.nextSibling !== newBefore
-        ) {
 
-            newBefore.before(mobilePlaceholder);
+        // Figure out where the placeholder currently is
+        const currentChildren =
+            [
+                ...answerArea.children
+            ];
 
-        }
-        else if (
-            !newBefore &&
-            mobilePlaceholder.parentNode !== answerArea
-        ) {
-
-            answerArea.appendChild(
+        const currentIndex =
+            currentChildren.indexOf(
                 mobilePlaceholder
             );
 
+
+        // Only move the placeholder if
+        // the intended position changed
+        if (
+            currentIndex !== targetIndex
+        ) {
+
+            if (
+                targetIndex >=
+                answerArea.children.length
+            ) {
+
+                answerArea.appendChild(
+                    mobilePlaceholder
+                );
+
+            } else {
+
+                const target =
+                    magnets[targetIndex];
+
+                if (target) {
+
+                    target.before(
+                        mobilePlaceholder
+                    );
+
+                } else {
+
+                    answerArea.appendChild(
+                        mobilePlaceholder
+                    );
+
+                }
+
+            }
+
         }
+
+        return;
     }
 
 
-    // ----------------------------------------------
     // WORD BANK
-    // ----------------------------------------------
-
-    else if (
+    if (
         wordBank &&
         wordBank.contains(element)
     ) {
@@ -1218,47 +1252,83 @@ function mobileDragMove(event) {
                 magnet !== mobileDraggedMagnet
         );
 
-        let newBefore = null;
 
-        for (const magnet of magnets) {
+        let targetIndex = magnets.length;
+
+
+        for (let i = 0; i < magnets.length; i++) {
 
             const rect =
-                magnet.getBoundingClientRect();
+                magnets[i].getBoundingClientRect();
 
             const midpoint =
-                rect.left + rect.width / 2;
+                rect.left +
+                rect.width / 2;
 
-            if (event.clientX < midpoint) {
+            if (
+                event.clientX <
+                midpoint
+            ) {
 
-                newBefore = magnet;
+                targetIndex = i;
                 break;
 
             }
 
         }
 
-        if (
-            newBefore &&
-            mobilePlaceholder.nextSibling !== newBefore
-        ) {
 
-            newBefore.before(mobilePlaceholder);
+        const currentChildren =
+            [
+                ...wordBank.children
+            ];
 
-        }
-        else if (
-            !newBefore &&
-            mobilePlaceholder.parentNode !== wordBank
-        ) {
-
-            wordBank.appendChild(
+        const currentIndex =
+            currentChildren.indexOf(
                 mobilePlaceholder
             );
+
+
+        if (
+            currentIndex !== targetIndex
+        ) {
+
+            if (
+                targetIndex >=
+                wordBank.children.length
+            ) {
+
+                wordBank.appendChild(
+                    mobilePlaceholder
+                );
+
+            } else {
+
+                const target =
+                    magnets[targetIndex];
+
+                if (target) {
+
+                    target.before(
+                        mobilePlaceholder
+                    );
+
+                } else {
+
+                    wordBank.appendChild(
+                        mobilePlaceholder
+                    );
+
+                }
+
+            }
 
         }
 
     }
 
 }
+
 // ------------------------------------------------------
 // END PHONE DRAG
 // ------------------------------------------------------
