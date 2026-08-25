@@ -173,3 +173,13 @@ input[type="submit"] {
 
     color-scheme: light;
 }
+
+button{
+    margin:20px;
+    padding:12px 25px;
+    font-size:18px;
+    background-color: tan;
+    font-family: 'Courier bold', Courier, monospace;
+    border: 2px solid black;
+    border: 2px solid white;
+}
