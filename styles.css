@@ -155,3 +155,12 @@ button{
     visibility: hidden;
 }
 
+button,
+button:visited,
+button:hover,
+button:active,
+button:focus {
+    color: black;
+    -webkit-text-fill-color: black;
+}
+
