@@ -151,3 +151,7 @@ button{
     cursor: grabbing;
 }
 
+.magnet-placeholder {
+    visibility: hidden;
+}
+
