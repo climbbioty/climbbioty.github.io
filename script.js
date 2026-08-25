@@ -1001,13 +1001,19 @@ if (wordBank) {
 let mobileDraggedMagnet = null;
 let mobilePlaceholder = null;
 let mobileDragging = false;
-let lastMobileTarget = null;
+let mobilePointerId = null;
+
+let mobileOffsetX = 0;
+let mobileOffsetY = 0;
 
 
-// Start touching a magnet
+// ------------------------------------------------------
+// START PHONE DRAG
+// ------------------------------------------------------
+
 function mobileDragStart(event) {
 
-    // Only activate this for touch
+    // Only handle touch
     if (event.pointerType !== "touch") {
         return;
     }
@@ -1018,20 +1024,29 @@ function mobileDragStart(event) {
         event.currentTarget;
 
     mobileDragging = true;
+    mobilePointerId = event.pointerId;
 
-    lastMobileTarget = null;
+
+    // Get the magnet's current position
+    const rect =
+        mobileDraggedMagnet.getBoundingClientRect();
 
 
-    // Create placeholder
+    // Remember where on the magnet the finger grabbed it
+    mobileOffsetX =
+        event.clientX - rect.left;
+
+    mobileOffsetY =
+        event.clientY - rect.top;
+
+
+    // Create placeholder so the layout
+    // does not collapse when the magnet is removed
     mobilePlaceholder =
         document.createElement("div");
 
     mobilePlaceholder.className =
         "magnet-placeholder";
-
-
-    const rect =
-        mobileDraggedMagnet.getBoundingClientRect();
 
     mobilePlaceholder.style.width =
         rect.width + "px";
@@ -1045,11 +1060,36 @@ function mobileDragStart(event) {
     );
 
 
-    // Keep magnet visible
+    // Take the REAL magnet out of normal layout
+    mobileDraggedMagnet.style.position =
+        "fixed";
+
+    mobileDraggedMagnet.style.left =
+        rect.left + "px";
+
+    mobileDraggedMagnet.style.top =
+        rect.top + "px";
+
+    mobileDraggedMagnet.style.width =
+        rect.width + "px";
+
+    mobileDraggedMagnet.style.height =
+        rect.height + "px";
+
+    mobileDraggedMagnet.style.zIndex =
+        "10000";
+
     mobileDraggedMagnet.style.opacity =
-        "0.6";
+        "1";
+
+    // Don't let the dragged magnet block
+    // elementFromPoint()
+    mobileDraggedMagnet.style.pointerEvents =
+        "none";
 
 
+    // Keep the browser from turning this
+    // into scrolling/pinch behavior
     mobileDraggedMagnet.setPointerCapture(
         event.pointerId
     );
@@ -1057,146 +1097,247 @@ function mobileDragStart(event) {
 }
 
 
-// Move on phone
-document.addEventListener(
-    "pointermove",
-    (event) => {
+// ------------------------------------------------------
+// MOVE PHONE DRAG
+// ------------------------------------------------------
+
+function mobileDragMove(event) {
+
+    if (
+        !mobileDragging ||
+        event.pointerId !== mobilePointerId
+    ) {
+        return;
+    }
+
+    event.preventDefault();
+
+
+    // Move the actual magnet with the finger
+    mobileDraggedMagnet.style.left =
+        (
+            event.clientX -
+            mobileOffsetX
+        ) + "px";
+
+    mobileDraggedMagnet.style.top =
+        (
+            event.clientY -
+            mobileOffsetY
+        ) + "px";
+
+
+    // Find what is underneath the finger
+    const element =
+        document.elementFromPoint(
+            event.clientX,
+            event.clientY
+        );
+
+
+    if (!element) {
+        return;
+    }
+
+
+    // --------------------------------------------------
+    // Dropping/reordering relative to another magnet
+    // --------------------------------------------------
+
+    const target =
+        element.closest(".magnet");
+
+
+    if (
+        target &&
+        target !== mobileDraggedMagnet
+    ) {
+
+        const rect =
+            target.getBoundingClientRect();
+
+        const midpoint =
+            rect.left +
+            rect.width / 2;
+
 
         if (
-            !mobileDragging ||
-            event.pointerType !== "touch"
+            event.clientX <
+            midpoint
         ) {
-            return;
-        }
 
-        event.preventDefault();
-
-
-        const element =
-            document.elementFromPoint(
-                event.clientX,
-                event.clientY
+            target.before(
+                mobilePlaceholder
             );
 
+        } else {
 
-        if (!element) {
-            return;
+            target.after(
+                mobilePlaceholder
+            );
+
         }
 
+        return;
+    }
 
-        const target =
-            element.closest(".magnet");
 
+    // --------------------------------------------------
+    // Moving into answer area
+    // --------------------------------------------------
 
-        // Don't repeatedly move the placeholder
-        // around the same magnet.
+    if (
+        answerArea &&
+        answerArea.contains(element)
+    ) {
+
         if (
-            target &&
-            target !== mobileDraggedMagnet &&
-            target !== lastMobileTarget
+            mobilePlaceholder.parentNode !==
+            answerArea
         ) {
 
-            lastMobileTarget =
-                target;
-
-
-            const rect =
-                target.getBoundingClientRect();
-
-            const midpoint =
-                rect.left +
-                rect.width / 2;
-
-
-            if (
-                event.clientX <
-                midpoint
-            ) {
-
-                target.before(
-                    mobilePlaceholder
-                );
-
-            } else {
-
-                target.after(
-                    mobilePlaceholder
-                );
-
-            }
-
-            return;
+            answerArea.appendChild(
+                mobilePlaceholder
+            );
         }
 
+    }
 
-        // Empty part of answer area
+
+    // --------------------------------------------------
+    // Moving into word bank
+    // --------------------------------------------------
+
+    else if (
+        wordBank &&
+        wordBank.contains(element)
+    ) {
+
         if (
-            answerArea &&
-            answerArea.contains(element)
+            mobilePlaceholder.parentNode !==
+            wordBank
         ) {
 
-            if (
-                mobilePlaceholder.parentNode !==
-                answerArea
-            ) {
-
-                answerArea.appendChild(
-                    mobilePlaceholder
-                );
-
-            }
-
+            wordBank.appendChild(
+                mobilePlaceholder
+            );
         }
 
-    },
+    }
+
+}
+
+
+// ------------------------------------------------------
+// END PHONE DRAG
+// ------------------------------------------------------
+
+function mobileDragEnd(event) {
+
+    if (
+        !mobileDragging ||
+        event.pointerId !== mobilePointerId
+    ) {
+        return;
+    }
+
+    event.preventDefault();
+
+
+    if (
+        mobileDraggedMagnet &&
+        mobilePlaceholder
+    ) {
+
+        // Put the real magnet exactly
+        // where the placeholder currently is
+        mobilePlaceholder.before(
+            mobileDraggedMagnet
+        );
+
+    }
+
+
+    // Return magnet to normal CSS
+    mobileDraggedMagnet.style.position =
+        "";
+
+    mobileDraggedMagnet.style.left =
+        "";
+
+    mobileDraggedMagnet.style.top =
+        "";
+
+    mobileDraggedMagnet.style.width =
+        "";
+
+    mobileDraggedMagnet.style.height =
+        "";
+
+    mobileDraggedMagnet.style.zIndex =
+        "";
+
+    mobileDraggedMagnet.style.opacity =
+        "";
+
+    mobileDraggedMagnet.style.pointerEvents =
+        "";
+
+
+    if (mobilePlaceholder) {
+
+        mobilePlaceholder.remove();
+
+    }
+
+
+    mobileDraggedMagnet = null;
+    mobilePlaceholder = null;
+    mobileDragging = false;
+    mobilePointerId = null;
+    mobileOffsetX = 0;
+    mobileOffsetY = 0;
+
+}
+
+
+// ------------------------------------------------------
+// CANCEL PHONE DRAG
+// ------------------------------------------------------
+
+function mobileDragCancel(event) {
+
+    if (
+        !mobileDragging ||
+        event.pointerId !== mobilePointerId
+    ) {
+        return;
+    }
+
+    mobileDragEnd(event);
+
+}
+
+
+// ------------------------------------------------------
+// POINTER EVENTS
+// ------------------------------------------------------
+
+document.addEventListener(
+    "pointermove",
+    mobileDragMove,
     { passive: false }
 );
 
-
-// End phone drag
 document.addEventListener(
     "pointerup",
-    (event) => {
+    mobileDragEnd,
+    { passive: false }
+);
 
-        if (
-            !mobileDragging ||
-            event.pointerType !== "touch"
-        ) {
-            return;
-        }
-
-        event.preventDefault();
-
-
-        if (
-            mobilePlaceholder &&
-            mobileDraggedMagnet
-        ) {
-
-            mobilePlaceholder.before(
-                mobileDraggedMagnet
-            );
-
-        }
-
-
-        mobileDraggedMagnet.style.opacity =
-            "";
-
-
-        if (mobilePlaceholder) {
-
-            mobilePlaceholder.remove();
-
-        }
-
-
-        mobileDraggedMagnet = null;
-        mobilePlaceholder = null;
-        mobileDragging = false;
-        lastMobileTarget = null;
-
-    },
+document.addEventListener(
+    "pointercancel",
+    mobileDragCancel,
     { passive: false }
 );
 
