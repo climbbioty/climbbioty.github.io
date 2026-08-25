@@ -1123,7 +1123,6 @@ function mobileDragMove(event) {
 
     event.preventDefault();
 
-
     // Move the actual magnet with the finger
     mobileDraggedMagnet.style.left =
         (
@@ -1151,39 +1150,63 @@ function mobileDragMove(event) {
     }
 
 
-    // --------------------------------------------------
-    // Dropping/reordering relative to another magnet
-    // --------------------------------------------------
-
-    const target =
-        element.closest(".magnet");
-
+    // ==================================================
+    // ANSWER AREA
+    // ==================================================
 
     if (
-        target &&
-        target !== mobileDraggedMagnet
+        answerArea &&
+        answerArea.contains(element)
     ) {
 
-        const rect =
-            target.getBoundingClientRect();
+        const magnets = [
+            ...answerArea.querySelectorAll(
+                ".magnet"
+            )
+        ].filter(
+            magnet =>
+                magnet !== mobileDraggedMagnet
+        );
 
-        const midpoint =
-            rect.left +
-            rect.width / 2;
+
+        let inserted = false;
 
 
-        if (
-            event.clientX <
-            midpoint
-        ) {
+        // Find the first magnet whose center
+        // is to the right of the finger
+        for (const magnet of magnets) {
 
-            target.before(
-                mobilePlaceholder
-            );
+            const rect =
+                magnet.getBoundingClientRect();
 
-        } else {
 
-            target.after(
+            const centerX =
+                rect.left +
+                rect.width / 2;
+
+
+            if (
+                event.clientX <
+                centerX
+            ) {
+
+                magnet.before(
+                    mobilePlaceholder
+                );
+
+                inserted = true;
+
+                break;
+            }
+
+        }
+
+
+        // If nothing is to the right,
+        // put it at the end
+        if (!inserted) {
+
+            answerArea.appendChild(
                 mobilePlaceholder
             );
 
@@ -1193,45 +1216,62 @@ function mobileDragMove(event) {
     }
 
 
-    // --------------------------------------------------
-    // Moving into answer area
-    // --------------------------------------------------
+    // ==================================================
+    // WORD BANK
+    // ==================================================
 
     if (
-        answerArea &&
-        answerArea.contains(element)
-    ) {
-
-        if (
-            mobilePlaceholder.parentNode !==
-            answerArea
-        ) {
-
-            answerArea.appendChild(
-                mobilePlaceholder
-            );
-        }
-
-    }
-
-
-    // --------------------------------------------------
-    // Moving into word bank
-    // --------------------------------------------------
-
-    else if (
         wordBank &&
         wordBank.contains(element)
     ) {
 
-        if (
-            mobilePlaceholder.parentNode !==
-            wordBank
-        ) {
+        const magnets = [
+            ...wordBank.querySelectorAll(
+                ".magnet"
+            )
+        ].filter(
+            magnet =>
+                magnet !== mobileDraggedMagnet
+        );
+
+
+        let inserted = false;
+
+
+        for (const magnet of magnets) {
+
+            const rect =
+                magnet.getBoundingClientRect();
+
+
+            const centerX =
+                rect.left +
+                rect.width / 2;
+
+
+            if (
+                event.clientX <
+                centerX
+            ) {
+
+                magnet.before(
+                    mobilePlaceholder
+                );
+
+                inserted = true;
+
+                break;
+            }
+
+        }
+
+
+        if (!inserted) {
 
             wordBank.appendChild(
                 mobilePlaceholder
             );
+
         }
 
     }
