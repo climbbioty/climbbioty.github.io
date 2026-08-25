@@ -840,11 +840,18 @@ function generateWords() {
 
         magnet.classList.add("magnet");
 
-        // Important: no draggable property.
-        // We handle both mouse and touch ourselves.
+        // COMPUTER
+        magnet.draggable = true;
+
+        magnet.addEventListener(
+            "dragstart",
+            desktopDragStart
+        );
+
+        // PHONE
         magnet.addEventListener(
             "pointerdown",
-            beginDrag
+            mobileDragStart
         );
 
         wordBank.appendChild(magnet);
@@ -856,202 +863,341 @@ function generateWords() {
 // MAGNET DRAGGING
 // ======================================================
 
-let draggedMagnet = null;
-let placeholder = null;
-let dragging = false;
-
 
 // ======================================================
-// BEGIN DRAG
+// COMPUTER DRAGGING
 // ======================================================
 
-function beginDrag(event) {
+let desktopDraggedMagnet = null;
 
-    event.preventDefault();
+function desktopDragStart(event) {
 
-    draggedMagnet =
+    desktopDraggedMagnet =
         event.currentTarget;
 
-    dragging = true;
+}
 
-    placeholder =
+
+// Computer: dragging over answer area
+if (answerArea) {
+
+    answerArea.addEventListener(
+        "dragover",
+        (event) => {
+
+            event.preventDefault();
+
+        }
+    );
+
+
+    answerArea.addEventListener(
+        "drop",
+        (event) => {
+
+            event.preventDefault();
+
+            if (!desktopDraggedMagnet) {
+                return;
+            }
+
+            const magnets = [
+                ...answerArea.querySelectorAll(
+                    ".magnet"
+                )
+            ].filter(
+                magnet =>
+                    magnet !== desktopDraggedMagnet
+            );
+
+
+            let placed = false;
+
+
+            for (const magnet of magnets) {
+
+                const rect =
+                    magnet.getBoundingClientRect();
+
+                const midpoint =
+                    rect.left +
+                    rect.width / 2;
+
+
+                if (
+                    event.clientX <
+                    midpoint
+                ) {
+
+                    answerArea.insertBefore(
+                        desktopDraggedMagnet,
+                        magnet
+                    );
+
+                    placed = true;
+
+                    break;
+                }
+
+            }
+
+
+            if (!placed) {
+
+                answerArea.appendChild(
+                    desktopDraggedMagnet
+                );
+
+            }
+
+
+            desktopDraggedMagnet = null;
+
+        }
+    );
+
+}
+
+
+// Computer: dragging back to word bank
+if (wordBank) {
+
+    wordBank.addEventListener(
+        "dragover",
+        (event) => {
+
+            event.preventDefault();
+
+        }
+    );
+
+
+    wordBank.addEventListener(
+        "drop",
+        (event) => {
+
+            event.preventDefault();
+
+            if (desktopDraggedMagnet) {
+
+                wordBank.appendChild(
+                    desktopDraggedMagnet
+                );
+
+            }
+
+            desktopDraggedMagnet = null;
+
+        }
+    );
+
+}
+
+
+// ======================================================
+// PHONE DRAGGING
+// ======================================================
+
+let mobileDraggedMagnet = null;
+let mobilePlaceholder = null;
+let mobileDragging = false;
+let lastMobileTarget = null;
+
+
+// Start touching a magnet
+function mobileDragStart(event) {
+
+    // Only activate this for touch
+    if (event.pointerType !== "touch") {
+        return;
+    }
+
+    event.preventDefault();
+
+    mobileDraggedMagnet =
+        event.currentTarget;
+
+    mobileDragging = true;
+
+    lastMobileTarget = null;
+
+
+    // Create placeholder
+    mobilePlaceholder =
         document.createElement("div");
 
-    placeholder.className =
+    mobilePlaceholder.className =
         "magnet-placeholder";
 
-    const rect =
-        draggedMagnet.getBoundingClientRect();
 
-    placeholder.style.width =
+    const rect =
+        mobileDraggedMagnet.getBoundingClientRect();
+
+    mobilePlaceholder.style.width =
         rect.width + "px";
 
-    placeholder.style.height =
+    mobilePlaceholder.style.height =
         rect.height + "px";
 
-    draggedMagnet.before(
-        placeholder
+
+    mobileDraggedMagnet.before(
+        mobilePlaceholder
     );
 
-    // Keep the magnet visible
-    draggedMagnet.style.opacity = "0.6";
 
-    draggedMagnet.setPointerCapture(
+    // Keep magnet visible
+    mobileDraggedMagnet.style.opacity =
+        "0.6";
+
+
+    mobileDraggedMagnet.setPointerCapture(
         event.pointerId
     );
+
 }
 
 
-// ======================================================
-// MOVE
-// ======================================================
-
-function handleDragMove(event) {
-
-    if (
-        !dragging ||
-        !draggedMagnet ||
-        !placeholder
-    ) {
-        return;
-    }
-
-    event.preventDefault();
-
-    // Get all magnets except the one being dragged
-    const magnets = [
-        ...answerArea.querySelectorAll(".magnet")
-    ].filter(
-        magnet => magnet !== draggedMagnet
-    );
-
-    let newTarget = null;
-
-    for (const magnet of magnets) {
-
-        const rect =
-            magnet.getBoundingClientRect();
-
-        const midpoint =
-            rect.left +
-            rect.width / 2;
-
-        if (event.clientX < midpoint) {
-
-            newTarget = magnet;
-            break;
-        }
-    }
-
-    // Decide where the placeholder should go
-    let newParent = answerArea;
-    let newBefore = newTarget;
-
-    // If we are over the word bank,
-    // use the word bank instead.
-    const element =
-        document.elementFromPoint(
-            event.clientX,
-            event.clientY
-        );
-
-    if (
-        element &&
-        wordBank &&
-        wordBank.contains(element)
-    ) {
-        newParent = wordBank;
-        newBefore = null;
-    }
-
-    // Check whether the placeholder is
-    // already in the correct position.
-    if (
-        placeholder.parentNode === newParent &&
-        (
-            newBefore === placeholder.nextElementSibling ||
-            (!newBefore && placeholder.nextElementSibling === null)
-        )
-    ) {
-        return;
-    }
-
-    // Move placeholder only when necessary
-    if (newBefore) {
-
-        newParent.insertBefore(
-            placeholder,
-            newBefore
-        );
-
-    } else {
-
-        newParent.appendChild(
-            placeholder
-        );
-    }
-}
-
-
-// ======================================================
-// END DRAG
-// ======================================================
-
-function finishDrag(event) {
-
-    if (
-        !dragging ||
-        !draggedMagnet
-    ) {
-        return;
-    }
-
-    event.preventDefault();
-
-    if (placeholder) {
-
-        placeholder.before(
-            draggedMagnet
-        );
-
-        placeholder.remove();
-    }
-
-    draggedMagnet.style.opacity = "";
-
-    if (
-        draggedMagnet.hasPointerCapture(
-            event.pointerId
-        )
-    ) {
-        draggedMagnet.releasePointerCapture(
-            event.pointerId
-        );
-    }
-
-    draggedMagnet = null;
-    placeholder = null;
-    dragging = false;
-}
-
-
-// ======================================================
-// POINTER EVENTS
-// ======================================================
-
+// Move on phone
 document.addEventListener(
     "pointermove",
-    handleDragMove
+    (event) => {
+
+        if (
+            !mobileDragging ||
+            event.pointerType !== "touch"
+        ) {
+            return;
+        }
+
+        event.preventDefault();
+
+
+        const element =
+            document.elementFromPoint(
+                event.clientX,
+                event.clientY
+            );
+
+
+        if (!element) {
+            return;
+        }
+
+
+        const target =
+            element.closest(".magnet");
+
+
+        // Don't repeatedly move the placeholder
+        // around the same magnet.
+        if (
+            target &&
+            target !== mobileDraggedMagnet &&
+            target !== lastMobileTarget
+        ) {
+
+            lastMobileTarget =
+                target;
+
+
+            const rect =
+                target.getBoundingClientRect();
+
+            const midpoint =
+                rect.left +
+                rect.width / 2;
+
+
+            if (
+                event.clientX <
+                midpoint
+            ) {
+
+                target.before(
+                    mobilePlaceholder
+                );
+
+            } else {
+
+                target.after(
+                    mobilePlaceholder
+                );
+
+            }
+
+            return;
+        }
+
+
+        // Empty part of answer area
+        if (
+            answerArea &&
+            answerArea.contains(element)
+        ) {
+
+            if (
+                mobilePlaceholder.parentNode !==
+                answerArea
+            ) {
+
+                answerArea.appendChild(
+                    mobilePlaceholder
+                );
+
+            }
+
+        }
+
+    },
+    { passive: false }
 );
 
+
+// End phone drag
 document.addEventListener(
     "pointerup",
-    finishDrag
-);
+    (event) => {
 
-document.addEventListener(
-    "pointercancel",
-    finishDrag
+        if (
+            !mobileDragging ||
+            event.pointerType !== "touch"
+        ) {
+            return;
+        }
+
+        event.preventDefault();
+
+
+        if (
+            mobilePlaceholder &&
+            mobileDraggedMagnet
+        ) {
+
+            mobilePlaceholder.before(
+                mobileDraggedMagnet
+            );
+
+        }
+
+
+        mobileDraggedMagnet.style.opacity =
+            "";
+
+
+        if (mobilePlaceholder) {
+
+            mobilePlaceholder.remove();
+
+        }
+
+
+        mobileDraggedMagnet = null;
+        mobilePlaceholder = null;
+        mobileDragging = false;
+        lastMobileTarget = null;
+
+    },
+    { passive: false }
 );
 
 
