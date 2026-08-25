@@ -810,7 +810,6 @@ function watchPrompt() {
 
 }
 
-
 // ======================================================
 // GENERATE WORDS
 // ======================================================
@@ -830,8 +829,7 @@ function generateWords() {
         () => Math.random() - 0.5
     );
 
-    const hand =
-        shuffled.slice(0, 20);
+    const hand = shuffled.slice(0, 20);
 
     hand.forEach((word) => {
 
@@ -842,12 +840,11 @@ function generateWords() {
 
         magnet.classList.add("magnet");
 
-        // IMPORTANT:
-        // We are using pointer events instead
-        // of HTML5 drag-and-drop.
+        // Important: no draggable property.
+        // We handle both mouse and touch ourselves.
         magnet.addEventListener(
             "pointerdown",
-            startMagnetDrag
+            beginDrag
         );
 
         wordBank.appendChild(magnet);
@@ -855,199 +852,126 @@ function generateWords() {
     });
 }
 
-
 // ======================================================
 // MAGNET DRAGGING
-// WORKS ON COMPUTER AND MOBILE
 // ======================================================
 
 let draggedMagnet = null;
-let draggedClone = null;
-let dropPlaceholder = null;
-let pointerId = null;
+let placeholder = null;
+let dragging = false;
 
 
 // ======================================================
-// START DRAG
+// BEGIN DRAG
 // ======================================================
 
-function startMagnetDrag(event) {
+function beginDrag(event) {
 
     event.preventDefault();
 
     draggedMagnet =
         event.currentTarget;
 
-    pointerId =
-        event.pointerId;
+    dragging = true;
 
+    // Reset any old positioning that may
+    // have been left on the magnet.
+    draggedMagnet.style.position = "";
+    draggedMagnet.style.left = "";
+    draggedMagnet.style.top = "";
+    draggedMagnet.style.transform = "";
+    draggedMagnet.style.zIndex = "";
+    draggedMagnet.style.visibility = "";
+
+    // Create placeholder
+    placeholder =
+        document.createElement("div");
+
+    placeholder.className =
+        "magnet-placeholder";
 
     const rect =
         draggedMagnet.getBoundingClientRect();
 
-
-    // ==============================================
-    // CREATE PLACEHOLDER
-    // ==============================================
-
-    dropPlaceholder =
-        document.createElement("div");
-
-    dropPlaceholder.classList.add(
-        "magnet-placeholder"
-    );
-
-    dropPlaceholder.style.width =
+    placeholder.style.width =
         rect.width + "px";
 
-    dropPlaceholder.style.height =
+    placeholder.style.height =
         rect.height + "px";
 
-
-    // Put placeholder where the magnet started
-    draggedMagnet.parentNode.insertBefore(
-        dropPlaceholder,
-        draggedMagnet
+    // Put placeholder where magnet was
+    draggedMagnet.before(
+        placeholder
     );
 
-
-    // ==============================================
-    // CREATE DRAGGING COPY
-    // ==============================================
-
-    draggedClone =
-        draggedMagnet.cloneNode(true);
-
-    draggedClone.style.position =
-        "fixed";
-
-    draggedClone.style.left =
-        rect.left + "px";
-
-    draggedClone.style.top =
-        rect.top + "px";
-
-    draggedClone.style.width =
-        rect.width + "px";
-
-    draggedClone.style.height =
-        rect.height + "px";
-
-    draggedClone.style.zIndex =
-        "9999";
-
-    draggedClone.style.pointerEvents =
-        "none";
-
-
-    document.body.appendChild(
-        draggedClone
-    );
-
-
-    // Hide original without changing
-    // its appearance or layout.
+    // Hide original
     draggedMagnet.style.visibility =
         "hidden";
 
-
-    // Keep receiving pointer events
     draggedMagnet.setPointerCapture(
-        pointerId
+        event.pointerId
     );
-
 }
 
 
 // ======================================================
-// MOVE DRAG
+// MOVE
 // ======================================================
 
-function moveMagnet(event) {
+function handleDragMove(event) {
 
     if (
+        !dragging ||
         !draggedMagnet ||
-        !draggedClone
+        !placeholder
     ) {
         return;
     }
 
     event.preventDefault();
 
-
-    // ==============================================
-    // MOVE CLONE WITH POINTER
-    // ==============================================
-
-    const cloneRect =
-        draggedClone.getBoundingClientRect();
-
-
-    draggedClone.style.left =
-        (
-            event.clientX -
-            cloneRect.width / 2
-        ) + "px";
-
-    draggedClone.style.top =
-        (
-            event.clientY -
-            cloneRect.height / 2
-        ) + "px";
-
-
-    // ==============================================
-    // FIND WHAT IS UNDER POINTER
-    // ==============================================
-
-    const elements =
-        document.elementsFromPoint(
+    const element =
+        document.elementFromPoint(
             event.clientX,
             event.clientY
         );
 
+    if (!element) {
+        return;
+    }
 
-    const hoveredMagnet =
-        elements.find(
-            (element) =>
-                element.classList &&
-                element.classList.contains(
-                    "magnet"
-                ) &&
-                element !== draggedMagnet
-        );
+    const target =
+        element.closest(".magnet");
 
 
     // ==============================================
-    // OVER A MAGNET
+    // MOVING OVER ANOTHER MAGNET
     // ==============================================
 
-    if (hoveredMagnet) {
+    if (
+        target &&
+        target !== draggedMagnet
+    ) {
 
         const rect =
-            hoveredMagnet.getBoundingClientRect();
+            target.getBoundingClientRect();
 
-
-        const midpoint =
+        const middle =
             rect.left +
             rect.width / 2;
 
-
         if (
-            event.clientX <
-            midpoint
+            event.clientX < middle
         ) {
 
-            hoveredMagnet.parentNode.insertBefore(
-                dropPlaceholder,
-                hoveredMagnet
+            target.before(
+                placeholder
             );
 
         } else {
 
-            hoveredMagnet.parentNode.insertBefore(
-                dropPlaceholder,
-                hoveredMagnet.nextSibling
+            target.after(
+                placeholder
             );
 
         }
@@ -1057,23 +981,21 @@ function moveMagnet(event) {
 
 
     // ==============================================
-    // OVER ANSWER AREA
+    // MOVING OVER ANSWER AREA
     // ==============================================
 
     if (
         answerArea &&
         (
-            elements.includes(answerArea) ||
-            answerArea.contains(
-                elements[0]
-            )
+            element === answerArea ||
+            answerArea.contains(element)
         )
     ) {
 
-        // If there are no magnets under us,
-        // put placeholder at the end.
+        // Put it at the end if we're
+        // over empty space.
         answerArea.appendChild(
-            dropPlaceholder
+            placeholder
         );
 
         return;
@@ -1081,21 +1003,19 @@ function moveMagnet(event) {
 
 
     // ==============================================
-    // OVER WORD BANK
+    // MOVING OVER WORD BANK
     // ==============================================
 
     if (
         wordBank &&
         (
-            elements.includes(wordBank) ||
-            wordBank.contains(
-                elements[0]
-            )
+            element === wordBank ||
+            wordBank.contains(element)
         )
     ) {
 
         wordBank.appendChild(
-            dropPlaceholder
+            placeholder
         );
 
     }
@@ -1107,81 +1027,48 @@ function moveMagnet(event) {
 // END DRAG
 // ======================================================
 
-function endMagnetDrag(event) {
+function finishDrag(event) {
 
-    if (!draggedMagnet) {
+    if (
+        !dragging ||
+        !draggedMagnet
+    ) {
         return;
     }
 
     event.preventDefault();
 
+    // Put the REAL magnet into the
+    // placeholder's location.
+    placeholder.before(
+        draggedMagnet
+    );
 
-    // ==============================================
-    // PLACE ORIGINAL MAGNET
-    // ==============================================
-
-    if (dropPlaceholder) {
-
-        dropPlaceholder.parentNode.insertBefore(
-            draggedMagnet,
-            dropPlaceholder
-        );
-
-    }
-
-
-    // ==============================================
-    // RESTORE ORIGINAL MAGNET
-    // ==============================================
-
-    draggedMagnet.style.visibility =
-        "";
-
-
-    // ==============================================
-    // REMOVE CLONE
-    // ==============================================
-
-    if (draggedClone) {
-
-        draggedClone.remove();
-
-    }
-
-
-    // ==============================================
-    // REMOVE PLACEHOLDER
-    // ==============================================
-
-    if (dropPlaceholder) {
-
-        dropPlaceholder.remove();
-
-    }
-
-
-    // ==============================================
-    // RELEASE POINTER
-    // ==============================================
+    // Restore it completely.
+    draggedMagnet.style.position = "";
+    draggedMagnet.style.left = "";
+    draggedMagnet.style.top = "";
+    draggedMagnet.style.transform = "";
+    draggedMagnet.style.zIndex = "";
+    draggedMagnet.style.visibility = "";
 
     if (
-        pointerId !== null &&
         draggedMagnet.hasPointerCapture(
-            pointerId
+            event.pointerId
         )
     ) {
 
         draggedMagnet.releasePointerCapture(
-            pointerId
+            event.pointerId
         );
 
     }
 
+    placeholder.remove();
 
     draggedMagnet = null;
-    draggedClone = null;
-    dropPlaceholder = null;
-    pointerId = null;
+    placeholder = null;
+    dragging = false;
 
 }
 
@@ -1192,18 +1079,19 @@ function endMagnetDrag(event) {
 
 document.addEventListener(
     "pointermove",
-    moveMagnet
+    handleDragMove
 );
 
 document.addEventListener(
     "pointerup",
-    endMagnetDrag
+    finishDrag
 );
 
 document.addEventListener(
     "pointercancel",
-    endMagnetDrag
+    finishDrag
 );
+
 
 // ======================================================
 // WATCH PLAYERS
