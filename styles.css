@@ -170,7 +170,6 @@ input[type="submit"] {
     background: tan;
     -webkit-appearance: none;
     appearance: none;
-
     color-scheme: light;
 }
 
@@ -199,7 +198,7 @@ button{
     margin: 0;
     padding: 15px;
     box-sizing: border-box;
-    border: 2px solid #ccc;
+    border: 2px solid #000000;
     border-radius: 10px;
 }
 
