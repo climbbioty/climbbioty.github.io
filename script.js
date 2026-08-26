@@ -738,7 +738,9 @@ async function generatePrompt() {
             selectedJudge
         );
 
-    } catch (error) {
+    } 
+    
+    catch (error) {
 
         console.error(
             "Error generating prompt:",
@@ -761,6 +763,38 @@ async function getNewPrompt() {
 
         return;
     }
+
+  const playersSnapshot =
+            await get(
+                ref(
+                    database,
+                    `rooms/${currentRoom}/players`
+                )
+            );
+
+        if (!playersSnapshot.exists()) {
+
+            alert(
+                "There are no players in the room."
+            );
+
+            return;
+        }
+
+  const players =
+            playersSnapshot.val();
+
+        const playerIds =
+            Object.keys(players);
+
+        if (playerIds.length < 2) {
+
+            alert(
+                "You need at least two players."
+            );
+
+            return;
+        }
 
     try {
 
