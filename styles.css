@@ -183,23 +183,26 @@ button{
 }
 
 #roundResults {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(200px, 200px)
+    );
     justify-content: center;
+    align-items: start;
     gap: 20px;
     width: 100%;
-    margin: 15px auto;
+    margin: 20px auto;
 }
 
 .roundResultCard {
-    flex: 0 0 200px;
-    width: 100px;
+    width: 200px;
     margin: 0;
     padding: 15px;
     box-sizing: border-box;
     border: 2px solid #000000;
     border-radius: 10px;
+    background: white;
 }
 
 .winningAnswer {
