@@ -753,7 +753,7 @@ async function generatePrompt() {
 // REFRESH PROMPT
 // ======================================================
 
-async function refreshPrompt() {
+async function getNewPrompt() {
 
   if (currentRoom === "") {
 
@@ -2532,7 +2532,7 @@ const refreshPrompt =
 if (promptButton) {
     refreshPrompt.addEventListener(
         "click",
-        refreshPrompt
+        getNewPrompt
     );
 }
 
