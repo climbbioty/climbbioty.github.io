@@ -195,7 +195,7 @@ button{
 
 .roundResultCard {
     display: block !important;
-    width: 100px !important;
+    width: auto !important;
     margin: 15px !important;
     padding: 15px !important;
     box-sizing: border-box !important;
