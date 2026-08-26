@@ -185,6 +185,7 @@ button{
 #roundResults {
     width: 100% !important;
     display: grid !important;
+    grid-template-columns: repeat(auto-fit, 200px) !important;
     justify-content: center !important;
     align-items: start !important;
     gap: 20px !important;
