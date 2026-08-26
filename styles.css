@@ -188,6 +188,7 @@ button{
         auto-fit,
         minmax(200px, 200px)
     );
+    align-items: start;
     justify-content: center;
     gap: 20px;
     width: 100%;
