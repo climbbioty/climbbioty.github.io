@@ -183,25 +183,24 @@ button{
 }
 
 #roundResults {
-    display: grid;
-    grid-template-columns: repeat(
-        auto-fit,
-        minmax(200px, 200px)
-    );
-    align-items: start;
-    justify-content: center;
-    gap: 20px;
-    width: 100%;
-    margin: 20px auto;
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(10, 100px) !important;
+    justify-content: center !important;
+    align-items: start !important;
+    gap: 20px !important;
+    margin: 20px auto !important;
+    box-sizing: border-box !important;
 }
 
 .roundResultCard {
-    width: 100px;
-    margin: 0;
-    padding: 15px;
-    box-sizing: border-box;
-    border: 2px solid #000000;
-    border-radius: 10px;
+    display: block !important;
+    width: 100px !important;
+    margin: 15px !important;
+    padding: 15px !important;
+    box-sizing: border-box !important;
+    border: 2px solid black !important;
+    border-radius: 10px !important;
 }
 
 .winningAnswer {
