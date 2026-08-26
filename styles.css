@@ -32,18 +32,19 @@ span{
     font-family: 'Courier bold', Courier, monospace;
 }
 
-#answerArea{
+#answerArea {
+    position: relative;
 
-    width:80%;
-    height:220px;
+    width: 80%;
+    height: 220px;
 
-    margin:auto;
+    margin: auto;
 
     background: rgb(0, 0, 0);
 
-    border:3px dashed gray;
+    border: 3px dashed gray;
 
-    overflow: visible;
+    overflow: hidden;
 
     color: white;
 }
@@ -141,18 +142,6 @@ span{
 
 .magnet:active {
     cursor: grabbing;
-}
-
-.magnet-placeholder {
-    visibility: hidden !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    outline: none !important;
-    padding: 0 !important;
-    margin: 6px !important;
-    color: transparent !important;
-    -webkit-text-fill-color: transparent !important;
 }
 
 button,
