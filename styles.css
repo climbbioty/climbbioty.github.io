@@ -1,147 +1,147 @@
-body{
-    font-family: 'Courier New', Courier, monospace;
-    background:#e77000;
-    text-align:center;
-    margin:40px;
+body {
+  font-family: 'Courier New', Courier, monospace;
+  background: #e77000;
+  text-align: center;
+  margin: 40px;
 }
 
-h1{
-  color:rgb(70, 40, 0)
+h1 {
+  color: rgb(70, 40, 0)
 }
 
-span{
-    font-size:24px;
-    color: black;
-    margin:auto;
-    padding:5px;
-    width:25%;
+span {
+  font-size: 24px;
+  color: black;
+  margin: auto;
+  padding: 5px;
+  width: 25%;
 }
 
-#promptBox{
-    width:70%;
-    margin: 0 auto 25px auto;
-    padding:10px;
-    background:white;
+#promptBox {
+  width: 70%;
+  margin: 0 auto 20px auto;
+  padding: 10px;
+  background: white;
 
-    border:3px solid black;
+  border: 3px solid black;
 
-    font-size:24px;
+  font-size: 24px;
 
-    min-height:30px;
+  min-height: 30px;
 
-    font-family: 'Courier bold', Courier, monospace;
+  font-family: 'Courier bold', Courier, monospace;
 }
 
 #answerArea {
-    position: relative;
+  position: relative;
 
-    width: 80%;
-    height: 220px;
+  width: 80%;
+  height: 220px;
 
-    margin: auto;
+  margin: auto;
 
-    background: rgb(0, 0, 0);
+  background: rgb(0, 0, 0);
 
-    border: 3px dashed gray;
+  border: 3px dashed gray;
 
-    overflow: hidden;
+  overflow: hidden;
 
-    color: white;
+  color: white;
 }
 
-#wordBank{
+#wordBank {
 
-    width:80%;
+  width: 80%;
 
-    margin:20px auto;
+  margin: 20px auto;
 
-    background:#dddddd;
+  background: #dddddd;
 
-    border:2px solid black;
+  border: 2px solid black;
 
-    min-height:120px;
+  min-height: 120px;
 
-    padding:10px;
+  padding: 10px;
 }
 
-#wordBank div{
+#wordBank div {
 
-    display:inline-block;
+  display: inline-block;
 
-    background:white;
+  background: white;
 
-    border:1px solid black;
+  border: 1px solid black;
 
-    padding:8px 12px;
+  padding: 8px 12px;
 
-    margin:6px;
+  margin: 6px;
 
-    cursor:pointer;
+  cursor: pointer;
 
-    font-weight:bold;
+  font-weight: bold;
 
-    user-select:none;
+  user-select: none;
 
-    box-shadow:2px 2px 4px gray;
+  box-shadow: 2px 2px 4px gray;
 }
 
 .magnet {
-    display: inline-block;
-    background: white;
-    border: 1px solid black;
-    padding: 8px 12px;
-    margin: 6px;
-    font-weight: bold;
-    cursor: grab;
-    user-select: none;
-    box-shadow: 2px 2px 6px gray;
-    color: black;
-    touch-action: none;
-    user-select: none;
-    -webkit-user-select: none;
+  display: inline-block;
+  background: white;
+  border: 1px solid black;
+  padding: 8px 12px;
+  margin: 6px;
+  font-weight: bold;
+  cursor: grab;
+  user-select: none;
+  box-shadow: 2px 2px 6px gray;
+  color: black;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 #nameInput,
 #roomInput {
-    width: 150px;
-    padding: 8px;
-    margin: 10px;
-    font-size: 18px;
-    border: 3px solid #000;
-    border-radius: 8px;
-    background-color: #fff;
-    color: #000;
-    text-align: center;
-    outline: none;
+  width: 150px;
+  padding: 8px;
+  margin: 10px;
+  font-size: 18px;
+  border: 3px solid #000;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #000;
+  text-align: center;
+  outline: none;
 }
 
 #answersContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    max-width: 700px;
-    margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 700px;
+  margin: 20px auto;
 }
 
 .answerCard {
-    border: 2px solid #333;
-    border-radius: 10px;
-    padding: 20px;
-    background: white;
+  border: 2px solid #333;
+  border-radius: 10px;
+  padding: 20px;
+  background: white;
 }
 
 .answerText {
-    font-size: 24px;
-    margin: 0 0 15px 0;
+  font-size: 24px;
+  margin: 0 0 15px 0;
 }
 
 .chooseAnswer {
-    padding: 10px 20px;
-    cursor: pointer;
+  padding: 10px 20px;
+  cursor: pointer;
 }
 
 .magnet:active {
-    cursor: grabbing;
+  cursor: grabbing;
 }
 
 button,
@@ -152,46 +152,46 @@ button:focus,
 button:focus-visible,
 input[type="button"],
 input[type="submit"] {
-    color: #000000 !important;
-    -webkit-text-fill-color: #000000 !important;
-    text-shadow: none !important;
-    border: 2px solid black;
-    background: tan;
-    -webkit-appearance: none;
-    appearance: none;
-    color-scheme: light;
+  color: #000000 !important;
+  -webkit-text-fill-color: #000000 !important;
+  text-shadow: none !important;
+  border: 2px solid black;
+  background: tan;
+  -webkit-appearance: none;
+  appearance: none;
+  color-scheme: light;
 }
 
-button{
-    margin:20px;
-    padding:12px 25px;
-    font-size:18px;
-    background-color: tan;
-    font-family: 'Courier bold', Courier, monospace;
-    border: 2px solid black;
+button {
+  margin: 20px;
+  padding: 12px 25px;
+  font-size: 18px;
+  background-color: tan;
+  font-family: 'Courier bold', Courier, monospace;
+  border: 2px solid black;
 }
 
 #roundResults {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: repeat(auto-fit, 200px) !important;
-    justify-content: center !important;
-    align-items: start !important;
-    gap: 20px !important;
-    margin: 20px auto !important;
-    box-sizing: border-box !important;
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, 200px) !important;
+  justify-content: center !important;
+  align-items: start !important;
+  gap: 20px !important;
+  margin: 20px auto !important;
+  box-sizing: border-box !important;
 }
 
 .roundResultCard {
-    display: block !important;
-    width: auto !important;
-    margin: 15px !important;
-    padding: 15px !important;
-    box-sizing: border-box !important;
-    border: 2px solid black !important;
-    border-radius: 10px !important;
+  display: block !important;
+  width: auto !important;
+  margin: 15px !important;
+  padding: 15px !important;
+  box-sizing: border-box !important;
+  border: 2px solid black !important;
+  border-radius: 10px !important;
 }
 
 .winningAnswer {
-    border: 3px solid gold !important;
+  border: 3px solid gold !important;
 }
