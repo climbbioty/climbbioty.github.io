@@ -600,6 +600,7 @@ async function loadGameInformation() {
         watchPlayers();
         watchJudge();
         watchWinner();
+        watchRoundResults();
 
     } catch (error) {
 
@@ -833,7 +834,7 @@ function generateWords() {
         () => Math.random() - 0.5
     );
 
-    const hand = shuffled.slice(0, 20);
+    const hand = shuffled.slice(0, 35);
 
     hand.forEach((word) => {
 
@@ -2335,6 +2336,171 @@ function showWinner(
 
     console.log(
         "Winner displayed."
+    );
+
+}
+
+// ======================================================
+// WATCH ROUND RESULTS
+// ======================================================
+
+function watchRoundResults() {
+
+    if (currentRoom === "") {
+        return;
+    }
+
+    const roomRef =
+        ref(
+            database,
+            `rooms/${currentRoom}`
+        );
+
+    onValue(
+        roomRef,
+        (snapshot) => {
+
+            const room =
+                snapshot.val();
+
+            if (!room) {
+                return;
+            }
+
+            const results =
+                document.getElementById(
+                    "roundResults"
+                );
+
+            if (!results) {
+                return;
+            }
+
+
+            // New round has started
+            if (room.state === "answering") {
+
+                results.innerHTML = "";
+
+                results.style.display =
+                    "none";
+
+                return;
+            }
+
+
+            // Don't show results yet
+            if (
+                room.state !== "winner" ||
+                !room.winner ||
+                !room.players
+            ) {
+
+                return;
+            }
+
+
+            // Show results
+            results.innerHTML = "";
+
+            results.style.display =
+                "block";
+
+
+            const title =
+                document.createElement("h2");
+
+            title.textContent =
+                "Round Results";
+
+            results.appendChild(
+                title
+            );
+
+
+            // Get all players except the judge
+            const contestants =
+                Object.entries(
+                    room.players
+                ).filter(
+                    ([id]) =>
+                        id !== room.judgeId
+                );
+
+
+            contestants.forEach(
+                ([playerId, player]) => {
+
+                    const answerCard =
+                        document.createElement(
+                            "div"
+                        );
+
+                    answerCard.classList.add(
+                        "roundResultCard"
+                    );
+
+
+                    const name =
+                        document.createElement(
+                            "h3"
+                        );
+
+                    name.textContent =
+                        player.name;
+
+
+                    const answer =
+                        document.createElement(
+                            "p"
+                        );
+
+                    answer.textContent =
+                        player.answer || 
+                        "No answer";
+
+
+                    // Highlight winner
+                    if (
+                        playerId === room.winner
+                    ) {
+
+                        answerCard.classList.add(
+                            "winningAnswer"
+                        );
+
+                        const winnerLabel =
+                            document.createElement(
+                                "strong"
+                            );
+
+                        winnerLabel.textContent =
+                            "WINNER";
+
+                        answerCard.appendChild(
+                            winnerLabel
+                        );
+
+                    }
+
+
+                    answerCard.appendChild(
+                        name
+                    );
+
+                    answerCard.appendChild(
+                        answer
+                    );
+
+
+                    results.appendChild(
+                        answerCard
+                    );
+
+                }
+            );
+
+        }
     );
 
 }
