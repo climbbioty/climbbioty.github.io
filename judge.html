@@ -2,42 +2,43 @@
 <html>
 
 <head>
-    <title>Judge Room</title>
-    <link rel="stylesheet" href="styles.css">
+  <title>Judge Room</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-    <h1>You're the Judge</h1>
+  <h1>You're the Judge</h1>
 
-     <div id="promptBox"> 
-          Press the button to generate a prompt.
-     </div>
+  <div id="promptBox">
+    Press the button to generate a prompt.
+  </div>
 
-    <p id="answerStatus">
-        Waiting for players...
-    </p>
+  <p id="answerStatus">
+    Waiting for players...
+  </p>
 
-    <div id="answersContainer"></div>
+  <div id="answersContainer"></div>
 
 
-    <!-- Template for ONE answer -->
-    <template id="answerTemplate">
+  <!-- Template for ONE answer -->
+  <template id="answerTemplate">
 
-        <div class="answerCard">
+    <div class="answerCard">
 
-            <p class="answerText"></p>
+      <p class="answerText"></p>
 
-            <button class="chooseAnswer">
+      <button class="chooseAnswer">
                 Choose This Answer
             </button>
 
-        </div>
+    </div>
 
-    </template>
+  </template>
 
 
-    <script type="module" src="script.js"></script>
+  <script type="module" src="script.js"></script>
 
 </body>
+
 </html>
