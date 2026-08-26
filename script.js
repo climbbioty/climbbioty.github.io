@@ -1660,22 +1660,61 @@ if (submitAnswerButton) {
             }
 
             const magnets =
-                document.querySelectorAll(
-                    "#answerArea .magnet"
-                );
+    Array.from(
+        document.querySelectorAll(
+            "#answerArea .magnet"
+        )
+    );
 
-            const answer =
-                Array.from(magnets)
-                    .map(
-                        (magnet) =>
-                            magnet.textContent.trim()
-                    )
-                    .join(" ");
 
-            console.log(
-                "Answer:",
-                answer
+magnets.sort(
+    (a, b) => {
+
+        const aRect =
+            a.getBoundingClientRect();
+
+        const bRect =
+            b.getBoundingClientRect();
+
+
+        const verticalDifference =
+            Math.abs(
+                aRect.top -
+                bRect.top
             );
+
+
+        // If they are on approximately
+        // the same row, sort left to right
+        if (
+            verticalDifference < 25
+        ) {
+
+            return (
+                aRect.left -
+                bRect.left
+            );
+
+        }
+
+
+        // Otherwise sort top to bottom
+        return (
+            aRect.top -
+            bRect.top
+        );
+
+    }
+);
+
+
+const answer =
+    magnets
+        .map(
+            magnet =>
+                magnet.textContent.trim()
+        )
+        .join(" ");
 
             if (answer === "") {
 
