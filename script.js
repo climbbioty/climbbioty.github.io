@@ -776,11 +776,6 @@ async function getNewPrompt() {
             `rooms/${currentRoom}/prompt`
         ] = newPrompt;
 
-  await update(
-            ref(database),
-            updates
-        );
-
 console.log(
             "Prompt:",
             newPrompt
