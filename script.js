@@ -749,6 +749,49 @@ async function generatePrompt() {
 
 }
 
+// ======================================================
+// REFRESH PROMPT
+// ======================================================
+
+async function refreshPrompt() {
+
+  if (currentRoom === "") {
+
+        alert(
+            "You are not in a room."
+        );
+
+        return;
+    }
+
+  const newPrompt =
+            prompts[
+                Math.floor(
+                    Math.random() *
+                    prompts.length
+                )
+            ];
+
+  updates[
+            `rooms/${currentRoom}/prompt`
+        ] = newPrompt;
+
+  await update(
+            ref(database),
+            updates
+        );
+
+console.log(
+            "Prompt:",
+            newPrompt
+        );
+  
+  console.error(
+            "Error generating prompt:",
+            error
+        );
+}
+
 
 // ======================================================
 // WATCH PROMPT
@@ -834,7 +877,7 @@ function generateWords() {
         () => Math.random() - 0.5
     );
 
-    const hand = shuffled.slice(0, 35);
+    const hand = shuffled.slice(0, 40);
 
     hand.forEach((word) => {
 
@@ -2479,6 +2522,13 @@ if (wordButton) {
         generateWords
     );
 
+}
+
+if (promptButton) {
+    refreshPrompt.addEventListener(
+        "click",
+        refreshPrompt
+    );
 }
 
 
