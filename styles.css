@@ -185,18 +185,23 @@ button{
 
 #roundResults {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
-    gap: 15px;
     justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .roundResultCard {
-    width: 200px;
-    padding: 15px;
+    flex: 0 0 200px;
+    width: 100px;
     margin: 0;
+    padding: 15px;
+    box-sizing: border-box;
     border: 2px solid #ccc;
     border-radius: 10px;
-    box-sizing: border-box;
 }
 
 .winningAnswer {
