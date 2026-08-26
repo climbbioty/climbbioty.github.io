@@ -755,16 +755,16 @@ async function generatePrompt() {
 
 async function getNewPrompt() {
 
-  if (currentRoom === "") {
+    if (currentRoom === "") {
 
-        alert(
-            "You are not in a room."
-        );
+        alert("You are not in a room.");
 
         return;
     }
 
-  const newPrompt =
+    try {
+
+        const newPrompt =
             prompts[
                 Math.floor(
                     Math.random() *
@@ -772,15 +772,28 @@ async function getNewPrompt() {
                 )
             ];
 
-console.log(
+        await update(
+            ref(database),
+            {
+                [`rooms/${currentRoom}/prompt`]:
+                    newPrompt
+            }
+        );
+
+        console.log(
             "Prompt:",
             newPrompt
         );
-  
-  console.error(
-            "Error generating prompt:",
+
+    } catch (error) {
+
+        console.error(
+            "Error refreshing prompt:",
             error
         );
+
+    }
+
 }
 
 
