@@ -2524,6 +2524,11 @@ if (wordButton) {
 
 }
 
+const refreshPrompt =
+    document.getElementById(
+        "refreshPrompt"
+    );
+
 if (promptButton) {
     refreshPrompt.addEventListener(
         "click",
