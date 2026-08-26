@@ -182,3 +182,23 @@ button{
     font-family: 'Courier bold', Courier, monospace;
     border: 2px solid black;
 }
+
+#roundResults {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.roundResultCard {
+    width: 200px;
+    padding: 15px;
+    margin: 0;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.winningAnswer {
+    border: 3px solid gold;
+}
