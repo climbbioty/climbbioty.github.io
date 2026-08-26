@@ -772,10 +772,6 @@ async function getNewPrompt() {
                 )
             ];
 
-  updates[
-            `rooms/${currentRoom}/prompt`
-        ] = newPrompt;
-
 console.log(
             "Prompt:",
             newPrompt
