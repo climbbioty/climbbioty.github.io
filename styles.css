@@ -204,5 +204,5 @@ button{
 }
 
 .winningAnswer {
-    border: 3px solid gold;
+    border: 3px solid gold !important;
 }
