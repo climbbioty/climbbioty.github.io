@@ -1278,6 +1278,8 @@ function mobileDragMove(event) {
 
   event.preventDefault();
 
+  autoScrollWhileDragging(event);
+
 
   // Move the ACTUAL magnet.
   // Nothing else in the answer area moves.
@@ -1591,6 +1593,42 @@ document.addEventListener(
   { passive: false }
 );
 
+// ======================================================
+// AUTO SCROLL WHILE DRAGGING
+// ======================================================
+
+function autoScrollWhileDragging(event) {
+
+    const edgeSize = 80;   // How close to edge before scrolling
+    const scrollSpeed = 8; // Pixels per movement event
+
+    const screenHeight =
+        window.innerHeight;
+
+    // Near top of screen
+    if (event.clientY < edgeSize) {
+
+        window.scrollBy(
+            0,
+            -scrollSpeed
+        );
+
+    }
+
+    // Near bottom of screen
+    else if (
+        event.clientY >
+        screenHeight - edgeSize
+    ) {
+
+        window.scrollBy(
+            0,
+            scrollSpeed
+        );
+
+    }
+
+}
 
 // ======================================================
 // WATCH PLAYERS
