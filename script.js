@@ -18,7 +18,8 @@ import {
 
 import {
     getAuth,
-    signInAnonymously
+    signInAnonymously,
+    signOut
 } from
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -43,8 +44,14 @@ const auth = getAuth(app);
 
 let authReady = false;
 
-signInAnonymously(auth)
-    .then((userCredential) => {
+async function authenticateNewPlayer() {
+
+    try {
+
+        await signOut(auth);
+
+        const userCredential =
+            await signInAnonymously(auth);
 
         playerId =
             userCredential.user.uid;
@@ -52,19 +59,22 @@ signInAnonymously(auth)
         authReady = true;
 
         console.log(
-            "Authenticated player:",
+            "New player ID:",
             playerId
         );
 
-    })
-    .catch((error) => {
+    } catch (error) {
 
         console.error(
             "Anonymous authentication failed:",
             error
         );
 
-    });
+    }
+
+}
+
+authenticateNewPlayer();
 
 
 // ======================================================
