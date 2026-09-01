@@ -13,10 +13,14 @@ import {
   child,
   onValue,
   update,
-  getAuth,
-  signInAnonymously
 } from
   "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+import {
+    getAuth,
+    signInAnonymously
+} from
+    "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 // ======================================================
