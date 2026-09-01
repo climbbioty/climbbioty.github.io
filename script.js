@@ -44,17 +44,41 @@ const auth = getAuth(app);
 
 let authReady = false;
 
-async function authenticateNewPlayer() {
+async function authenticatePlayer() {
 
     try {
 
-        await signOut(auth);
+        const existingId =
+            sessionStorage.getItem(
+                "playerId"
+            );
+
+        if (existingId) {
+
+            playerId =
+                existingId;
+
+            authReady = true;
+
+            console.log(
+                "Existing player ID:",
+                playerId
+            );
+
+            return;
+        }
+
 
         const userCredential =
             await signInAnonymously(auth);
 
         playerId =
             userCredential.user.uid;
+
+        sessionStorage.setItem(
+            "playerId",
+            playerId
+        );
 
         authReady = true;
 
