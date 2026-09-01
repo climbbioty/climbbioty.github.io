@@ -12,7 +12,9 @@ import {
   get,
   child,
   onValue,
-  update
+  update,
+  getAuth,
+  signInAnonymously
 } from
   "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
@@ -33,6 +35,32 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+const auth = getAuth(app);
+
+let authReady = false;
+
+signInAnonymously(auth)
+    .then((userCredential) => {
+
+        playerId =
+            userCredential.user.uid;
+
+        authReady = true;
+
+        console.log(
+            "Authenticated player:",
+            playerId
+        );
+
+    })
+    .catch((error) => {
+
+        console.error(
+            "Anonymous authentication failed:",
+            error
+        );
+
+    });
 
 
 // ======================================================
@@ -259,20 +287,6 @@ const answerArea =
 const roomDisplay =
   document.getElementById("roomDisplay");
 
-
-// ======================================================
-// GENERATE PLAYER ID
-// ======================================================
-
-function generatePlayerId() {
-
-  return Math.random()
-    .toString(36)
-    .substring(2, 10);
-
-}
-
-
 // ======================================================
 // GENERATE ROOM CODE
 // ======================================================
@@ -306,6 +320,15 @@ function generateRoomCode() {
 // ======================================================
 
 async function createRoom() {
+
+  if (!authReady) {
+
+    alert(
+        "Connecting to Firebase. Try again in a moment."
+    );
+
+    return;
+}
 
   const nameInput =
     document.getElementById("nameInput");
@@ -354,10 +377,6 @@ async function createRoom() {
       }
     );
 
-    // Create player
-    playerId =
-      generatePlayerId();
-
     await set(
       ref(
         database,
@@ -401,6 +420,15 @@ async function createRoom() {
 // ======================================================
 
 async function joinRoom() {
+
+  if (!authReady) {
+
+    alert(
+        "Connecting to Firebase. Try again in a moment."
+    );
+
+    return;
+}
 
   const roomInput =
     document.getElementById("roomInput");
@@ -466,9 +494,6 @@ async function joinRoom() {
 
     currentRoom =
       roomData.code;
-
-    playerId =
-      generatePlayerId();
 
     await set(
       ref(
