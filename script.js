@@ -1781,6 +1781,12 @@ console.log(
 submitAnswerButton.disabled =
 true;
 
+document.querySelectorAll(".magnet").forEach(
+    (magnet) => {
+        magnet.style.pointerEvents = "none";
+    }
+);
+
 submitAnswerButton.textContent =
 "Answer Submitted";
 
@@ -1798,6 +1804,53 @@ error
 
 }
 
+// ======================================================
+// EDIT ANSWER
+// ======================================================
+
+const editAnswerButton =
+    document.getElementById("editAnswerButton");
+
+if (editAnswerButton) {
+
+    editAnswerButton.addEventListener(
+        "click",
+        () => {
+
+            // Enable Submit Answer
+            if (submitAnswerButton) {
+
+                submitAnswerButton.disabled =
+                    false;
+
+                submitAnswerButton.textContent =
+                    "Submit Answer";
+
+            }
+
+            // Enable the magnets
+            const magnets =
+                document.querySelectorAll(
+                    "#answerArea .magnet, #wordBank .magnet"
+                );
+
+            magnets.forEach(
+                (magnet) => {
+
+                    magnet.style.pointerEvents =
+                        "";
+
+                }
+            );
+
+            console.log(
+                "Answer editing enabled."
+            );
+
+        }
+    );
+
+}
 
 // ======================================================
 // WATCH JUDGE
