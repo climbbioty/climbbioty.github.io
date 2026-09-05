@@ -12,16 +12,9 @@ import {
   get,
   child,
   onValue,
-  update,
+  update
 } from
   "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-import {
-    getAuth,
-    signInAnonymously,
-    signOut
-} from
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 // ======================================================
@@ -40,65 +33,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
-const auth = getAuth(app);
 
-let authReady = false;
-
-async function authenticatePlayer() {
-
-    try {
-
-        const existingId =
-            sessionStorage.getItem(
-                "playerId"
-            );
-
-        if (existingId) {
-
-            playerId =
-                existingId;
-
-            authReady = true;
-
-            console.log(
-                "Existing player ID:",
-                playerId
-            );
-
-            return;
-        }
-
-
-        const userCredential =
-            await signInAnonymously(auth);
-
-        playerId =
-            userCredential.user.uid;
-
-        sessionStorage.setItem(
-            "playerId",
-            playerId
-        );
-
-        authReady = true;
-
-        console.log(
-            "New player ID:",
-            playerId
-        );
-
-    } catch (error) {
-
-        console.error(
-            "Anonymous authentication failed:",
-            error
-        );
-
-    }
-
-}
-
-authenticatePlayer();
 
 // ======================================================
 // GAME VARIABLES
@@ -324,6 +259,20 @@ const answerArea =
 const roomDisplay =
   document.getElementById("roomDisplay");
 
+
+// ======================================================
+// GENERATE PLAYER ID
+// ======================================================
+
+function generatePlayerId() {
+
+  return Math.random()
+    .toString(36)
+    .substring(2, 10);
+
+}
+
+
 // ======================================================
 // GENERATE ROOM CODE
 // ======================================================
@@ -357,15 +306,6 @@ function generateRoomCode() {
 // ======================================================
 
 async function createRoom() {
-
-  if (!authReady) {
-
-    alert(
-        "Connecting to Firebase. Try again in a moment."
-    );
-
-    return;
-}
 
   const nameInput =
     document.getElementById("nameInput");
@@ -414,6 +354,10 @@ async function createRoom() {
       }
     );
 
+    // Create player
+    playerId =
+      generatePlayerId();
+
     await set(
       ref(
         database,
@@ -457,15 +401,6 @@ async function createRoom() {
 // ======================================================
 
 async function joinRoom() {
-
-  if (!authReady) {
-
-    alert(
-        "Connecting to Firebase. Try again in a moment."
-    );
-
-    return;
-}
 
   const roomInput =
     document.getElementById("roomInput");
@@ -531,6 +466,9 @@ async function joinRoom() {
 
     currentRoom =
       roomData.code;
+
+    playerId =
+      generatePlayerId();
 
     await set(
       ref(
@@ -1340,8 +1278,6 @@ function mobileDragMove(event) {
 
   event.preventDefault();
 
-  autoScrollWhileDragging(event);
-
 
   // Move the ACTUAL magnet.
   // Nothing else in the answer area moves.
@@ -1655,42 +1591,6 @@ document.addEventListener(
   { passive: false }
 );
 
-// ======================================================
-// AUTO SCROLL WHILE DRAGGING
-// ======================================================
-
-function autoScrollWhileDragging(event) {
-
-    const edgeSize = 80;   // How close to edge before scrolling
-    const scrollSpeed = 8; // Pixels per movement event
-
-    const screenHeight =
-        window.innerHeight;
-
-    // Near top of screen
-    if (event.clientY < edgeSize) {
-
-        window.scrollBy(
-            0,
-            -scrollSpeed
-        );
-
-    }
-
-    // Near bottom of screen
-    else if (
-        event.clientY >
-        screenHeight - edgeSize
-    ) {
-
-        window.scrollBy(
-            0,
-            scrollSpeed
-        );
-
-    }
-
-}
 
 // ======================================================
 // WATCH PLAYERS
