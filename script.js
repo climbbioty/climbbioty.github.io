@@ -98,7 +98,7 @@ async function authenticatePlayer() {
 
 }
 
-authenticateNewPlayer();
+startNewPlayerSession();
 
 
 // ======================================================
