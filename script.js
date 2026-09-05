@@ -2724,3 +2724,55 @@ window.location.pathname.endsWith(
 loadJudgeRoom();
 
 }
+
+// ======================================================
+// EXIT ROOM
+// ======================================================
+
+const exitRoomButton =
+    document.getElementById("exitRoomButton");
+
+if (exitRoomButton) {
+
+    exitRoomButton.addEventListener(
+        "click",
+        async () => {
+
+            if (
+                currentRoom === "" ||
+                playerId === ""
+            ) {
+                window.location.href = "index.html";
+                return;
+            }
+
+            try {
+
+                await set(
+                    ref(
+                        database,
+                        `rooms/${currentRoom}/players/${playerId}`
+                    ),
+                    null
+                );
+
+                console.log(
+                    "Player left room."
+                );
+
+                window.location.href =
+                    "index.html";
+
+            } catch (error) {
+
+                console.error(
+                    "Error leaving room:",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+}
