@@ -748,6 +748,12 @@ console.error(
 error
 );
 
+document.querySelectorAll(".magnet").forEach(
+    (magnet) => {
+        magnet.style.pointerEvents = "";
+    }
+);
+
 }
 }
 
@@ -2227,6 +2233,12 @@ for (
 displayJudgeAnswers(
 shuffledPlayers,
 judgeRoomCode
+);
+
+document.querySelectorAll(".magnet").forEach(
+    (magnet) => {
+        magnet.style.pointerEvents = "none";
+    }
 );
 
 }
