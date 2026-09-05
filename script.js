@@ -98,8 +98,7 @@ async function authenticatePlayer() {
 
 }
 
-startNewPlayerSession();
-
+authenticatePlayer();
 
 // ======================================================
 // GAME VARIABLES
