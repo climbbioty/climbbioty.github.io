@@ -3,18 +3,18 @@
 // ======================================================
 
 import { initializeApp } from
-  "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-  getDatabase,
-  ref,
-  set,
-  get,
-  child,
-  onValue,
-  update
+getDatabase,
+ref,
+set,
+get,
+child,
+onValue,
+update
 } from
-  "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 
 // ======================================================
@@ -22,13 +22,13 @@ import {
 // ======================================================
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA7PpddeYPWBczMv7z-VHZ0esFwkaBNBms",
-  authDomain: "ransomnoteish.firebaseapp.com",
-  databaseURL: "https://ransomnoteish-default-rtdb.firebaseio.com",
-  projectId: "ransomnoteish",
-  storageBucket: "ransomnoteish.firebasestorage.app",
-  messagingSenderId: "458933010520",
-  appId: "1:458933010520:web:e3e25257bdbec3758aca2d"
+apiKey: "AIzaSyA7PpddeYPWBczMv7z-VHZ0esFwkaBNBms",
+authDomain: "ransomnoteish.firebaseapp.com",
+databaseURL: "https://ransomnoteish-default-rtdb.firebaseio.com",
+projectId: "ransomnoteish",
+storageBucket: "ransomnoteish.firebasestorage.app",
+messagingSenderId: "458933010520",
+appId: "1:458933010520:web:e3e25257bdbec3758aca2d"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -49,74 +49,74 @@ let playerId = "";
 // ======================================================
 
 const words = [
-  // Nouns
-  "apple", "banana", "pizza", "dragon", "wizard",
-  "pirate", "robot", "alien", "ghost", "monster",
-  "unicorn", "castle", "tower", "forest", "mountain",
-  "river", "ocean", "island", "cave", "volcano",
-  "moon", "star", "planet", "spaceship", "rocket",
-  "computer", "phone", "book", "map", "key",
-  "door", "chair", "table", "bed", "pillow",
-  "blanket", "shoe", "hat", "sword", "shield",
-  "helmet", "armor", "crown", "ring", "coin",
-  "treasure", "diamond", "gold", "cookie", "cake",
-  "sandwich", "taco", "cheese", "pickle", "chicken",
-  "cow", "dog", "cat", "fish", "bird",
-  "mouse", "frog", "horse", "dragonfly", "bee",
-  "spider", "snake", "turtle", "tree", "flower",
-  "leaf", "rock", "cloud", "storm", "fire",
-  "water", "ice", "shadow", "light", "song",
-  "dance", "movie", "game", "story", "letter",
-  "picture", "camera", "paint", "toy", "ball",
-  "rope", "box", "bag", "keyhole", "clock",
-  "mirror", "mask", "king", "queen", "soldier",
-  "captain", "doctor", "teacher",
+// Nouns
+"apple", "banana", "pizza", "dragon", "wizard",
+"pirate", "robot", "alien", "ghost", "monster",
+"unicorn", "castle", "tower", "forest", "mountain",
+"river", "ocean", "island", "cave", "volcano",
+"moon", "star", "planet", "spaceship", "rocket",
+"computer", "phone", "book", "map", "key",
+"door", "chair", "table", "bed", "pillow",
+"blanket", "shoe", "hat", "sword", "shield",
+"helmet", "armor", "crown", "ring", "coin",
+"treasure", "diamond", "gold", "cookie", "cake",
+"sandwich", "taco", "cheese", "pickle", "chicken",
+"cow", "dog", "cat", "fish", "bird",
+"mouse", "frog", "horse", "dragonfly", "bee",
+"spider", "snake", "turtle", "tree", "flower",
+"leaf", "rock", "cloud", "storm", "fire",
+"water", "ice", "shadow", "light", "song",
+"dance", "movie", "game", "story", "letter",
+"picture", "camera", "paint", "toy", "ball",
+"rope", "box", "bag", "keyhole", "clock",
+"mirror", "mask", "king", "queen", "soldier",
+"captain", "doctor", "teacher",
 
-  // Verbs
-  "run", "jump", "walk", "fly", "swim",
-  "climb", "crawl", "dance", "sing", "laugh",
-  "cry", "smile", "shout", "whisper", "eat",
-  "drink", "cook", "bake", "burn", "freeze",
-  "explode", "break", "build", "create", "destroy",
-  "fix", "throw", "catch", "kick", "punch",
-  "push", "pull", "open", "close", "lock",
-  "unlock", "find", "hide", "seek", "steal",
-  "give", "take", "buy", "sell", "trade",
-  "carry", "drop", "lift", "fall", "sleep",
-  "wake", "dream", "think", "know", "forget",
-  "remember", "learn", "teach", "read", "write",
-  "draw", "paint", "play", "fight", "win",
-  "lose", "help", "save", "attack", "defend",
-  "protect", "escape", "chase", "follow", "lead",
-  "become", "change", "grow", "shrink", "transform",
-  "discover", "explore", "travel", "visit", "invent",
-  "charge", "control", "summon", "wear", "remove",
-  "mix", "spill",
+// Verbs
+"run", "jump", "walk", "fly", "swim",
+"climb", "crawl", "dance", "sing", "laugh",
+"cry", "smile", "shout", "whisper", "eat",
+"drink", "cook", "bake", "burn", "freeze",
+"explode", "break", "build", "create", "destroy",
+"fix", "throw", "catch", "kick", "punch",
+"push", "pull", "open", "close", "lock",
+"unlock", "find", "hide", "seek", "steal",
+"give", "take", "buy", "sell", "trade",
+"carry", "drop", "lift", "fall", "sleep",
+"wake", "dream", "think", "know", "forget",
+"remember", "learn", "teach", "read", "write",
+"draw", "paint", "play", "fight", "win",
+"lose", "help", "save", "attack", "defend",
+"protect", "escape", "chase", "follow", "lead",
+"become", "change", "grow", "shrink", "transform",
+"discover", "explore", "travel", "visit", "invent",
+"charge", "control", "summon", "wear", "remove",
+"mix", "spill",
 
-  // Adjectives
-  "tiny", "giant", "huge", "small", "purple",
-  "green", "blue", "red", "golden", "silver",
-  "ancient", "modern", "magical", "mysterious",
-  "angry", "happy", "sad", "silly", "strange",
-  "weird", "funny", "scary", "friendly", "evil",
-  "good", "lazy", "fast", "slow", "loud",
-  "quiet", "flying", "broken", "secret", "hidden",
-  "bright", "dark", "cold", "hot", "spicy",
-  "sweet", "sticky", "fuzzy", "sharp", "soft",
-  "heavy", "light", "crazy", "wild", "royal",
-  "legendary",
+// Adjectives
+"tiny", "giant", "huge", "small", "purple",
+"green", "blue", "red", "golden", "silver",
+"ancient", "modern", "magical", "mysterious",
+"angry", "happy", "sad", "silly", "strange",
+"weird", "funny", "scary", "friendly", "evil",
+"good", "lazy", "fast", "slow", "loud",
+"quiet", "flying", "broken", "secret", "hidden",
+"bright", "dark", "cold", "hot", "spicy",
+"sweet", "sticky", "fuzzy", "sharp", "soft",
+"heavy", "light", "crazy", "wild", "royal",
+"legendary",
 
-  // Connectors
-  "the", "a", "an", "my", "your",
-  "his", "her", "our", "their", "this",
-  "that", "these", "those", "and", "or",
-  "but", "because", "with", "without", "from",
-  "to", "for", "at", "by", "about",
-  "into", "inside", "outside", "over", "under",
-  "through", "after", "before", "while", "when",
-  "where", "who", "what", "how", "very",
-  "really", "almost", "never", "always", "maybe",
-  "not", "only", "also", "then", "so"
+// Connectors
+"the", "a", "an", "my", "your",
+"his", "her", "our", "their", "this",
+"that", "these", "those", "and", "or",
+"but", "because", "with", "without", "from",
+"to", "for", "at", "by", "about",
+"into", "inside", "outside", "over", "under",
+"through", "after", "before", "while", "when",
+"where", "who", "what", "how", "very",
+"really", "almost", "never", "always", "maybe",
+"not", "only", "also", "then", "so"
 ];
 
 
@@ -125,115 +125,115 @@ const words = [
 // ======================================================
 
 const prompts = [
-  "Explain why you are banned from a restaurant.",
-  "Write a terrible excuse for being late.",
-  "Explain why your neighbor is suspicious.",
-  "Write a message found inside a mysterious box.",
-  "Explain why you should be the next king.",
-  "Describe your evil plan.",
-  "Explain why your plan failed.",
-  "Write an apology to everyone in the room.",
-  "Explain why you cannot be trusted.",
-  "Write a warning to future generations.",
+"Explain why you are banned from a restaurant.",
+"Write a terrible excuse for being late.",
+"Explain why your neighbor is suspicious.",
+"Write a message found inside a mysterious box.",
+"Explain why you should be the next king.",
+"Describe your evil plan.",
+"Explain why your plan failed.",
+"Write an apology to everyone in the room.",
+"Explain why you cannot be trusted.",
+"Write a warning to future generations.",
 
-  "Explain why your pet became famous.",
-  "Describe your most embarrassing achievement.",
-  "Explain why you were removed from a competition.",
-  "Write a message from your evil twin.",
-  "Explain why you accidentally saved the world.",
-  "Describe your secret identity.",
-  "Explain why you are hiding in a bathroom.",
-  "Write a complaint about your own life.",
-  "Explain why you challenged a wizard.",
-  "Describe your greatest discovery.",
+"Explain why your pet became famous.",
+"Describe your most embarrassing achievement.",
+"Explain why you were removed from a competition.",
+"Write a message from your evil twin.",
+"Explain why you accidentally saved the world.",
+"Describe your secret identity.",
+"Explain why you are hiding in a bathroom.",
+"Write a complaint about your own life.",
+"Explain why you challenged a wizard.",
+"Describe your greatest discovery.",
 
-  "Write a message from a confused alien.",
-  "Explain why aliens should avoid Earth.",
-  "Describe your new invention.",
-  "Explain why your invention is dangerous.",
-  "Write instructions for using a ridiculous machine.",
-  "Explain why your robot malfunctioned.",
-  "Describe your dream vacation gone wrong.",
-  "Explain why you cannot leave your house.",
-  "Write a letter from your future self.",
-  "Explain why your future self is disappointed.",
+"Write a message from a confused alien.",
+"Explain why aliens should avoid Earth.",
+"Describe your new invention.",
+"Explain why your invention is dangerous.",
+"Write instructions for using a ridiculous machine.",
+"Explain why your robot malfunctioned.",
+"Describe your dream vacation gone wrong.",
+"Explain why you cannot leave your house.",
+"Write a letter from your future self.",
+"Explain why your future self is disappointed.",
 
-  "Describe your fantasy kingdom.",
-  "Explain why your castle has a strange rule.",
-  "Write an announcement from a king.",
-  "Explain why the dragon chose you.",
-  "Describe your legendary weapon.",
-  "Explain why your sword is embarrassing.",
-  "Write a message from a magical creature.",
-  "Explain why you joined a quest.",
-  "Describe your unusual magical power.",
-  "Explain why your spell failed.",
+"Describe your fantasy kingdom.",
+"Explain why your castle has a strange rule.",
+"Write an announcement from a king.",
+"Explain why the dragon chose you.",
+"Describe your legendary weapon.",
+"Explain why your sword is embarrassing.",
+"Write a message from a magical creature.",
+"Explain why you joined a quest.",
+"Describe your unusual magical power.",
+"Explain why your spell failed.",
 
-  "Write a pirate captain's announcement.",
-  "Explain why your pirate crew quit.",
-  "Describe your hidden treasure.",
-  "Explain why your treasure is worthless.",
-  "Write a message found in a bottle.",
-  "Explain why you became a pirate.",
-  "Describe your worst adventure.",
-  "Explain why your ship disappeared.",
-  "Write a pirate's apology letter.",
-  "Explain why you were kicked off your ship.",
+"Write a pirate captain's announcement.",
+"Explain why your pirate crew quit.",
+"Describe your hidden treasure.",
+"Explain why your treasure is worthless.",
+"Write a message found in a bottle.",
+"Explain why you became a pirate.",
+"Describe your worst adventure.",
+"Explain why your ship disappeared.",
+"Write a pirate's apology letter.",
+"Explain why you were kicked off your ship.",
 
-  "Describe your strange new business.",
-  "Explain why nobody should buy your product.",
-  "Write an advertisement for something ridiculous.",
-  "Explain why your company went bankrupt.",
-  "Describe your terrible invention idea.",
-  "Write a five-star review for something awful.",
-  "Explain why your restaurant failed.",
-  "Describe your unusual job.",
-  "Explain why you were fired.",
-  "Write a message to your angry customers.",
+"Describe your strange new business.",
+"Explain why nobody should buy your product.",
+"Write an advertisement for something ridiculous.",
+"Explain why your company went bankrupt.",
+"Describe your terrible invention idea.",
+"Write a five-star review for something awful.",
+"Explain why your restaurant failed.",
+"Describe your unusual job.",
+"Explain why you were fired.",
+"Write a message to your angry customers.",
 
-  "Explain why you are being chased.",
-  "Describe your escape plan.",
-  "Write a message to your enemy.",
-  "Explain why your enemy became your friend.",
-  "Describe your secret hideout.",
-  "Explain why your hiding place was discovered.",
-  "Write a villain's speech.",
-  "Explain why you became a villain.",
-  "Describe your heroic comeback.",
-  "Explain why everyone misunderstood you.",
+"Explain why you are being chased.",
+"Describe your escape plan.",
+"Write a message to your enemy.",
+"Explain why your enemy became your friend.",
+"Describe your secret hideout.",
+"Explain why your hiding place was discovered.",
+"Write a villain's speech.",
+"Explain why you became a villain.",
+"Describe your heroic comeback.",
+"Explain why everyone misunderstood you.",
 
-  "Write a message from a ghost.",
-  "Explain why a ghost is bothering you.",
-  "Describe your haunted house.",
-  "Explain why the monster is friendly.",
-  "Write a monster's diary entry.",
-  "Explain why you adopted a monster.",
-  "Describe your strangest roommate.",
-  "Explain why your house moved.",
-  "Write a message from a talking animal.",
-  "Explain why animals are angry.",
+"Write a message from a ghost.",
+"Explain why a ghost is bothering you.",
+"Describe your haunted house.",
+"Explain why the monster is friendly.",
+"Write a monster's diary entry.",
+"Explain why you adopted a monster.",
+"Describe your strangest roommate.",
+"Explain why your house moved.",
+"Write a message from a talking animal.",
+"Explain why animals are angry.",
 
-  "Describe your weirdest dream.",
-  "Explain why your dream became real.",
-  "Write a message from the moon.",
-  "Explain why the moon is upset.",
-  "Describe your trip through space.",
-  "Explain why your spaceship crashed.",
-  "Write a message from another planet.",
-  "Explain why you cannot return home.",
-  "Describe your new planet.",
-  "Explain why your planet needs help.",
+"Describe your weirdest dream.",
+"Explain why your dream became real.",
+"Write a message from the moon.",
+"Explain why the moon is upset.",
+"Describe your trip through space.",
+"Explain why your spaceship crashed.",
+"Write a message from another planet.",
+"Explain why you cannot return home.",
+"Describe your new planet.",
+"Explain why your planet needs help.",
 
-  "Write a ridiculous excuse.",
-  "Explain why everyone is confused.",
-  "Describe your greatest failure.",
-  "Explain why you celebrated too early.",
-  "Write a dramatic announcement.",
-  "Explain why something completely normal became dangerous.",
-  "Describe your unusual hobby.",
-  "Explain why your hobby scares people.",
-  "Write a message to your younger self.",
-  "Explain why your younger self made a mistake."
+"Write a ridiculous excuse.",
+"Explain why everyone is confused.",
+"Describe your greatest failure.",
+"Explain why you celebrated too early.",
+"Write a dramatic announcement.",
+"Explain why something completely normal became dangerous.",
+"Describe your unusual hobby.",
+"Explain why your hobby scares people.",
+"Write a message to your younger self.",
+"Explain why your younger self made a mistake."
 ];
 
 
@@ -242,22 +242,22 @@ const prompts = [
 // ======================================================
 
 const promptBox =
-  document.getElementById("promptBox");
+document.getElementById("promptBox");
 
 const promptButton =
-  document.getElementById("promptButton");
+document.getElementById("promptButton");
 
 const wordButton =
-  document.getElementById("wordButton");
+document.getElementById("wordButton");
 
 const wordBank =
-  document.getElementById("wordBank");
+document.getElementById("wordBank");
 
 const answerArea =
-  document.getElementById("answerArea");
+document.getElementById("answerArea");
 
 const roomDisplay =
-  document.getElementById("roomDisplay");
+document.getElementById("roomDisplay");
 
 
 // ======================================================
@@ -266,9 +266,9 @@ const roomDisplay =
 
 function generatePlayerId() {
 
-  return Math.random()
-    .toString(36)
-    .substring(2, 10);
+return Math.random()
+.toString(36)
+.substring(2, 10);
 
 }
 
@@ -279,24 +279,24 @@ function generatePlayerId() {
 
 function generateRoomCode() {
 
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const characters =
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-  let code = "";
+let code = "";
 
-  for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 5; i++) {
 
-    code +=
-      characters[
-      Math.floor(
-        Math.random() *
-        characters.length
-      )
-      ];
+code +=
+characters[
+Math.floor(
+Math.random() *
+characters.length
+)
+];
 
-  }
+}
 
-  return code;
+return code;
 
 }
 
@@ -307,91 +307,91 @@ function generateRoomCode() {
 
 async function createRoom() {
 
-  const nameInput =
-    document.getElementById("nameInput");
+const nameInput =
+document.getElementById("nameInput");
 
-  if (!nameInput) {
+if (!nameInput) {
 
-    console.error(
-      "nameInput was not found."
-    );
+console.error(
+"nameInput was not found."
+);
 
-    return;
-  }
+return;
+}
 
-  playerName =
-    nameInput.value.trim();
+playerName =
+nameInput.value.trim();
 
-  if (playerName === "") {
+if (playerName === "") {
 
-    alert("Enter your name.");
+alert("Enter your name.");
 
-    return;
-  }
+return;
+}
 
-  const newRoomCode =
-    generateRoomCode();
+const newRoomCode =
+generateRoomCode();
 
-  console.log(
-    "Generated room:",
-    newRoomCode
-  );
+console.log(
+"Generated room:",
+newRoomCode
+);
 
-  try {
+try {
 
-    // Create room
-    await set(
-      ref(
-        database,
-        `rooms/${newRoomCode}`
-      ),
-      {
-        code: newRoomCode,
-        prompt: "",
-        state: "lobby",
-        judgeId: null,
-        winner: null
-      }
-    );
+// Create room
+await set(
+ref(
+database,
+`rooms/${newRoomCode}`
+),
+{
+code: newRoomCode,
+prompt: "",
+state: "lobby",
+judgeId: null,
+winner: null
+}
+);
 
-    // Create player
-    playerId =
-      generatePlayerId();
+// Create player
+playerId =
+generatePlayerId();
 
-    await set(
-      ref(
-        database,
-        `rooms/${newRoomCode}/players/${playerId}`
-      ),
-      {
-        name: playerName,
-        answer: null
-      }
-    );
+await set(
+ref(
+database,
+`rooms/${newRoomCode}/players/${playerId}`
+),
+{
+name: playerName,
+answer: null
+}
+);
 
-    console.log(
-      "Room created:",
-      newRoomCode
-    );
+console.log(
+"Room created:",
+newRoomCode
+);
 
-    // Go to game
-    window.location.href =
-      `game.html?room=${newRoomCode}` +
-      `&name=${encodeURIComponent(playerName)}` +
-      `&player=${playerId}`;
+// Go to game
+window.location.href =
+`game.html?room=${newRoomCode}` +
+`&name=${encodeURIComponent(playerName)}` +
+`&player=${playerId}`;
 
-  } catch (error) {
+} catch (error) {
 
-    console.error(
-      "Error creating room:",
-      error
-    );
+console.error(
+"Error creating room:",
+error
+);
 
-    alert(
-      "There was an error creating the room."
-    );
+alert(
+"There was an error creating the room."
+);
 
-  }
+}
 
 }
 
@@ -402,107 +402,107 @@ async function createRoom() {
 
 async function joinRoom() {
 
-  const roomInput =
-    document.getElementById("roomInput");
+const roomInput =
+document.getElementById("roomInput");
 
-  const nameInput =
-    document.getElementById("nameInput");
+const nameInput =
+document.getElementById("nameInput");
 
-  if (!roomInput || !nameInput) {
+if (!roomInput || !nameInput) {
 
-    console.error(
-      "roomInput or nameInput was not found."
-    );
+console.error(
+"roomInput or nameInput was not found."
+);
 
-    return;
-  }
+return;
+}
 
-  const enteredRoomCode =
-    roomInput.value
-      .trim()
-      .toUpperCase();
+const enteredRoomCode =
+roomInput.value
+.trim()
+.toUpperCase();
 
-  playerName =
-    nameInput.value.trim();
+playerName =
+nameInput.value.trim();
 
-  if (enteredRoomCode === "") {
+if (enteredRoomCode === "") {
 
-    alert("Enter a room code.");
+alert("Enter a room code.");
 
-    return;
-  }
+return;
+}
 
-  if (playerName === "") {
+if (playerName === "") {
 
-    alert("Enter your name.");
+alert("Enter your name.");
 
-    return;
-  }
+return;
+}
 
-  try {
+try {
 
-    console.log(
-      "Trying to join:",
-      enteredRoomCode
-    );
+console.log(
+"Trying to join:",
+enteredRoomCode
+);
 
-    const snapshot =
-      await get(
-        child(
-          ref(database),
-          `rooms/${enteredRoomCode}`
-        )
-      );
+const snapshot =
+await get(
+child(
+ref(database),
+`rooms/${enteredRoomCode}`
+)
+);
 
-    if (!snapshot.exists()) {
+if (!snapshot.exists()) {
 
-      alert("Room not found.");
+alert("Room not found.");
 
-      return;
-    }
+return;
+}
 
-    const roomData =
-      snapshot.val();
+const roomData =
+snapshot.val();
 
-    currentRoom =
-      roomData.code;
+currentRoom =
+roomData.code;
 
-    playerId =
-      generatePlayerId();
+playerId =
+generatePlayerId();
 
-    await set(
-      ref(
-        database,
-        `rooms/${currentRoom}/players/${playerId}`
-      ),
-      {
-        name: playerName,
-        answer: null
-      }
-    );
+await set(
+ref(
+database,
+`rooms/${currentRoom}/players/${playerId}`
+),
+{
+name: playerName,
+answer: null
+}
+);
 
-    console.log(
-      "Joined room:",
-      currentRoom
-    );
+console.log(
+"Joined room:",
+currentRoom
+);
 
-    window.location.href =
-      `game.html?room=${currentRoom}` +
-      `&name=${encodeURIComponent(playerName)}` +
-      `&player=${playerId}`;
+window.location.href =
+`game.html?room=${currentRoom}` +
+`&name=${encodeURIComponent(playerName)}` +
+`&player=${playerId}`;
 
-  } catch (error) {
+} catch (error) {
 
-    console.error(
-      "Error joining room:",
-      error
-    );
+console.error(
+"Error joining room:",
+error
+);
 
-    alert(
-      "There was an error joining the room."
-    );
+alert(
+"There was an error joining the room."
+);
 
-  }
+}
 
 }
 
@@ -513,103 +513,103 @@ async function joinRoom() {
 
 async function loadGameInformation() {
 
-  const params =
-    new URLSearchParams(
-      window.location.search
-    );
+const params =
+new URLSearchParams(
+window.location.search
+);
 
-  const urlRoomCode =
-    params.get("room");
+const urlRoomCode =
+params.get("room");
 
-  playerName =
-    params.get("name") || "";
+playerName =
+params.get("name") || "";
 
-  playerId =
-    params.get("player") || "";
+playerId =
+params.get("player") || "";
 
-  if (!urlRoomCode) {
+if (!urlRoomCode) {
 
-    console.error(
-      "No room code was provided."
-    );
+console.error(
+"No room code was provided."
+);
 
-    return;
-  }
+return;
+}
 
-  if (!playerId) {
+if (!playerId) {
 
-    console.error(
-      "No player ID was provided."
-    );
+console.error(
+"No player ID was provided."
+);
 
-    return;
-  }
+return;
+}
 
-  try {
+try {
 
-    const snapshot =
-      await get(
-        ref(
-          database,
-          `rooms/${urlRoomCode}`
-        )
-      );
+const snapshot =
+await get(
+ref(
+database,
+`rooms/${urlRoomCode}`
+)
+);
 
-    if (!snapshot.exists()) {
+if (!snapshot.exists()) {
 
-      console.error(
-        "That room does not exist."
-      );
+console.error(
+"That room does not exist."
+);
 
-      return;
-    }
+return;
+}
 
-    const roomData =
-      snapshot.val();
+const roomData =
+snapshot.val();
 
-    currentRoom =
-      roomData.code;
+currentRoom =
+roomData.code;
 
-    console.log(
-      "Current room:",
-      currentRoom
-    );
+console.log(
+"Current room:",
+currentRoom
+);
 
-    if (roomDisplay) {
+if (roomDisplay) {
 
-      roomDisplay.textContent =
-        "Room Code: " +
-        currentRoom;
+roomDisplay.textContent =
+"Room Code: " +
+currentRoom;
 
-    }
+}
 
-    const playerDisplay =
-      document.getElementById(
-        "playerDisplay"
-      );
+const playerDisplay =
+document.getElementById(
+"playerDisplay"
+);
 
-    if (playerDisplay) {
+if (playerDisplay) {
 
-      playerDisplay.textContent =
-        "Player: " +
-        playerName;
+playerDisplay.textContent =
+"Player: " +
+playerName;
 
-    }
+}
 
-    watchPrompt();
-    watchPlayers();
-    watchJudge();
-    watchWinner();
-    watchRoundResults();
+watchPrompt();
+watchPlayers();
+watchJudge();
+watchWinner();
+watchRoundResults();
 
-  } catch (error) {
+} catch (error) {
 
-    console.error(
-      "Error loading game:",
-      error
-    );
+console.error(
+"Error loading game:",
+error
+);
 
-  }
+}
 
 }
 
@@ -620,134 +620,134 @@ async function loadGameInformation() {
 
 async function generatePrompt() {
 
-  if (currentRoom === "") {
+if (currentRoom === "") {
 
-    alert(
-      "You are not in a room."
-    );
+alert(
+"You are not in a room."
+);
 
-    return;
-  }
+return;
+}
 
-  try {
+try {
 
-    const playersSnapshot =
-      await get(
-        ref(
-          database,
-          `rooms/${currentRoom}/players`
-        )
-      );
+const playersSnapshot =
+await get(
+ref(
+database,
+`rooms/${currentRoom}/players`
+)
+);
 
-    if (!playersSnapshot.exists()) {
+if (!playersSnapshot.exists()) {
 
-      alert(
-        "There are no players in the room."
-      );
+alert(
+"There are no players in the room."
+);
 
-      return;
-    }
+return;
+}
 
-    const players =
-      playersSnapshot.val();
+const players =
+playersSnapshot.val();
 
-    const playerIds =
-      Object.keys(players);
+const playerIds =
+Object.keys(players);
 
-    if (playerIds.length < 2) {
+if (playerIds.length < 2) {
 
-      alert(
-        "You need at least two players."
-      );
+alert(
+"You need at least two players."
+);
 
-      return;
-    }
-
-
-    // Select random judge
-    const randomIndex =
-      Math.floor(
-        Math.random() *
-        playerIds.length
-      );
-
-    const selectedJudge =
-      playerIds[randomIndex];
+return;
+}
 
 
-    // Select random prompt
-    const newPrompt =
-      prompts[
-      Math.floor(
-        Math.random() *
-        prompts.length
-      )
-      ];
+// Select random judge
+const randomIndex =
+Math.floor(
+Math.random() *
+playerIds.length
+);
 
-    displayedWinnerId = null;
-
-    // Clear old round
-    const updates = {};
-
-    playerIds.forEach(
-      (id) => {
-
-        updates[
-          `rooms/${currentRoom}/players/${id}/answer`
-        ] = null;
-
-      }
-    );
-
-    updates[
-      `rooms/${currentRoom}/winner`
-    ] = null;
+const selectedJudge =
+playerIds[randomIndex];
 
 
-    // Start new round
-    updates[
-      `rooms/${currentRoom}/prompt`
-    ] = newPrompt;
+// Select random prompt
+const newPrompt =
+prompts[
+Math.floor(
+Math.random() *
+prompts.length
+)
+];
 
-    updates[
-      `rooms/${currentRoom}/judgeId`
-    ] = selectedJudge;
+displayedWinnerId = null;
 
-    updates[
-      `rooms/${currentRoom}/state`
-    ] = "answering";
+// Clear old round
+const updates = {};
+
+playerIds.forEach(
+(id) => {
+
+updates[
+`rooms/${currentRoom}/players/${id}/answer`
+] = null;
+
+}
+);
+
+updates[
+`rooms/${currentRoom}/winner`
+] = null;
 
 
-    await update(
-      ref(database),
-      updates
-    );
+// Start new round
+updates[
+`rooms/${currentRoom}/prompt`
+] = newPrompt;
+
+updates[
+`rooms/${currentRoom}/judgeId`
+] = selectedJudge;
+
+updates[
+`rooms/${currentRoom}/state`
+] = "answering";
 
 
-    console.log(
-      "New round started."
-    );
+await update(
+ref(database),
+updates
+);
 
-    console.log(
-      "Prompt:",
-      newPrompt
-    );
 
-    console.log(
-      "Judge:",
-      selectedJudge
-    );
+console.log(
+"New round started."
+);
 
-  }
+console.log(
+"Prompt:",
+newPrompt
+);
 
-  catch (error) {
+console.log(
+"Judge:",
+selectedJudge
+);
 
-    console.error(
-      "Error generating prompt:",
-      error
-    );
+}
 
-  }
+catch (error) {
+
+console.error(
+"Error generating prompt:",
+error
+);
+
+}
 
 }
 
@@ -757,76 +757,76 @@ async function generatePrompt() {
 
 async function getNewPrompt() {
 
-  if (currentRoom === "") {
+if (currentRoom === "") {
 
-    alert("You are not in a room.");
+alert("You are not in a room.");
 
-    return;
-  }
+return;
+}
 
-  const playersSnapshot =
-    await get(
-      ref(
-        database,
-        `rooms/${currentRoom}/players`
-      )
-    );
+const playersSnapshot =
+await get(
+ref(
+database,
+`rooms/${currentRoom}/players`
+)
+);
 
-  if (!playersSnapshot.exists()) {
+if (!playersSnapshot.exists()) {
 
-    alert(
-      "There are no players in the room."
-    );
+alert(
+"There are no players in the room."
+);
 
-    return;
-  }
+return;
+}
 
-  const players =
-    playersSnapshot.val();
+const players =
+playersSnapshot.val();
 
-  const playerIds =
-    Object.keys(players);
+const playerIds =
+Object.keys(players);
 
-  if (playerIds.length < 2) {
+if (playerIds.length < 2) {
 
-    alert(
-      "You need at least two players."
-    );
+alert(
+"You need at least two players."
+);
 
-    return;
-  }
+return;
+}
 
-  try {
+try {
 
-    const newPrompt =
-      prompts[
-      Math.floor(
-        Math.random() *
-        prompts.length
-      )
-      ];
+const newPrompt =
+prompts[
+Math.floor(
+Math.random() *
+prompts.length
+)
+];
 
-    await update(
-      ref(database),
-      {
-        [`rooms/${currentRoom}/prompt`]:
-          newPrompt
-      }
-    );
+await update(
+ref(database),
+{
+[`rooms/${currentRoom}/prompt`]:
+newPrompt
+}
+);
 
-    console.log(
-      "Prompt:",
-      newPrompt
-    );
+console.log(
+"Prompt:",
+newPrompt
+);
 
-  } catch (error) {
+} catch (error) {
 
-    console.error(
-      "Error refreshing prompt:",
-      error
-    );
+console.error(
+"Error refreshing prompt:",
+error
+);
 
-  }
+}
 
 }
 
@@ -837,62 +837,62 @@ async function getNewPrompt() {
 
 function watchPrompt() {
 
-  if (currentRoom === "") {
-    return;
-  }
+if (currentRoom === "") {
+return;
+}
 
-  const promptRef =
-    ref(
-      database,
-      `rooms/${currentRoom}/prompt`
-    );
+const promptRef =
+ref(
+database,
+`rooms/${currentRoom}/prompt`
+);
 
-  onValue(
-    promptRef,
-    (snapshot) => {
+onValue(
+promptRef,
+(snapshot) => {
 
-      if (!snapshot.exists()) {
-        return;
-      }
+if (!snapshot.exists()) {
+return;
+}
 
-      const promptText =
-        snapshot.val();
+const promptText =
+snapshot.val();
 
-      if (!promptText || promptText.toString().trim() === "") {
-        return;
-      }
+if (!promptText || promptText.toString().trim() === "") {
+return;
+}
 
-      const promptElement =
-        document.getElementById(
-          "promptBox"
-        ) ||
-        document.getElementById(
-          "promptText"
-        ) ||
-        document.getElementById(
-          "judgePrompt"
-        );
+const promptElement =
+document.getElementById(
+"promptBox"
+) ||
+document.getElementById(
+"promptText"
+) ||
+document.getElementById(
+"judgePrompt"
+);
 
-      if (promptElement) {
+if (promptElement) {
 
-        promptElement.textContent =
-          promptText;
+promptElement.textContent =
+promptText;
 
-      }
+}
 
-      // Reset submit button for new round
-      if (submitAnswerButton) {
+// Reset submit button for new round
+if (submitAnswerButton) {
 
-        submitAnswerButton.disabled =
-          false;
+submitAnswerButton.disabled =
+false;
 
-        submitAnswerButton.textContent =
-          "Submit Answer";
+submitAnswerButton.textContent =
+"Submit Answer";
 
-      }
+}
 
-    }
-  );
+}
+);
 
 }
 
@@ -902,64 +902,64 @@ function watchPrompt() {
 
 function generateWords() {
 
-  if (!wordBank || !answerArea) {
-    return;
-  }
+if (!wordBank || !answerArea) {
+return;
+}
 
-  wordBank.innerHTML = "";
-  answerArea.innerHTML = "";
+wordBank.innerHTML = "";
+answerArea.innerHTML = "";
 
-  const shuffled = [...words];
+const shuffled = [...words];
 
-  shuffled.sort(
-    () => Math.random() - 0.5
-  );
+shuffled.sort(
+() => Math.random() - 0.5
+);
 
-  const hand = shuffled.slice(0, 40);
+const hand = shuffled.slice(0, 40);
 
-  hand.forEach((word) => {
+hand.forEach((word) => {
 
-    const magnet =
-      document.createElement("div");
+const magnet =
+document.createElement("div");
 
-    magnet.textContent = word;
+magnet.textContent = word;
 
-    magnet.classList.add("magnet");
+magnet.classList.add("magnet");
 
-    const isTouchDevice =
-      window.matchMedia("(pointer: coarse)").matches;
+const isTouchDevice =
+window.matchMedia("(pointer: coarse)").matches;
 
-    if (
-      window.matchMedia(
-        "(pointer: coarse)"
-      ).matches
-    ) {
+if (
+window.matchMedia(
+"(pointer: coarse)"
+).matches
+) {
 
-      // Phone/tablet
-      magnet.draggable =
-        false;
+// Phone/tablet
+magnet.draggable =
+false;
 
-      magnet.addEventListener(
-        "pointerdown",
-        mobileDragStart
-      );
+magnet.addEventListener(
+"pointerdown",
+mobileDragStart
+);
 
-    } else {
+} else {
 
-      // Computer
-      magnet.draggable =
-        true;
+// Computer
+magnet.draggable =
+true;
 
-      magnet.addEventListener(
-        "dragstart",
-        desktopDragStart
-      );
+magnet.addEventListener(
+"dragstart",
+desktopDragStart
+);
 
-    }
+}
 
-    wordBank.appendChild(magnet);
+wordBank.appendChild(magnet);
 
-  });
+});
 }
 
 // ======================================================
@@ -978,15 +978,15 @@ let desktopDraggedMagnet = null;
 // Start desktop drag
 function desktopDragStart(event) {
 
-  desktopDraggedMagnet =
-    event.currentTarget;
+desktopDraggedMagnet =
+event.currentTarget;
 
-  if (event.dataTransfer) {
+if (event.dataTransfer) {
 
-    event.dataTransfer.effectAllowed =
-      "move";
+event.dataTransfer.effectAllowed =
+"move";
 
-  }
+}
 
 }
 
@@ -997,99 +997,99 @@ function desktopDragStart(event) {
 
 if (answerArea) {
 
-  answerArea.addEventListener(
-    "dragover",
-    (event) => {
+answerArea.addEventListener(
+"dragover",
+(event) => {
 
-      event.preventDefault();
+event.preventDefault();
 
-    }
-  );
-
-
-  answerArea.addEventListener(
-    "drop",
-    (event) => {
-
-      event.preventDefault();
-
-      if (!desktopDraggedMagnet) {
-        return;
-      }
+}
+);
 
 
-      const magnet =
-        desktopDraggedMagnet;
+answerArea.addEventListener(
+"drop",
+(event) => {
+
+event.preventDefault();
+
+if (!desktopDraggedMagnet) {
+return;
+}
 
 
-      const answerRect =
-        answerArea.getBoundingClientRect();
+const magnet =
+desktopDraggedMagnet;
 
 
-      const magnetRect =
-        magnet.getBoundingClientRect();
+const answerRect =
+answerArea.getBoundingClientRect();
 
 
-      // Position relative to answer area
-      let x =
-        event.clientX -
-        answerRect.left -
-        magnetRect.width / 2;
+const magnetRect =
+magnet.getBoundingClientRect();
 
 
-      let y =
-        event.clientY -
-        answerRect.top -
-        magnetRect.height / 2;
+// Position relative to answer area
+let x =
+event.clientX -
+answerRect.left -
+magnetRect.width / 2;
 
 
-      // Keep magnet inside answer area
-      const maxX =
-        answerArea.clientWidth -
-        magnetRect.width;
-
-      const maxY =
-        answerArea.clientHeight -
-        magnetRect.height;
+let y =
+event.clientY -
+answerRect.top -
+magnetRect.height / 2;
 
 
-      x =
-        Math.max(
-          0,
-          Math.min(x, maxX)
-        );
+// Keep magnet inside answer area
+const maxX =
+answerArea.clientWidth -
+magnetRect.width;
 
-      y =
-        Math.max(
-          0,
-          Math.min(y, maxY)
-        );
+const maxY =
+answerArea.clientHeight -
+magnetRect.height;
 
 
-      // Move magnet into answer area
-      answerArea.appendChild(
-        magnet
-      );
+x =
+Math.max(
+0,
+Math.min(x, maxX)
+);
+
+y =
+Math.max(
+0,
+Math.min(y, maxY)
+);
 
 
-      magnet.style.position =
-        "absolute";
-
-      magnet.style.left =
-        x + "px";
-
-      magnet.style.top =
-        y + "px";
-
-      magnet.style.margin =
-        "0";
+// Move magnet into answer area
+answerArea.appendChild(
+magnet
+);
 
 
-      desktopDraggedMagnet =
-        null;
+magnet.style.position =
+"absolute";
 
-    }
-  );
+magnet.style.left =
+x + "px";
+
+magnet.style.top =
+y + "px";
+
+magnet.style.margin =
+"0";
+
+
+desktopDraggedMagnet =
+null;
+
+}
+);
 
 }
 
@@ -1100,55 +1100,55 @@ if (answerArea) {
 
 if (wordBank) {
 
-  wordBank.addEventListener(
-    "dragover",
-    (event) => {
+wordBank.addEventListener(
+"dragover",
+(event) => {
 
-      event.preventDefault();
+event.preventDefault();
 
-    }
-  );
-
-
-  wordBank.addEventListener(
-    "drop",
-    (event) => {
-
-      event.preventDefault();
-
-      if (!desktopDraggedMagnet) {
-        return;
-      }
+}
+);
 
 
-      const magnet =
-        desktopDraggedMagnet;
+wordBank.addEventListener(
+"drop",
+(event) => {
+
+event.preventDefault();
+
+if (!desktopDraggedMagnet) {
+return;
+}
 
 
-      wordBank.appendChild(
-        magnet
-      );
+const magnet =
+desktopDraggedMagnet;
 
 
-      // Return normal word-bank styling
-      magnet.style.position =
-        "";
-
-      magnet.style.left =
-        "";
-
-      magnet.style.top =
-        "";
-
-      magnet.style.margin =
-        "";
+wordBank.appendChild(
+magnet
+);
 
 
-      desktopDraggedMagnet =
-        null;
+// Return normal word-bank styling
+magnet.style.position =
+"";
 
-    }
-  );
+magnet.style.left =
+"";
+
+magnet.style.top =
+"";
+
+magnet.style.margin =
+"";
+
+
+desktopDraggedMagnet =
+null;
+
+}
+);
 
 }
 
@@ -1174,90 +1174,90 @@ let mobileOriginalNextSibling = null;
 
 function mobileDragStart(event) {
 
-  if (
-    event.pointerType !== "touch"
-  ) {
-    return;
-  }
+if (
+event.pointerType !== "touch"
+) {
+return;
+}
 
 
-  event.preventDefault();
+event.preventDefault();
 
 
-  const magnet =
-    event.currentTarget;
+const magnet =
+event.currentTarget;
 
 
-  // Prevent native HTML dragging
-  magnet.draggable =
-    false;
+// Prevent native HTML dragging
+magnet.draggable =
+false;
 
 
-  mobileDraggedMagnet =
-    magnet;
+mobileDraggedMagnet =
+magnet;
 
-  mobileDragging =
-    true;
+mobileDragging =
+true;
 
-  mobilePointerId =
-    event.pointerId;
-
-
-  // Remember exactly where
-  // the finger grabbed the magnet
-  const rect =
-    magnet.getBoundingClientRect();
+mobilePointerId =
+event.pointerId;
 
 
-  mobileOffsetX =
-    event.clientX -
-    rect.left;
-
-  mobileOffsetY =
-    event.clientY -
-    rect.top;
+// Remember exactly where
+// the finger grabbed the magnet
+const rect =
+magnet.getBoundingClientRect();
 
 
-  // Remember original location
-  mobileOriginalParent =
-    magnet.parentNode;
+mobileOffsetX =
+event.clientX -
+rect.left;
 
-  mobileOriginalNextSibling =
-    magnet.nextSibling;
-
-
-  // Take magnet out of normal layout
-  magnet.style.position =
-    "fixed";
-
-  magnet.style.left =
-    rect.left + "px";
-
-  magnet.style.top =
-    rect.top + "px";
-
-  magnet.style.width =
-    rect.width + "px";
-
-  magnet.style.height =
-    rect.height + "px";
-
-  magnet.style.margin =
-    "0";
-
-  magnet.style.zIndex =
-    "10000";
-
-  magnet.style.opacity =
-    "1";
-
-  magnet.style.pointerEvents =
-    "none";
+mobileOffsetY =
+event.clientY -
+rect.top;
 
 
-  magnet.setPointerCapture(
-    event.pointerId
-  );
+// Remember original location
+mobileOriginalParent =
+magnet.parentNode;
+
+mobileOriginalNextSibling =
+magnet.nextSibling;
+
+
+// Take magnet out of normal layout
+magnet.style.position =
+"fixed";
+
+magnet.style.left =
+rect.left + "px";
+
+magnet.style.top =
+rect.top + "px";
+
+magnet.style.width =
+rect.width + "px";
+
+magnet.style.height =
+rect.height + "px";
+
+magnet.style.margin =
+"0";
+
+magnet.style.zIndex =
+"10000";
+
+magnet.style.opacity =
+"1";
+
+magnet.style.pointerEvents =
+"none";
+
+
+magnet.setPointerCapture(
+event.pointerId
+);
 
 }
 
@@ -1268,30 +1268,32 @@ function mobileDragStart(event) {
 
 function mobileDragMove(event) {
 
-  if (
-    !mobileDragging ||
-    event.pointerId !== mobilePointerId
-  ) {
-    return;
-  }
+if (
+!mobileDragging ||
+event.pointerId !== mobilePointerId
+) {
+return;
+}
 
 
-  event.preventDefault();
+event.preventDefault();
+
+  autoScrollWhileDragging(event);
 
 
-  // Move the ACTUAL magnet.
-  // Nothing else in the answer area moves.
-  mobileDraggedMagnet.style.left =
-    (
-      event.clientX -
-      mobileOffsetX
-    ) + "px";
+// Move the ACTUAL magnet.
+// Nothing else in the answer area moves.
+mobileDraggedMagnet.style.left =
+(
+event.clientX -
+mobileOffsetX
+) + "px";
 
-  mobileDraggedMagnet.style.top =
-    (
-      event.clientY -
-      mobileOffsetY
-    ) + "px";
+mobileDraggedMagnet.style.top =
+(
+event.clientY -
+mobileOffsetY
+) + "px";
 
 }
 
@@ -1302,248 +1304,248 @@ function mobileDragMove(event) {
 
 function mobileDragEnd(event) {
 
-  if (
-    !mobileDragging ||
-    event.pointerId !== mobilePointerId
-  ) {
-    return;
-  }
+if (
+!mobileDragging ||
+event.pointerId !== mobilePointerId
+) {
+return;
+}
 
 
-  event.preventDefault();
+event.preventDefault();
 
 
-  const magnet =
-    mobileDraggedMagnet;
+const magnet =
+mobileDraggedMagnet;
 
 
-  if (!magnet) {
-    return;
-  }
+if (!magnet) {
+return;
+}
 
 
-  // See what is underneath
-  // the finger at release
-  const element =
-    document.elementFromPoint(
-      event.clientX,
-      event.clientY
-    );
+// See what is underneath
+// the finger at release
+const element =
+document.elementFromPoint(
+event.clientX,
+event.clientY
+);
 
 
-  // ==================================================
-  // DROPPED IN ANSWER AREA
-  // ==================================================
+// ==================================================
+// DROPPED IN ANSWER AREA
+// ==================================================
 
-  if (
-    answerArea &&
-    answerArea.contains(element)
-  ) {
+if (
+answerArea &&
+answerArea.contains(element)
+) {
 
-    const answerRect =
-      answerArea.getBoundingClientRect();
+const answerRect =
+answerArea.getBoundingClientRect();
 
 
-    const magnetRect =
-      magnet.getBoundingClientRect();
+const magnetRect =
+magnet.getBoundingClientRect();
 
 
-    let x =
-      magnetRect.left -
-      answerRect.left;
+let x =
+magnetRect.left -
+answerRect.left;
 
 
-    let y =
-      magnetRect.top -
-      answerRect.top;
+let y =
+magnetRect.top -
+answerRect.top;
 
 
-    // Keep magnet inside answer area
-    const maxX =
-      answerArea.clientWidth -
-      magnetRect.width;
+// Keep magnet inside answer area
+const maxX =
+answerArea.clientWidth -
+magnetRect.width;
 
 
-    const maxY =
-      answerArea.clientHeight -
-      magnetRect.height;
+const maxY =
+answerArea.clientHeight -
+magnetRect.height;
 
 
-    x =
-      Math.max(
-        0,
-        Math.min(x, maxX)
-      );
+x =
+Math.max(
+0,
+Math.min(x, maxX)
+);
 
-    y =
-      Math.max(
-        0,
-        Math.min(y, maxY)
-      );
+y =
+Math.max(
+0,
+Math.min(y, maxY)
+);
 
 
-    answerArea.appendChild(
-      magnet
-    );
+answerArea.appendChild(
+magnet
+);
 
 
-    magnet.style.position =
-      "absolute";
+magnet.style.position =
+"absolute";
 
-    magnet.style.left =
-      x + "px";
+magnet.style.left =
+x + "px";
 
-    magnet.style.top =
-      y + "px";
+magnet.style.top =
+y + "px";
 
-    magnet.style.width =
-      "";
+magnet.style.width =
+"";
 
-    magnet.style.height =
-      "";
+magnet.style.height =
+"";
 
-    magnet.style.margin =
-      "0";
+magnet.style.margin =
+"0";
 
-    magnet.style.zIndex =
-      "";
+magnet.style.zIndex =
+"";
 
-    magnet.style.opacity =
-      "";
+magnet.style.opacity =
+"";
 
-    magnet.style.pointerEvents =
-      "";
+magnet.style.pointerEvents =
+"";
 
 
-  }
+}
 
 
-  // ==================================================
-  // DROPPED IN WORD BANK
-  // ==================================================
+// ==================================================
+// DROPPED IN WORD BANK
+// ==================================================
 
-  else if (
-    wordBank &&
-    wordBank.contains(element)
-  ) {
+else if (
+wordBank &&
+wordBank.contains(element)
+) {
 
-    wordBank.appendChild(
-      magnet
-    );
+wordBank.appendChild(
+magnet
+);
 
 
-    magnet.style.position =
-      "";
+magnet.style.position =
+"";
 
-    magnet.style.left =
-      "";
+magnet.style.left =
+"";
 
-    magnet.style.top =
-      "";
+magnet.style.top =
+"";
 
-    magnet.style.width =
-      "";
+magnet.style.width =
+"";
 
-    magnet.style.height =
-      "";
+magnet.style.height =
+"";
 
-    magnet.style.margin =
-      "";
+magnet.style.margin =
+"";
 
-    magnet.style.zIndex =
-      "";
+magnet.style.zIndex =
+"";
 
-    magnet.style.opacity =
-      "";
+magnet.style.opacity =
+"";
 
-    magnet.style.pointerEvents =
-      "";
+magnet.style.pointerEvents =
+"";
 
-  }
+}
 
 
-  // ==================================================
-  // DROPPED SOMEWHERE INVALID
-  // ==================================================
+// ==================================================
+// DROPPED SOMEWHERE INVALID
+// ==================================================
 
-  else {
+else {
 
-    if (
-      mobileOriginalNextSibling &&
-      mobileOriginalNextSibling.parentNode ===
-      mobileOriginalParent
-    ) {
+if (
+mobileOriginalNextSibling &&
+mobileOriginalNextSibling.parentNode ===
+mobileOriginalParent
+) {
 
-      mobileOriginalParent.insertBefore(
-        magnet,
-        mobileOriginalNextSibling
-      );
+mobileOriginalParent.insertBefore(
+magnet,
+mobileOriginalNextSibling
+);
 
-    }
+}
 
-    else if (
-      mobileOriginalParent
-    ) {
+else if (
+mobileOriginalParent
+) {
 
-      mobileOriginalParent.appendChild(
-        magnet
-      );
+mobileOriginalParent.appendChild(
+magnet
+);
 
-    }
+}
 
 
-    // Restore normal styling
-    magnet.style.position =
-      "";
+// Restore normal styling
+magnet.style.position =
+"";
 
-    magnet.style.left =
-      "";
+magnet.style.left =
+"";
 
-    magnet.style.top =
-      "";
+magnet.style.top =
+"";
 
-    magnet.style.width =
-      "";
+magnet.style.width =
+"";
 
-    magnet.style.height =
-      "";
+magnet.style.height =
+"";
 
-    magnet.style.margin =
-      "";
+magnet.style.margin =
+"";
 
-    magnet.style.zIndex =
-      "";
+magnet.style.zIndex =
+"";
 
-    magnet.style.opacity =
-      "";
+magnet.style.opacity =
+"";
 
-    magnet.style.pointerEvents =
-      "";
+magnet.style.pointerEvents =
+"";
 
-  }
+}
 
 
-  // Reset variables
-  mobileDraggedMagnet =
-    null;
+// Reset variables
+mobileDraggedMagnet =
+null;
 
-  mobileDragging =
-    false;
+mobileDragging =
+false;
 
-  mobilePointerId =
-    null;
+mobilePointerId =
+null;
 
-  mobileOriginalParent =
-    null;
+mobileOriginalParent =
+null;
 
-  mobileOriginalNextSibling =
-    null;
+mobileOriginalNextSibling =
+null;
 
-  mobileOffsetX =
-    0;
+mobileOffsetX =
+0;
 
-  mobileOffsetY =
-    0;
+mobileOffsetY =
+0;
 
 }
 
@@ -1554,15 +1556,15 @@ function mobileDragEnd(event) {
 
 function mobileDragCancel(event) {
 
-  if (
-    !mobileDragging ||
-    event.pointerId !== mobilePointerId
-  ) {
-    return;
-  }
+if (
+!mobileDragging ||
+event.pointerId !== mobilePointerId
+) {
+return;
+}
 
 
-  mobileDragEnd(event);
+mobileDragEnd(event);
 
 }
 
@@ -1572,25 +1574,61 @@ function mobileDragCancel(event) {
 // ======================================================
 
 document.addEventListener(
-  "pointermove",
-  mobileDragMove,
-  { passive: false }
+"pointermove",
+mobileDragMove,
+{ passive: false }
 );
 
 
 document.addEventListener(
-  "pointerup",
-  mobileDragEnd,
-  { passive: false }
+"pointerup",
+mobileDragEnd,
+{ passive: false }
 );
 
 
 document.addEventListener(
-  "pointercancel",
-  mobileDragCancel,
-  { passive: false }
+"pointercancel",
+mobileDragCancel,
+{ passive: false }
 );
 
+// ======================================================
+// AUTO SCROLL WHILE DRAGGING
+// ======================================================
+
+function autoScrollWhileDragging(event) {
+
+    const edgeSize = 80;   // How close to edge before scrolling
+    const scrollSpeed = 8; // Pixels per movement event
+
+    const screenHeight =
+        window.innerHeight;
+
+    // Near top of screen
+    if (event.clientY < edgeSize) {
+
+        window.scrollBy(
+            0,
+            -scrollSpeed
+        );
+
+    }
+
+    // Near bottom of screen
+    else if (
+        event.clientY >
+        screenHeight - edgeSize
+    ) {
+
+        window.scrollBy(
+            0,
+            scrollSpeed
+        );
+
+    }
+
+}
 
 // ======================================================
 // WATCH PLAYERS
@@ -1598,27 +1636,27 @@ document.addEventListener(
 
 function watchPlayers() {
 
-  if (currentRoom === "") {
-    return;
-  }
+if (currentRoom === "") {
+return;
+}
 
-  const playersRef =
-    ref(
-      database,
-      `rooms/${currentRoom}/players`
-    );
+const playersRef =
+ref(
+database,
+`rooms/${currentRoom}/players`
+);
 
-  onValue(
-    playersRef,
-    (snapshot) => {
+onValue(
+playersRef,
+(snapshot) => {
 
-      console.log(
-        "Players:",
-        snapshot.val()
-      );
+console.log(
+"Players:",
+snapshot.val()
+);
 
-    }
-  );
+}
+);
 
 }
 
@@ -1627,137 +1665,137 @@ function watchPlayers() {
 // ======================================================
 
 const submitAnswerButton =
-  document.getElementById(
-    "submitAnswer"
-  );
+document.getElementById(
+"submitAnswer"
+);
 
 if (submitAnswerButton) {
 
-  submitAnswerButton.addEventListener(
-    "click",
-    async () => {
+submitAnswerButton.addEventListener(
+"click",
+async () => {
 
-      console.log(
-        "SUBMIT BUTTON CLICKED"
-      );
+console.log(
+"SUBMIT BUTTON CLICKED"
+);
 
-      if (currentRoom === "") {
+if (currentRoom === "") {
 
-        console.log(
-          "NO ROOM"
-        );
+console.log(
+"NO ROOM"
+);
 
-        return;
-      }
+return;
+}
 
-      if (playerId === "") {
+if (playerId === "") {
 
-        console.log(
-          "NO PLAYER ID"
-        );
+console.log(
+"NO PLAYER ID"
+);
 
-        return;
-      }
+return;
+}
 
-      const magnets =
-        Array.from(
-          document.querySelectorAll(
-            "#answerArea .magnet"
-          )
-        );
-
-
-      magnets.sort(
-        (a, b) => {
-
-          const aRect =
-            a.getBoundingClientRect();
-
-          const bRect =
-            b.getBoundingClientRect();
+const magnets =
+Array.from(
+document.querySelectorAll(
+"#answerArea .magnet"
+)
+);
 
 
-          const verticalDifference =
-            Math.abs(
-              aRect.top -
-              bRect.top
-            );
+magnets.sort(
+(a, b) => {
+
+const aRect =
+a.getBoundingClientRect();
+
+const bRect =
+b.getBoundingClientRect();
 
 
-          // If they are on approximately
-          // the same row, sort left to right
-          if (
-            verticalDifference < 25
-          ) {
-
-            return (
-              aRect.left -
-              bRect.left
-            );
-
-          }
+const verticalDifference =
+Math.abs(
+aRect.top -
+bRect.top
+);
 
 
-          // Otherwise sort top to bottom
-          return (
-            aRect.top -
-            bRect.top
-          );
+// If they are on approximately
+// the same row, sort left to right
+if (
+verticalDifference < 25
+) {
 
-        }
-      );
+return (
+aRect.left -
+bRect.left
+);
+
+}
 
 
-      const answer =
-        magnets
-          .map(
-            magnet =>
-              magnet.textContent.trim()
-          )
-          .join(" ");
+// Otherwise sort top to bottom
+return (
+aRect.top -
+bRect.top
+);
 
-      if (answer === "") {
+}
+);
 
-        alert(
-          "Create an answer before submitting."
-        );
 
-        return;
-      }
+const answer =
+magnets
+.map(
+magnet =>
+magnet.textContent.trim()
+)
+.join(" ");
 
-      try {
+if (answer === "") {
 
-        await update(
-          ref(
-            database,
-            `rooms/${currentRoom}/players/${playerId}`
-          ),
-          {
-            answer: answer
-          }
-        );
+alert(
+"Create an answer before submitting."
+);
 
-        console.log(
-          "ANSWER SUBMITTED"
-        );
+return;
+}
 
-        submitAnswerButton.disabled =
-          true;
+try {
 
-        submitAnswerButton.textContent =
-          "Answer Submitted";
+await update(
+ref(
+database,
+`rooms/${currentRoom}/players/${playerId}`
+),
+{
+answer: answer
+}
+);
 
-      } catch (error) {
+console.log(
+"ANSWER SUBMITTED"
+);
 
-        console.error(
-          "Error submitting answer:",
-          error
-        );
+submitAnswerButton.disabled =
+true;
 
-      }
+submitAnswerButton.textContent =
+"Answer Submitted";
 
-    }
-  );
+} catch (error) {
+
+console.error(
+"Error submitting answer:",
+error
+);
+
+}
+
+}
+);
 
 }
 
@@ -1768,60 +1806,60 @@ if (submitAnswerButton) {
 
 function watchJudge() {
 
-  if (
-    currentRoom === "" ||
-    playerId === ""
-  ) {
-    return;
-  }
+if (
+currentRoom === "" ||
+playerId === ""
+) {
+return;
+}
 
-  const roomRef =
-    ref(
-      database,
-      `rooms/${currentRoom}`
-    );
+const roomRef =
+ref(
+database,
+`rooms/${currentRoom}`
+);
 
-  onValue(
-    roomRef,
-    (snapshot) => {
+onValue(
+roomRef,
+(snapshot) => {
 
-      const room =
-        snapshot.val();
+const room =
+snapshot.val();
 
-      if (!room) {
-        return;
-      }
+if (!room) {
+return;
+}
 
-      const selectedJudge =
-        room.judgeId;
+const selectedJudge =
+room.judgeId;
 
-      console.log(
-        "Current judge:",
-        selectedJudge
-      );
+console.log(
+"Current judge:",
+selectedJudge
+);
 
-      if (
-        selectedJudge === playerId &&
-        room.state === "answering" &&
-        !window.location.pathname.endsWith(
-          "judge.html"
-        )
-      ) {
+if (
+selectedJudge === playerId &&
+room.state === "answering" &&
+!window.location.pathname.endsWith(
+"judge.html"
+)
+) {
 
-        console.log(
-          "I am the judge."
-        );
+console.log(
+"I am the judge."
+);
 
-        window.location.replace(
-          `judge.html?room=${currentRoom}` +
-          `&player=${playerId}` +
-          `&name=${encodeURIComponent(playerName)}`
-        );
+window.location.replace(
+`judge.html?room=${currentRoom}` +
+`&player=${playerId}` +
+`&name=${encodeURIComponent(playerName)}`
+);
 
-      }
+}
 
-    }
-  );
+}
+);
 
 }
 
@@ -1832,98 +1870,98 @@ function watchJudge() {
 
 async function loadJudgeRoom() {
 
-  const params =
-    new URLSearchParams(
-      window.location.search
-    );
+const params =
+new URLSearchParams(
+window.location.search
+);
 
-  currentRoom =
-    params.get("room");
+currentRoom =
+params.get("room");
 
-  playerId =
-    params.get("player");
+playerId =
+params.get("player");
 
-  playerName =
-    params.get("name") || "";
+playerName =
+params.get("name") || "";
 
-  console.log(
-    "Loading judge room:",
-    currentRoom
-  );
+console.log(
+"Loading judge room:",
+currentRoom
+);
 
-  console.log(
-    "Judge player ID:",
-    playerId
-  );
+console.log(
+"Judge player ID:",
+playerId
+);
 
-  if (
-    !currentRoom ||
-    !playerId
-  ) {
+if (
+!currentRoom ||
+!playerId
+) {
 
-    console.error(
-      "Missing room or player information."
-    );
+console.error(
+"Missing room or player information."
+);
 
-    return;
-  }
+return;
+}
 
-  try {
+try {
 
-    const snapshot =
-      await get(
-        ref(
-          database,
-          `rooms/${currentRoom}`
-        )
-      );
+const snapshot =
+await get(
+ref(
+database,
+`rooms/${currentRoom}`
+)
+);
 
-    if (!snapshot.exists()) {
+if (!snapshot.exists()) {
 
-      console.error(
-        "Room does not exist."
-      );
+console.error(
+"Room does not exist."
+);
 
-      return;
-    }
+return;
+}
 
-    const room =
-      snapshot.val();
+const room =
+snapshot.val();
 
-    if (
-      room.judgeId !== playerId
-    ) {
+if (
+room.judgeId !== playerId
+) {
 
-      console.error(
-        "This player is not the judge."
-      );
+console.error(
+"This player is not the judge."
+);
 
-      return;
-    }
+return;
+}
 
-    console.log(
-      "Confirmed: this player is the judge."
-    );
+console.log(
+"Confirmed: this player is the judge."
+);
 
-    watchCurrentJudge();
+watchCurrentJudge();
 
-    watchJudgePrompt(
-      currentRoom
-    );
+watchJudgePrompt(
+currentRoom
+);
 
-    watchJudgeAnswers(
-      currentRoom,
-      playerId
-    );
+watchJudgeAnswers(
+currentRoom,
+playerId
+);
 
-  } catch (error) {
+} catch (error) {
 
-    console.error(
-      "Error loading judge room:",
-      error
-    );
+console.error(
+"Error loading judge room:",
+error
+);
 
-  }
+}
 
 }
 
@@ -1933,50 +1971,50 @@ async function loadJudgeRoom() {
 
 function watchCurrentJudge() {
 
-  if (
-    currentRoom === "" ||
-    playerId === ""
-  ) {
-    return;
-  }
+if (
+currentRoom === "" ||
+playerId === ""
+) {
+return;
+}
 
-  const roomRef = ref(
-    database,
-    `rooms/${currentRoom}`
-  );
+const roomRef = ref(
+database,
+`rooms/${currentRoom}`
+);
 
-  onValue(
-    roomRef,
-    (snapshot) => {
+onValue(
+roomRef,
+(snapshot) => {
 
-      const room = snapshot.val();
+const room = snapshot.val();
 
-      if (!room) {
-        return;
-      }
+if (!room) {
+return;
+}
 
-      const currentJudgeId =
-        room.judgeId;
+const currentJudgeId =
+room.judgeId;
 
-      // This player is no longer the judge
-      if (
-        currentJudgeId !== playerId
-      ) {
+// This player is no longer the judge
+if (
+currentJudgeId !== playerId
+) {
 
-        console.log(
-          "This player is no longer the judge."
-        );
+console.log(
+"This player is no longer the judge."
+);
 
-        window.location.replace(
-          `game.html?room=${currentRoom}` +
-          `&name=${encodeURIComponent(playerName)}` +
-          `&player=${playerId}`
-        );
+window.location.replace(
+`game.html?room=${currentRoom}` +
+`&name=${encodeURIComponent(playerName)}` +
+`&player=${playerId}`
+);
 
-      }
+}
 
-    }
-  );
+}
+);
 
 }
 
@@ -1985,51 +2023,51 @@ function watchCurrentJudge() {
 // ======================================================
 
 function watchJudgePrompt(
-  judgeRoomCode
+judgeRoomCode
 ) {
 
-  const promptRef =
-    ref(
-      database,
-      `rooms/${judgeRoomCode}/prompt`
-    );
+const promptRef =
+ref(
+database,
+`rooms/${judgeRoomCode}/prompt`
+);
 
-  onValue(
-    promptRef,
-    (snapshot) => {
+onValue(
+promptRef,
+(snapshot) => {
 
-      if (!snapshot.exists()) {
-        return;
-      }
+if (!snapshot.exists()) {
+return;
+}
 
-      const promptText =
-        snapshot.val();
+const promptText =
+snapshot.val();
 
-      const promptElement =
-        document.getElementById(
-          "judgePrompt"
-        ) ||
-        document.getElementById(
-          "promptBox"
-        ) ||
-        document.getElementById(
-          "promptText"
-        );
+const promptElement =
+document.getElementById(
+"judgePrompt"
+) ||
+document.getElementById(
+"promptBox"
+) ||
+document.getElementById(
+"promptText"
+);
 
-      if (promptElement) {
+if (promptElement) {
 
-        promptElement.textContent =
-          promptText;
+promptElement.textContent =
+promptText;
 
-      }
+}
 
-      console.log(
-        "Judge prompt:",
-        promptText
-      );
+console.log(
+"Judge prompt:",
+promptText
+);
 
-    }
-  );
+}
+);
 
 }
 
@@ -2039,85 +2077,85 @@ function watchJudgePrompt(
 // ======================================================
 
 function watchJudgeAnswers(
-  judgeRoomCode,
-  judgePlayerId
+judgeRoomCode,
+judgePlayerId
 ) {
 
-  const playersRef =
-    ref(
-      database,
-      `rooms/${judgeRoomCode}/players`
-    );
+const playersRef =
+ref(
+database,
+`rooms/${judgeRoomCode}/players`
+);
 
-  onValue(
-    playersRef,
-    (snapshot) => {
+onValue(
+playersRef,
+(snapshot) => {
 
-      const players =
-        snapshot.val();
+const players =
+snapshot.val();
 
-      if (!players) {
-        return;
-      }
+if (!players) {
+return;
+}
 
-      // Everyone except judge
-      const contestants =
-        Object.entries(
-          players
-        ).filter(
-          ([id]) =>
-            id !== judgePlayerId
-        );
+// Everyone except judge
+const contestants =
+Object.entries(
+players
+).filter(
+([id]) =>
+id !== judgePlayerId
+);
 
-      // Only players with answers
-      const submittedPlayers =
-        contestants.filter(
-          ([id, player]) =>
-            player.answer &&
-            player.answer
-              .toString()
-              .trim() !== ""
-        );
+// Only players with answers
+const submittedPlayers =
+contestants.filter(
+([id, player]) =>
+player.answer &&
+player.answer
+.toString()
+.trim() !== ""
+);
 
-      const statusElement =
-        document.getElementById(
-          "answerStatus"
-        );
+const statusElement =
+document.getElementById(
+"answerStatus"
+);
 
-      if (statusElement) {
+if (statusElement) {
 
-        statusElement.textContent =
-          `${submittedPlayers.length} of ` +
-          `${contestants.length} players have submitted.`;
+statusElement.textContent =
+`${submittedPlayers.length} of ` +
+`${contestants.length} players have submitted.`;
 
-      }
+}
 
-      console.log(
-        "Submitted:",
-        submittedPlayers.length,
-        "of",
-        contestants.length
-      );
+console.log(
+"Submitted:",
+submittedPlayers.length,
+"of",
+contestants.length
+);
 
-      // Wait until everyone answers
-      if (
-        submittedPlayers.length <
-        contestants.length
-      ) {
+// Wait until everyone answers
+if (
+submittedPlayers.length <
+contestants.length
+) {
 
-        clearJudgeAnswers();
+clearJudgeAnswers();
 
-        return;
-      }
+return;
+}
 
-      // Everyone answered
-      displayJudgeAnswers(
-        submittedPlayers,
-        judgeRoomCode
-      );
+// Everyone answered
+displayJudgeAnswers(
+submittedPlayers,
+judgeRoomCode
+);
 
-    }
-  );
+}
+);
 
 }
 
@@ -2128,16 +2166,16 @@ function watchJudgeAnswers(
 
 function clearJudgeAnswers() {
 
-  const container =
-    document.getElementById(
-      "answersContainer"
-    );
+const container =
+document.getElementById(
+"answersContainer"
+);
 
-  if (!container) {
-    return;
-  }
+if (!container) {
+return;
+}
 
-  container.innerHTML = "";
+container.innerHTML = "";
 
 }
 
@@ -2147,133 +2185,133 @@ function clearJudgeAnswers() {
 // ======================================================
 
 function displayJudgeAnswers(
-  submittedPlayers,
-  judgeRoomCode
+submittedPlayers,
+judgeRoomCode
 ) {
 
-  const container =
-    document.getElementById(
-      "answersContainer"
-    );
+const container =
+document.getElementById(
+"answersContainer"
+);
 
-  if (!container) {
+if (!container) {
 
-    console.error(
-      "answersContainer was not found."
-    );
+console.error(
+"answersContainer was not found."
+);
 
-    return;
-  }
+return;
+}
 
-  const template =
-    document.getElementById(
-      "answerTemplate"
-    );
+const template =
+document.getElementById(
+"answerTemplate"
+);
 
-  container.innerHTML = "";
+container.innerHTML = "";
 
-  submittedPlayers.forEach(
-    ([playerId, player]) => {
+submittedPlayers.forEach(
+([playerId, player]) => {
 
-      let answerCard;
-
-
-      // Use template if available
-      if (template) {
-
-        answerCard =
-          template.content
-            .cloneNode(true);
-
-      }
+let answerCard;
 
 
-      // Otherwise build one
-      else {
+// Use template if available
+if (template) {
 
-        answerCard =
-          document.createElement(
-            "div"
-          );
+answerCard =
+template.content
+.cloneNode(true);
 
-        answerCard.classList.add(
-          "answerCard"
-        );
-
-        const answerText =
-          document.createElement(
-            "p"
-          );
-
-        answerText.classList.add(
-          "answerText"
-        );
-
-        const chooseButton =
-          document.createElement(
-            "button"
-          );
-
-        chooseButton.classList.add(
-          "chooseAnswer"
-        );
-
-        chooseButton.textContent =
-          "Choose This Answer";
-
-        answerCard.appendChild(
-          answerText
-        );
-
-        answerCard.appendChild(
-          chooseButton
-        );
-
-      }
+}
 
 
-      const answerText =
-        answerCard.querySelector(
-          ".answerText"
-        );
+// Otherwise build one
+else {
 
-      const chooseButton =
-        answerCard.querySelector(
-          ".chooseAnswer"
-        );
+answerCard =
+document.createElement(
+"div"
+);
+
+answerCard.classList.add(
+"answerCard"
+);
+
+const answerText =
+document.createElement(
+"p"
+);
+
+answerText.classList.add(
+"answerText"
+);
+
+const chooseButton =
+document.createElement(
+"button"
+);
+
+chooseButton.classList.add(
+"chooseAnswer"
+);
+
+chooseButton.textContent =
+"Choose This Answer";
+
+answerCard.appendChild(
+answerText
+);
+
+answerCard.appendChild(
+chooseButton
+);
+
+}
 
 
-      if (answerText) {
+const answerText =
+answerCard.querySelector(
+".answerText"
+);
 
-        answerText.textContent =
-          player.answer;
-
-      }
-
-
-      if (chooseButton) {
-
-        chooseButton.addEventListener(
-          "click",
-          () => {
-
-            chooseWinner(
-              judgeRoomCode,
-              playerId
-            );
-
-          }
-        );
-
-      }
+const chooseButton =
+answerCard.querySelector(
+".chooseAnswer"
+);
 
 
-      container.appendChild(
-        answerCard
-      );
+if (answerText) {
 
-    }
-  );
+answerText.textContent =
+player.answer;
+
+}
+
+
+if (chooseButton) {
+
+chooseButton.addEventListener(
+"click",
+() => {
+
+chooseWinner(
+judgeRoomCode,
+playerId
+);
+
+}
+);
+
+}
+
+
+container.appendChild(
+answerCard
+);
+
+}
+);
 
 }
 
@@ -2283,48 +2321,48 @@ function displayJudgeAnswers(
 // ======================================================
 
 async function chooseWinner(
-  judgeRoomCode,
-  winningPlayerId
+judgeRoomCode,
+winningPlayerId
 ) {
 
-  try {
+try {
 
-    await update(
-      ref(
-        database,
-        `rooms/${judgeRoomCode}`
-      ),
-      {
-        winner: winningPlayerId,
-        state: "winner"
-      }
-    );
+await update(
+ref(
+database,
+`rooms/${judgeRoomCode}`
+),
+{
+winner: winningPlayerId,
+state: "winner"
+}
+);
 
-    console.log(
-      "Winner selected:",
-      winningPlayerId
-    );
+console.log(
+"Winner selected:",
+winningPlayerId
+);
 
-    document
-      .querySelectorAll(".chooseAnswer")
-      .forEach((button) => {
-        button.disabled = true;
-      });
+document
+.querySelectorAll(".chooseAnswer")
+.forEach((button) => {
+button.disabled = true;
+});
 
-    window.location.replace(
-      `game.html?room=${judgeRoomCode}` +
-      `&name=${encodeURIComponent(playerName)}` +
-      `&player=${playerId}`
-    );
+window.location.replace(
+`game.html?room=${judgeRoomCode}` +
+`&name=${encodeURIComponent(playerName)}` +
+`&player=${playerId}`
+);
 
-  } catch (error) {
+} catch (error) {
 
-    console.error(
-      "Error selecting winner:",
-      error
-    );
+console.error(
+"Error selecting winner:",
+error
+);
 
-  }
+}
 
 }
 
@@ -2337,78 +2375,78 @@ let displayedWinnerId = null;
 
 function watchWinner() {
 
-  if (
-    currentRoom === "" ||
-    playerId === ""
-  ) {
-    return;
-  }
+if (
+currentRoom === "" ||
+playerId === ""
+) {
+return;
+}
 
-  const winnerRef = ref(
-    database,
-    `rooms/${currentRoom}/winner`
-  );
+const winnerRef = ref(
+database,
+`rooms/${currentRoom}/winner`
+);
 
-  onValue(
-    winnerRef,
-    async (snapshot) => {
+onValue(
+winnerRef,
+async (snapshot) => {
 
-      const winningPlayerId =
-        snapshot.val();
+const winningPlayerId =
+snapshot.val();
 
-      // No winner yet
-      if (!winningPlayerId) {
-        return;
-      }
+// No winner yet
+if (!winningPlayerId) {
+return;
+}
 
-      // Already displayed this winner
-      if (
-        winningPlayerId ===
-        displayedWinnerId
-      ) {
-        return;
-      }
+// Already displayed this winner
+if (
+winningPlayerId ===
+displayedWinnerId
+) {
+return;
+}
 
-      displayedWinnerId =
-        winningPlayerId;
+displayedWinnerId =
+winningPlayerId;
 
-      // Get the player's information
-      const playerSnapshot =
-        await get(
-          ref(
-            database,
-            `rooms/${currentRoom}/players/${winningPlayerId}`
-          )
-        );
+// Get the player's information
+const playerSnapshot =
+await get(
+ref(
+database,
+`rooms/${currentRoom}/players/${winningPlayerId}`
+)
+);
 
-      if (!playerSnapshot.exists()) {
-        console.error(
-          "Winning player could not be found."
-        );
+if (!playerSnapshot.exists()) {
+console.error(
+"Winning player could not be found."
+);
 
-        return;
-      }
+return;
+}
 
-      const winningPlayer =
-        playerSnapshot.val();
+const winningPlayer =
+playerSnapshot.val();
 
-      console.log(
-        "Winner:",
-        winningPlayer.name
-      );
+console.log(
+"Winner:",
+winningPlayer.name
+);
 
-      console.log(
-        "Winning answer:",
-        winningPlayer.answer
-      );
+console.log(
+"Winning answer:",
+winningPlayer.answer
+);
 
-      showWinner(
-        winningPlayer.name,
-        winningPlayer.answer
-      );
+showWinner(
+winningPlayer.name,
+winningPlayer.answer
+);
 
-    }
-  );
+}
+);
 
 }
 
@@ -2418,162 +2456,162 @@ function watchWinner() {
 
 function watchRoundResults() {
 
-  if (currentRoom === "") {
-    return;
-  }
+if (currentRoom === "") {
+return;
+}
 
-  const roomRef =
-    ref(
-      database,
-      `rooms/${currentRoom}`
-    );
+const roomRef =
+ref(
+database,
+`rooms/${currentRoom}`
+);
 
-  onValue(
-    roomRef,
-    (snapshot) => {
+onValue(
+roomRef,
+(snapshot) => {
 
-      const room =
-        snapshot.val();
+const room =
+snapshot.val();
 
-      if (!room) {
-        return;
-      }
+if (!room) {
+return;
+}
 
-      const results =
-        document.getElementById(
-          "roundResults"
-        );
+const results =
+document.getElementById(
+"roundResults"
+);
 
-      if (!results) {
-        return;
-      }
-
-
-      // New round has started
-      if (room.state === "answering") {
-
-        results.innerHTML = "";
-
-        results.style.display =
-          "none";
-
-        return;
-      }
+if (!results) {
+return;
+}
 
 
-      // Don't show results yet
-      if (
-        room.state !== "winner" ||
-        !room.winner ||
-        !room.players
-      ) {
+// New round has started
+if (room.state === "answering") {
 
-        return;
-      }
+results.innerHTML = "";
 
+results.style.display =
+"none";
 
-      // Show results
-      results.innerHTML = "";
-
-      results.style.display =
-        "block";
+return;
+}
 
 
-      const title =
-        document.createElement("h2");
+// Don't show results yet
+if (
+room.state !== "winner" ||
+!room.winner ||
+!room.players
+) {
 
-      title.textContent =
-        "Round Results";
-
-      results.appendChild(
-        title
-      );
-
-
-      // Get all players except the judge
-      const contestants =
-        Object.entries(
-          room.players
-        ).filter(
-          ([id]) =>
-            id !== room.judgeId
-        );
+return;
+}
 
 
-      contestants.forEach(
-        ([playerId, player]) => {
+// Show results
+results.innerHTML = "";
 
-          const answerCard =
-            document.createElement(
-              "div"
-            );
-
-          answerCard.classList.add(
-            "roundResultCard"
-          );
+results.style.display =
+"block";
 
 
-          const name =
-            document.createElement(
-              "h3"
-            );
+const title =
+document.createElement("h2");
 
-          name.textContent =
-            player.name;
+title.textContent =
+"Round Results";
 
-
-          const answer =
-            document.createElement(
-              "p"
-            );
-
-          answer.textContent =
-            player.answer ||
-            "No answer";
+results.appendChild(
+title
+);
 
 
-          // Highlight winner
-          if (
-            playerId === room.winner
-          ) {
-
-            answerCard.classList.add(
-              "winningAnswer"
-            );
-
-            const winnerLabel =
-              document.createElement(
-                "strong"
-              );
-
-            winnerLabel.textContent =
-              "WINNER";
-
-            answerCard.appendChild(
-              winnerLabel
-            );
-
-          }
+// Get all players except the judge
+const contestants =
+Object.entries(
+room.players
+).filter(
+([id]) =>
+id !== room.judgeId
+);
 
 
-          answerCard.appendChild(
-            name
-          );
+contestants.forEach(
+([playerId, player]) => {
 
-          answerCard.appendChild(
-            answer
-          );
+const answerCard =
+document.createElement(
+"div"
+);
+
+answerCard.classList.add(
+"roundResultCard"
+);
 
 
-          results.appendChild(
-            answerCard
-          );
+const name =
+document.createElement(
+"h3"
+);
 
-        }
-      );
+name.textContent =
+player.name;
 
-    }
-  );
+
+const answer =
+document.createElement(
+"p"
+);
+
+answer.textContent =
+player.answer ||
+"No answer";
+
+
+// Highlight winner
+if (
+playerId === room.winner
+) {
+
+answerCard.classList.add(
+"winningAnswer"
+);
+
+const winnerLabel =
+document.createElement(
+"strong"
+);
+
+winnerLabel.textContent =
+"WINNER";
+
+answerCard.appendChild(
+winnerLabel
+);
+
+}
+
+
+answerCard.appendChild(
+name
+);
+
+answerCard.appendChild(
+answer
+);
+
+
+results.appendChild(
+answerCard
+);
+
+}
+);
+
+}
+);
 
 }
 
@@ -2584,32 +2622,32 @@ function watchRoundResults() {
 
 // CREATE ROOM
 const roomButton =
-  document.getElementById(
-    "roomButton"
-  );
+document.getElementById(
+"roomButton"
+);
 
 if (roomButton) {
 
-  roomButton.addEventListener(
-    "click",
-    createRoom
-  );
+roomButton.addEventListener(
+"click",
+createRoom
+);
 
 }
 
 
 // JOIN ROOM
 const joinRoomButton =
-  document.getElementById(
-    "joinRoomButton"
-  );
+document.getElementById(
+"joinRoomButton"
+);
 
 if (joinRoomButton) {
 
-  joinRoomButton.addEventListener(
-    "click",
-    joinRoom
-  );
+joinRoomButton.addEventListener(
+"click",
+joinRoom
+);
 
 }
 
@@ -2617,10 +2655,10 @@ if (joinRoomButton) {
 // GENERATE PROMPT
 if (promptButton) {
 
-  promptButton.addEventListener(
-    "click",
-    generatePrompt
-  );
+promptButton.addEventListener(
+"click",
+generatePrompt
+);
 
 }
 
@@ -2628,23 +2666,23 @@ if (promptButton) {
 // GENERATE WORDS
 if (wordButton) {
 
-  wordButton.addEventListener(
-    "click",
-    generateWords
-  );
+wordButton.addEventListener(
+"click",
+generateWords
+);
 
 }
 
 const refreshPrompt =
-  document.getElementById(
-    "refreshPrompt"
-  );
+document.getElementById(
+"refreshPrompt"
+);
 
 if (promptButton) {
-  refreshPrompt.addEventListener(
-    "click",
-    getNewPrompt
-  );
+refreshPrompt.addEventListener(
+"click",
+getNewPrompt
+);
 }
 
 
@@ -2654,23 +2692,23 @@ if (promptButton) {
 
 // GAME PAGE
 if (
-  window.location.pathname.endsWith(
-    "game.html"
-  )
+window.location.pathname.endsWith(
+"game.html"
+)
 ) {
 
-  loadGameInformation();
+loadGameInformation();
 
 }
 
 
 // JUDGE PAGE
 if (
-  window.location.pathname.endsWith(
-    "judge.html"
-  )
+window.location.pathname.endsWith(
+"judge.html"
+)
 ) {
 
-  loadJudgeRoom();
+loadJudgeRoom();
 
 }
