@@ -50,76 +50,99 @@ let allSubmitted = false;
 // ======================================================
 
 const words = [
-// Nouns
-"apple", "banana", "pizza", "dragon", "wizard",
-"pirate", "robot", "alien", "ghost", "monster",
-"unicorn", "castle", "tower", "forest", "mountain",
-"river", "ocean", "island", "cave", "volcano",
-"moon", "star", "planet", "spaceship", "rocket",
-"computer", "phone", "book", "map", "key",
-"door", "chair", "table", "bed", "pillow",
-"blanket", "shoe", "hat", "sword", "shield",
-"helmet", "armor", "crown", "ring", "coin",
-"treasure", "diamond", "gold", "cookie", "cake",
-"sandwich", "taco", "cheese", "pickle", "chicken",
-"cow", "dog", "cat", "fish", "bird",
-"mouse", "frog", "horse", "dragonfly", "bee",
-"spider", "snake", "turtle", "tree", "flower",
-"leaf", "rock", "cloud", "storm", "fire",
-"water", "ice", "shadow", "light", "song",
-"dance", "movie", "game", "story", "letter",
-"picture", "camera", "paint", "toy", "ball",
-"rope", "box", "bag", "keyhole", "clock",
-"mirror", "mask", "king", "queen", "soldier",
-"captain", "doctor", "teacher",
 
-// Verbs
-"run", "jump", "walk", "fly", "swim",
-"climb", "crawl", "dance", "sing", "laugh",
-"cry", "smile", "shout", "whisper", "eat",
-"drink", "cook", "bake", "burn", "freeze",
-"explode", "break", "build", "create", "destroy",
-"fix", "throw", "catch", "kick", "punch",
-"push", "pull", "open", "close", "lock",
-"unlock", "find", "hide", "seek", "steal",
-"give", "take", "buy", "sell", "trade",
-"carry", "drop", "lift", "fall", "sleep",
-"wake", "dream", "think", "know", "forget",
-"remember", "learn", "teach", "read", "write",
-"draw", "paint", "play", "fight", "win",
-"lose", "help", "save", "attack", "defend",
-"protect", "escape", "chase", "follow", "lead",
-"become", "change", "grow", "shrink", "transform",
-"discover", "explore", "travel", "visit", "invent",
-"charge", "control", "summon", "wear", "remove",
-"mix", "spill",
+    // ======================================================
+    // NOUNS - 200
+    // ======================================================
 
-// Adjectives
-"tiny", "giant", "huge", "small", "purple",
-"green", "blue", "red", "golden", "silver",
-"ancient", "modern", "magical", "mysterious",
-"angry", "happy", "sad", "silly", "strange",
-"weird", "funny", "scary", "friendly", "evil",
-"good", "lazy", "fast", "slow", "loud",
-"quiet", "flying", "broken", "secret", "hidden",
-"bright", "dark", "cold", "hot", "spicy",
-"sweet", "sticky", "fuzzy", "sharp", "soft",
-"heavy", "light", "crazy", "wild", "royal",
-"legendary",
+    "apple", "banana", "orange", "pizza", "cookie", "cake", "sandwich", "cheese",
+    "bread", "carrot", "potato", "burger", "taco", "candy", "chocolate", "coffee",
+    "water", "house", "castle", "school", "church", "store", "office", "room",
+    "kitchen", "bedroom", "garden", "street", "road", "bridge", "mountain", "river",
+    "ocean", "beach", "island", "forest", "desert", "cave", "volcano", "planet",
+    "moon", "star", "sun", "space", "rocket", "ship", "boat", "submarine",
+    "airplane", "helicopter", "train", "truck", "bicycle", "motorcycle", "bus", "robot",
+    "computer", "phone", "camera", "television", "radio", "clock", "book", "paper",
+    "pencil", "pen", "teacher", "student", "friend", "family", "brother", "sister",
+    "parent", "king", "queen", "prince", "princess", "wizard", "witch", "dragon",
+    "pirate", "knight", "monster", "ghost", "vampire", "hero", "villain", "soldier",
+    "captain", "doctor", "nurse", "chef", "farmer", "artist", "musician", "singer",
+    "actor", "detective", "scientist", "engineer", "builder", "hammer", "sword", "shield",
+    "rope", "key", "door", "window", "table", "chair", "bed", "lamp",
+    "box", "bag", "hat", "shirt", "shoe", "jacket", "crown", "ring",
+    "diamond", "gold", "treasure", "money", "coin", "map", "letter", "message",
+    "question", "answer", "idea", "story", "song", "movie", "game", "picture",
+    "joke", "secret", "plan", "problem", "solution", "battle", "war", "army",
+    "team", "race", "party", "festival", "holiday", "birthday", "trip", "adventure",
+    "journey", "dream", "night", "morning", "day", "week", "year", "time",
+    "place", "thing", "animal", "dog", "cat", "horse", "bird", "fish",
+    "shark", "whale", "lion", "tiger", "bear", "wolf", "monkey", "snake",
+    "frog", "mouse", "rabbit", "spider", "bee", "butterfly", "tree", "flower",
+    "cloud", "storm", "fire", "ice", "rain", "wind", "snow", "thunder",
 
-// Connectors
-"the", "a", "an", "my", "your",
-"his", "her", "our", "their", "this",
-"that", "these", "those", "and", "or",
-"but", "because", "with", "without", "from",
-"to", "for", "at", "by", "about",
-"into", "inside", "outside", "over", "under",
-"through", "after", "before", "while", "when",
-"where", "who", "what", "how", "very",
-"really", "almost", "never", "always", "maybe",
-"not", "only", "also", "then", "so"
+    // ======================================================
+    // VERBS - 200
+    // ======================================================
+
+    "run", "walk", "jump", "climb", "swim", "fly", "fall", "stand",
+    "sit", "sleep", "wake", "eat", "drink", "cook", "bake", "cut",
+    "build", "break", "fix", "make", "create", "draw", "paint", "write",
+    "read", "sing", "dance", "play", "laugh", "cry", "smile", "shout",
+    "whisper", "talk", "speak", "listen", "hear", "see", "watch", "look",
+    "find", "lose", "search", "hide", "seek", "open", "close", "push",
+    "pull", "lift", "drop", "throw", "catch", "kick", "hit", "punch",
+    "fight", "attack", "defend", "chase", "escape", "drive", "ride", "sail",
+    "steer", "travel", "arrive", "leave", "enter", "exit", "visit", "explore",
+    "discover", "follow", "lead", "save", "rescue", "protect", "destroy", "burn",
+    "freeze", "melt", "boil", "wash", "clean", "grab", "hold", "carry",
+    "move", "stop", "start", "wait", "begin", "finish", "win", "guess",
+    "choose", "pick", "decide", "think", "know", "understand", "remember", "forget",
+    "learn", "teach", "ask", "answer", "tell", "explain", "promise", "agree",
+    "argue", "believe", "hope", "want", "need", "like", "love", "hate",
+    "fear", "trust", "doubt", "plan", "try", "practice", "work", "rest",
+    "clap", "wave", "point", "touch", "feel", "smell", "taste", "count",
+    "measure", "weigh", "add", "subtract", "multiply", "divide", "change", "turn",
+    "spin", "roll", "slide", "drag", "place", "wear", "use", "give",
+    "take", "buy", "sell", "pay", "steal", "borrow", "return", "send",
+    "receive", "bring", "keep", "share", "show", "call", "text", "email",
+    "press", "click", "type", "download", "upload", "connect", "disconnect", "design",
+    "invent", "repair", "collect", "gather", "hunt", "survive", "celebrate", "compete",
+    "win", "capture", "release", "cross", "reach", "follow", "greet", "knock",
+
+    // ======================================================
+    // ADJECTIVES - 100
+    // ======================================================
+
+    "big", "small", "tiny", "huge", "tall", "short", "long", "fast",
+    "slow", "loud", "quiet", "hot", "cold", "warm", "cool", "wet",
+    "dry", "heavy", "light", "strong", "weak", "smart", "stupid", "funny",
+    "serious", "happy", "sad", "angry", "scared", "brave", "calm", "wild",
+    "crazy", "strange", "weird", "normal", "good", "bad", "great", "terrible",
+    "amazing", "awful", "beautiful", "ugly", "pretty", "handsome", "shiny", "dark",
+    "bright", "clean", "dirty", "rich", "poor", "old", "young", "new",
+    "ancient", "modern", "fresh", "stale", "soft", "hard", "sharp", "dull",
+    "smooth", "rough", "sweet", "sour", "salty", "bitter", "spicy", "friendly",
+    "mean", "kind", "rude", "polite", "lazy", "busy", "empty", "full",
+    "open", "closed", "broken", "perfect", "wrong", "right", "safe", "dangerous",
+    "famous", "mysterious", "powerful", "giant", "miniature", "electric", "magical", "invisible",
+    "ancient", "clever", "brilliant", "helpless",
+
+    // ======================================================
+    // CONNECTORS - 100
+    // ======================================================
+
+    "the", "a", "an", "my", "your", "his", "her", "our", "their", "this",
+    "that", "these", "those", "some", "any", "all", "every", "each", "no", "not",
+    "and", "or", "but", "because", "so", "if", "then", "than", "when", "while",
+    "before", "after", "until", "since", "although", "though", "unless", "where", "wherever", "why",
+    "how", "what", "who", "which", "whose", "with", "without", "for", "from", "to",
+    "into", "onto", "over", "under", "above", "below", "behind", "beside", "between", "through",
+    "around", "near", "inside", "outside", "against", "about", "like", "as", "at", "by",
+    "on", "off", "up", "down", "in", "out", "together", "again", "also", "just",
+    "only", "even", "still", "already", "always", "never", "ever", "very", "really",
+    "almost", "maybe", "perhaps", "instead", "however", "therefore", "finally", "too", "either", "neither"
+
 ];
-
 
 // ======================================================
 // PROMPTS
