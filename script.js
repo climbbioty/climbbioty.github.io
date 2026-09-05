@@ -2149,9 +2149,31 @@ return;
 
 // Everyone answered
 displayJudgeAnswers(
-submittedPlayers,
+shuffledPlayers,
 judgeRoomCode
 );
+
+const shuffledPlayers =
+    [...submittedPlayers];
+
+for (
+    let i = shuffledPlayers.length - 1;
+    i > 0;
+    i--
+) {
+    const j =
+        Math.floor(
+            Math.random() * (i + 1)
+        );
+
+    [
+        shuffledPlayers[i],
+        shuffledPlayers[j]
+    ] = [
+        shuffledPlayers[j],
+        shuffledPlayers[i]
+    ];
+}
 
 }
 );
