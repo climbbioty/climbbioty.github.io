@@ -1819,6 +1819,8 @@ error
 const editAnswerButton =
     document.getElementById("editAnswerButton");
 
+if (editAnswerButton) {
+
     editAnswerButton.addEventListener(
         "click",
         () => {
@@ -1859,6 +1861,7 @@ const editAnswerButton =
 
         }
     );
+}
 
 // ======================================================
 // WATCH JUDGE
