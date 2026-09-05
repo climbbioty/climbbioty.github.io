@@ -43,6 +43,7 @@ let currentRoom = "";
 let playerName = "";
 let playerId = "";
 let lastPrompt = "";
+let allSubmitted = false;
 
 // ======================================================
 // WORDS
@@ -753,7 +754,7 @@ document.querySelectorAll(".magnet").forEach(
     }
 );
 
-export const allSubmitted = false;
+allSubmitted = false;
 
 }
 }
@@ -1818,11 +1819,13 @@ error
 const editAnswerButton =
     document.getElementById("editAnswerButton");
 
-if (allSubmitted = false) {
-
     editAnswerButton.addEventListener(
         "click",
         () => {
+
+            if (allSubmitted) {
+            return;
+        }
 
             // Enable Submit Answer
             if (submitAnswerButton) {
@@ -1856,8 +1859,6 @@ if (allSubmitted = false) {
 
         }
     );
-
-}
 
 // ======================================================
 // WATCH JUDGE
