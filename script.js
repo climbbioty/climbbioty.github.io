@@ -1825,7 +1825,7 @@ if (editAnswerButton) {
         "click",
         () => {
 
-            if (allSubmitted) {
+            if (allSubmitted = true) {
             return;
         }
 
