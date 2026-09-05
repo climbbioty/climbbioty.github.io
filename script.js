@@ -1786,6 +1786,8 @@ console.log(
 "ANSWER SUBMITTED"
 );
 
+console.log(allSubmitted);
+
 submitAnswerButton.disabled =
 true;
 
