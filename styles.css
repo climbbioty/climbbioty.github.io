@@ -197,5 +197,7 @@ button {
 }
 
 .answerText {
-    white-space: pre-line;
+    font-size: 24px;
+    margin: 0 0 15px 0;
+    white-space: pre-line !important;
 }
