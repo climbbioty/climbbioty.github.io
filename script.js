@@ -748,9 +748,6 @@ error
 );
 
 }
-
-generateWords();
-
 }
 
 // ======================================================
@@ -895,6 +892,8 @@ submitAnswerButton.textContent =
 
 }
 );
+
+generateWords();
 
 }
 
