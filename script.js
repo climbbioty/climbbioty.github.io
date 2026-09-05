@@ -44,7 +44,6 @@ let playerName = "";
 let playerId = "";
 let lastPrompt = "";
 
-
 // ======================================================
 // WORDS
 // ======================================================
@@ -753,6 +752,8 @@ document.querySelectorAll(".magnet").forEach(
         magnet.style.pointerEvents = "";
     }
 );
+
+const allSubmitted = false;
 
 }
 }
@@ -1817,7 +1818,7 @@ error
 const editAnswerButton =
     document.getElementById("editAnswerButton");
 
-if (editAnswerButton) {
+if (allSubmitted = false) {
 
     editAnswerButton.addEventListener(
         "click",
@@ -2269,6 +2270,8 @@ function displayJudgeAnswers(
 submittedPlayers,
 judgeRoomCode
 ) {
+
+allSubmitted = true;
 
 document.querySelectorAll(".magnet").forEach(
     (magnet) => {
