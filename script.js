@@ -836,64 +836,61 @@ error
 
 function watchPrompt() {
 
-if (currentRoom === "") {
-return;
-}
+    if (currentRoom === "") {
+        return;
+    }
 
-const promptRef =
-ref(
-database,
-`rooms/${currentRoom}/prompt`
-);
+    const promptRef =
+        ref(
+            database,
+            `rooms/${currentRoom}/prompt`
+        );
 
-onValue(
-promptRef,
-(snapshot) => {
+    onValue(
+        promptRef,
+        (snapshot) => {
 
-if (!snapshot.exists()) {
-return;
-}
+            const promptText =
+                snapshot.val();
 
-const promptText =
-snapshot.val();
+            if (!promptText) {
+                return;
+            }
 
-if (!promptText || promptText.toString().trim() === "") {
-return;
-}
+            const promptElement =
+                document.getElementById("promptBox") ||
+                document.getElementById("promptText") ||
+                document.getElementById("judgePrompt");
 
-const promptElement =
-document.getElementById(
-"promptBox"
-) ||
-document.getElementById(
-"promptText"
-) ||
-document.getElementById(
-"judgePrompt"
-);
+            if (promptElement) {
 
-if (promptElement) {
+                promptElement.textContent =
+                    promptText;
 
-promptElement.textContent =
-promptText;
+            }
 
-}
+            // Only generate new magnets
+            // when the prompt actually changes
+            if (promptText !== lastPrompt) {
 
-// Reset submit button for new round
-if (submitAnswerButton) {
+                lastPrompt =
+                    promptText;
 
-submitAnswerButton.disabled =
-false;
+                // Don't generate magnets on judge.html
+                if (
+                    !window.location.pathname.endsWith(
+                        "judge.html"
+                    )
+                ) {
 
-submitAnswerButton.textContent =
-"Submit Answer";
+                    generateWords();
 
-}
+                }
 
-}
-);
+            }
 
-generateWords();
+        }
+    );
 
 }
 
