@@ -465,6 +465,26 @@ return;
 const roomData =
 snapshot.val();
 
+const players =
+    roomData.players || {};
+
+const nameAlreadyTaken =
+    Object.values(players).some(
+        (player) =>
+            player.name &&
+            player.name.trim().toLowerCase() ===
+            playerName.trim().toLowerCase()
+    );
+
+if (nameAlreadyTaken) {
+
+    alert(
+        "That name is already being used in this room."
+    );
+
+    return;
+}
+
 currentRoom =
 roomData.code;
 
