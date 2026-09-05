@@ -1705,61 +1705,124 @@ return;
 }
 
 const magnets =
-Array.from(
-document.querySelectorAll(
-"#answerArea .magnet"
-)
+    Array.from(
+        document.querySelectorAll(
+            "#answerArea .magnet"
+        )
+    );
+
+
+// Get position of every magnet
+const positionedMagnets =
+    magnets.map(
+        (magnet) => {
+
+            const rect =
+                magnet.getBoundingClientRect();
+
+            return {
+                magnet: magnet,
+                x: rect.left,
+                y: rect.top,
+                word: magnet.textContent.trim()
+            };
+
+        }
+    );
+
+
+// Sort from top to bottom
+positionedMagnets.sort(
+    (a, b) => a.y - b.y
 );
 
 
-magnets.sort(
-(a, b) => {
+// Create rows
+const rows = [];
 
-const aRect =
-a.getBoundingClientRect();
-
-const bRect =
-b.getBoundingClientRect();
+const rowTolerance = 25;
 
 
-const verticalDifference =
-Math.abs(
-aRect.top -
-bRect.top
-);
-
-
-// If they are on approximately
-// the same row, sort left to right
-if (
-verticalDifference < 25
+// Put each magnet into a row
+for (
+    const item of positionedMagnets
 ) {
 
-return (
-aRect.left -
-bRect.left
-);
+    let row = null;
+
+
+    // Find an existing row close
+    // to this magnet's vertical position
+    for (
+        const existingRow of rows
+    ) {
+
+        if (
+            Math.abs(
+                item.y -
+                existingRow.y
+            ) <= rowTolerance
+        ) {
+
+            row = existingRow;
+            break;
+
+        }
+
+    }
+
+
+    // No matching row -> create one
+    if (!row) {
+
+        row = {
+            y: item.y,
+            magnets: []
+        };
+
+        rows.push(row);
+
+    }
+
+
+    row.magnets.push(item);
 
 }
 
 
-// Otherwise sort top to bottom
-return (
-aRect.top -
-bRect.top
-);
-
-}
+// Sort rows vertically
+rows.sort(
+    (a, b) => a.y - b.y
 );
 
 
+// Sort magnets inside each row
+// from left to right
+rows.forEach(
+    (row) => {
+
+        row.magnets.sort(
+            (a, b) =>
+                a.x - b.x
+        );
+
+    }
+);
+
+
+// Create the final answer
 const answer =
-magnets
-.map(
-magnet =>
-magnet.textContent.trim()
-)
-.join(" ");
+    rows
+        .map(
+            (row) =>
+                row.magnets
+                    .map(
+                        (item) =>
+                            item.word
+                    )
+                    .join(" ")
+        )
+        .join("\n");
 
 if (answer === "") {
 
