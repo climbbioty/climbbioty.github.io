@@ -2235,12 +2235,6 @@ shuffledPlayers,
 judgeRoomCode
 );
 
-document.querySelectorAll(".magnet").forEach(
-    (magnet) => {
-        magnet.style.pointerEvents = "none";
-    }
-);
-
 }
 );
 
@@ -2275,6 +2269,12 @@ function displayJudgeAnswers(
 submittedPlayers,
 judgeRoomCode
 ) {
+
+document.querySelectorAll(".magnet").forEach(
+    (magnet) => {
+        magnet.style.pointerEvents = "none";
+    }
+);
 
 const container =
 document.getElementById(
