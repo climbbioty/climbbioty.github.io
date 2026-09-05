@@ -753,7 +753,7 @@ document.querySelectorAll(".magnet").forEach(
     }
 );
 
-const allSubmitted = false;
+export const allSubmitted = false;
 
 }
 }
