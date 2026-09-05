@@ -2147,13 +2147,8 @@ clearJudgeAnswers();
 return;
 }
 
-// Everyone answered
-displayJudgeAnswers(
-shuffledPlayers,
-judgeRoomCode
-);
 
-const shuffledPlayers =
+    const shuffledPlayers =
     [...submittedPlayers];
 
 for (
@@ -2174,6 +2169,12 @@ for (
         shuffledPlayers[i]
     ];
 }
+
+// Everyone answered
+displayJudgeAnswers(
+shuffledPlayers,
+judgeRoomCode
+);
 
 }
 );
