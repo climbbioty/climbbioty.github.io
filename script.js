@@ -749,6 +749,8 @@ error
 
 }
 
+generateWords();
+
 }
 
 // ======================================================
@@ -2662,16 +2664,6 @@ generatePrompt
 
 }
 
-
-// GENERATE WORDS
-if (wordButton) {
-
-wordButton.addEventListener(
-"click",
-generateWords
-);
-
-}
 
 const refreshPrompt =
 document.getElementById(
