@@ -2268,7 +2268,7 @@ state
 ) {
 
 if (
-    state === "answering" 
+    state === "submitted" 
 ) {
 
     update(
@@ -2376,6 +2376,13 @@ for (
 displayJudgeAnswers(
 shuffledPlayers,
 judgeRoomCode
+);
+
+await update(
+    ref(database, `rooms/${currentRoom}`),
+    {
+        state: "submitted"
+    }
 );
 
 }
