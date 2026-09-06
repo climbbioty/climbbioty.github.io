@@ -815,6 +815,9 @@ await update(
 
 submitAnswerButton.disabled =
                     false;
+
+submitAnswerButton.textContent =
+    "Submit Answer";
     
 }
 }
@@ -1028,6 +1031,9 @@ wordBank.appendChild(magnet);
 
 submitAnswerButton.disabled =
                     false;
+
+submitAnswerButton.textContent =
+    "Submit Answer";
 
 });
 }
