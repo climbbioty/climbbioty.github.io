@@ -2269,6 +2269,8 @@ update(
     }
 );
 
+console.log(allSubmitted);
+
 const playersRef =
 ref(
 database,
