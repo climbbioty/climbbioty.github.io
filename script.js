@@ -2267,8 +2267,11 @@ judgePlayerId,
 state
 ) {
 
-if (state === "submitted" ) {
+const state = room.state;
 
+console.log("State:", state);
+
+if (state === "submitted") {
     update(
         ref(database, `rooms/${currentRoom}`),
         {
