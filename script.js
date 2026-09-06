@@ -2378,7 +2378,7 @@ shuffledPlayers,
 judgeRoomCode
 );
 
-await update(
+update(
     ref(database, `rooms/${currentRoom}`),
     {
         state: "submitted"
