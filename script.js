@@ -2266,12 +2266,19 @@ judgeRoomCode,
 judgePlayerId
 ) {
 
-update(
-    ref(database, `rooms/${judgeRoomCode}`),
-    {
-        allSubmitted: true
-    }
-);
+if (
+    contestants.length > 0 &&
+    submittedPlayers.length === contestants.length
+) {
+
+    update(
+        ref(database, `rooms/${judgeRoomCode}`),
+        {
+            allSubmitted: true
+        }
+    );
+
+}
 
 console.log(allSubmitted);
 
