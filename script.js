@@ -1941,15 +1941,11 @@ error
 const editAnswerButton =
     document.getElementById("editAnswerButton");
 
-if (editAnswerButton) {
+if (editAnswerButton && allSubmitted === false) {
 
     editAnswerButton.addEventListener(
         "click",
         () => {
-
-            if (allSubmitted === true) {
-            return;
-        }
 
             // Enable Submit Answer
             if (submitAnswerButton) {
