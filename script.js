@@ -812,6 +812,9 @@ await update(
         allSubmitted: false
     }
 );
+
+submitAnswerButton.disabled =
+                    false;
     
 }
 }
