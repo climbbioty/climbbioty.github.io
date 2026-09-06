@@ -1026,6 +1026,9 @@ desktopDragStart
 
 wordBank.appendChild(magnet);
 
+submitAnswerButton.disabled =
+                    false;
+
 });
 }
 
