@@ -2263,7 +2263,7 @@ judgePlayerId
 ) {
 
 update(
-    ref(database, `rooms/${RoomCode}`),
+    ref(database, `rooms/${judgeRoomCode}`),
     {
         allSubmitted: true
     }
