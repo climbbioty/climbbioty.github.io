@@ -2267,8 +2267,14 @@ judgePlayerId,
 state
 ) {
 
+const roomRefer =
+        ref(
+            database,
+            `rooms/${judgeRoomCode}`
+        );
+
 onValue(
-    roomRef,
+    roomRefer,
     (snapshot) => {
 
         const room = snapshot.val();
