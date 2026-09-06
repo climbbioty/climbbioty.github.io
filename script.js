@@ -2267,17 +2267,14 @@ judgePlayerId,
 state
 ) {
 
-if (
-    state === "submitted" 
-) {
+if (state === "submitted" ) {
 
     update(
-        ref(database, `rooms/${judgeRoomCode}`),
+        ref(database, `rooms/${currentRoom}`),
         {
             allSubmitted: true
         }
     );
-
 }
 
 console.log(allSubmitted);
