@@ -797,8 +797,13 @@ document.querySelectorAll(".magnet").forEach(
     }
 );
 
-allSubmitted = false;
-
+await update(
+    ref(database, `rooms/${currentRoom}`),
+    {
+        allSubmitted: false
+    }
+);
+    
 }
 }
 
@@ -2252,6 +2257,13 @@ judgeRoomCode,
 judgePlayerId
 ) {
 
+await update(
+    ref(database, `rooms/${judgeRoomCode}`),
+    {
+        allSubmitted: true
+    }
+);
+
 const playersRef =
 ref(
 database,
@@ -2382,8 +2394,6 @@ function displayJudgeAnswers(
 submittedPlayers,
 judgeRoomCode
 ) {
-
-allSubmitted = true;
     
 document.querySelectorAll(".magnet").forEach(
     (magnet) => {
@@ -2875,6 +2885,48 @@ refreshPrompt.addEventListener(
 "click",
 getNewPrompt
 );
+}
+
+
+// ======================================================
+// Watch All Submitted
+// ======================================================
+function watchAllSubmitted() {
+
+    const allSubmittedRef = ref(
+        database,
+        `rooms/${currentRoom}/allSubmitted`
+    );
+
+    onValue(
+        allSubmittedRef,
+        (snapshot) => {
+
+            const allSubmitted =
+                snapshot.val();
+
+            if (allSubmitted) {
+
+                document
+                    .querySelectorAll(".magnet")
+                    .forEach((magnet) => {
+
+                        magnet.style.pointerEvents =
+                            "none";
+
+                        magnet.style.cursor =
+                            "default";
+
+                        magnet.draggable =
+                            false;
+
+                    });
+
+            }
+
+        }
+    );
+
 }
 
 
