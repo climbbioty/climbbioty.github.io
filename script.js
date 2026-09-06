@@ -2263,7 +2263,8 @@ promptText
 
 function watchJudgeAnswers(
 judgeRoomCode,
-judgePlayerId
+judgePlayerId,
+players
 ) {
 
 if (
