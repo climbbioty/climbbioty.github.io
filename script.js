@@ -645,6 +645,7 @@ watchPlayers();
 watchJudge();
 watchWinner();
 watchRoundResults();
+watchAllSubmitted();
 
 } catch (error) {
 
@@ -760,6 +761,10 @@ updates[
 updates[
 `rooms/${currentRoom}/state`
 ] = "answering";
+
+updates[
+    `rooms/${currentRoom}/allSubmitted`
+] = false;
 
 
 await update(
@@ -2257,8 +2262,8 @@ judgeRoomCode,
 judgePlayerId
 ) {
 
-await update(
-    ref(database, `rooms/${judgeRoomCode}`),
+update(
+    ref(database, `rooms/${RoomCode}`),
     {
         allSubmitted: true
     }
