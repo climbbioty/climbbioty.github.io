@@ -2268,8 +2268,7 @@ players
 ) {
 
 if (
-    players.length > 0 &&
-    submittedPlayers.length === contestants.length
+    room.state === "answering" 
 ) {
 
     update(
