@@ -2267,9 +2267,9 @@ judgePlayerId,
 state
 ) {
 
-const state = room.state;
+const dastate = room.state;
 
-console.log("State:", state);
+console.log("State:", dastate);
 
 if (state === "submitted") {
     update(
