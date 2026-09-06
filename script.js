@@ -2267,7 +2267,7 @@ judgePlayerId
 ) {
 
 if (
-    contestants.length > 0 &&
+    players.length > 0 &&
     submittedPlayers.length === contestants.length
 ) {
 
