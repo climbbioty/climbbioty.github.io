@@ -748,6 +748,10 @@ updates[
 `rooms/${currentRoom}/winner`
 ] = null;
 
+updates[
+`rooms/${currentRoom}/allSubmitted`
+] = false;
+
 
 // Start new round
 updates[
