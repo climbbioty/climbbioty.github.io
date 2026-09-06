@@ -1941,11 +1941,35 @@ error
 const editAnswerButton =
     document.getElementById("editAnswerButton");
 
-if (editAnswerButton && allSubmitted === false) {
+if (editAnswerButton) {
 
     editAnswerButton.addEventListener(
         "click",
-        () => {
+        async () => {
+
+            // Check Firebase for the current value
+            const allSubmittedSnapshot =
+                await get(
+                    ref(
+                        database,
+                        `rooms/${currentRoom}/allSubmitted`
+                    )
+                );
+
+            const allSubmitted =
+                allSubmittedSnapshot.val();
+
+
+            // Don't allow editing after everyone submitted
+            if (allSubmitted === true) {
+
+                console.log(
+                    "Editing locked: everyone has submitted."
+                );
+
+                return;
+            }
+
 
             // Enable Submit Answer
             if (submitAnswerButton) {
@@ -1957,6 +1981,7 @@ if (editAnswerButton && allSubmitted === false) {
                     "Submit Answer";
 
             }
+
 
             // Enable the magnets
             const magnets =
@@ -1970,6 +1995,12 @@ if (editAnswerButton && allSubmitted === false) {
                     magnet.style.pointerEvents =
                         "";
 
+                    magnet.style.cursor =
+                        "grab";
+
+                    magnet.draggable =
+                        true;
+
                 }
             );
 
@@ -1979,6 +2010,7 @@ if (editAnswerButton && allSubmitted === false) {
 
         }
     );
+
 }
 
 // ======================================================
