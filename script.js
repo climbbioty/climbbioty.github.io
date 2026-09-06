@@ -2267,18 +2267,29 @@ judgePlayerId,
 state
 ) {
 
-const dastate = room.state;
+onValue(
+    roomRef,
+    (snapshot) => {
 
-console.log("State:", dastate);
+        const room = snapshot.val();
 
-if (state === "submitted") {
-    update(
-        ref(database, `rooms/${currentRoom}`),
-        {
-            allSubmitted: true
+        if (!room) {
+            return;
         }
-    );
-}
+
+        if (room.state === "submitted") {
+
+            update(
+                ref(database, `rooms/${judgeRoomCode}`),
+                {
+                    allSubmitted: true
+                }
+            );
+
+        }
+
+    }
+);
 
 console.log(allSubmitted);
 
