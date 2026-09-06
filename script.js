@@ -2264,11 +2264,11 @@ promptText
 function watchJudgeAnswers(
 judgeRoomCode,
 judgePlayerId,
-players
+state
 ) {
 
 if (
-    room.state === "answering" 
+    state === "answering" 
 ) {
 
     update(
