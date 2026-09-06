@@ -2384,7 +2384,7 @@ judgeRoomCode
 ) {
 
 allSubmitted = true;
-
+    
 document.querySelectorAll(".magnet").forEach(
     (magnet) => {
         magnet.style.pointerEvents = "none";
