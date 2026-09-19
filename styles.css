@@ -208,13 +208,14 @@ button {
     align-items: center;
     flex-wrap: wrap;
 
-    width: 50%;
+    width: 100%;
     margin: 10px auto 20px auto;
 
     font-size: 18px;
-    color: black;
+    color: blue;
 
-    column-gap: 8px;
+    column-gap: 3px;
+    font-weight: bold;
     row-gap: 5px;
 }
 
