@@ -389,7 +389,8 @@ database,
 ),
 {
 name: playerName,
-answer: null
+answer: null,
+score: 0
 }
 );
 
@@ -521,7 +522,8 @@ database,
 ),
 {
 name: playerName,
-answer: null
+answer: null,
+score: 0
 }
 );
 
@@ -2614,49 +2616,104 @@ answerCard
 // CHOOSE WINNER
 // ======================================================
 
+// ======================================================
+// CHOOSE WINNER
+// ======================================================
+
 async function chooseWinner(
-judgeRoomCode,
-winningPlayerId
+    judgeRoomCode,
+    winningPlayerId
 ) {
 
-try {
+    try {
 
-await update(
-ref(
-database,
-`rooms/${judgeRoomCode}`
-),
-{
-winner: winningPlayerId,
-state: "winner"
-}
-);
+        // Get the winning player's current score
+        const playerRef =
+            ref(
+                database,
+                `rooms/${judgeRoomCode}/players/${winningPlayerId}`
+            );
 
-console.log(
-"Winner selected:",
-winningPlayerId
-);
+        const playerSnapshot =
+            await get(playerRef);
 
-document
-.querySelectorAll(".chooseAnswer")
-.forEach((button) => {
-button.disabled = true;
-});
+        if (!playerSnapshot.exists()) {
 
-window.location.replace(
-`game.html?room=${judgeRoomCode}` +
-`&name=${encodeURIComponent(playerName)}` +
-`&player=${playerId}`
-);
+            console.error(
+                "Winning player not found."
+            );
 
-} catch (error) {
+            return;
+        }
 
-console.error(
-"Error selecting winner:",
-error
-);
+        const player =
+            playerSnapshot.val();
 
-}
+        const currentScore =
+            player.score || 0;
+
+        const newScore =
+            currentScore + 1;
+
+
+        // Update winner, state, and score together
+        const updates = {};
+
+        updates[
+            `rooms/${judgeRoomCode}/winner`
+        ] = winningPlayerId;
+
+        updates[
+            `rooms/${judgeRoomCode}/state`
+        ] = "winner";
+
+        updates[
+            `rooms/${judgeRoomCode}/players/${winningPlayerId}/score`
+        ] = newScore;
+
+
+        await update(
+            ref(database),
+            updates
+        );
+
+
+        console.log(
+            "Winner selected:",
+            winningPlayerId
+        );
+
+        console.log(
+            "New score:",
+            newScore
+        );
+
+
+        // Disable judge buttons
+        document
+            .querySelectorAll(".chooseAnswer")
+            .forEach(
+                (button) => {
+                    button.disabled = true;
+                }
+            );
+
+
+        // Return judge to game
+        window.location.replace(
+            `game.html?room=${judgeRoomCode}` +
+            `&name=${encodeURIComponent(playerName)}` +
+            `&player=${playerId}`
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error selecting winner:",
+            error
+        );
+
+    }
 
 }
 
