@@ -206,14 +206,17 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 5px;
     flex-wrap: wrap;
 
-    width: 50%;
+    width: 100%;
     margin: 10px auto 20px auto;
 
-    font-size: 14px;
+    font-size: 18px;
+    font-weight: bold;
     color: black;
+
+    column-gap: 8px;
+    row-gap: 3px;
 }
 
 .scorePlayer {
