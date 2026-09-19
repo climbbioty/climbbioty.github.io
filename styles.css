@@ -208,11 +208,10 @@ button {
     align-items: center;
     flex-wrap: wrap;
 
-    width: 70%;
+    width: 50%;
     margin: 10px auto 20px auto;
 
     font-size: 18px;
-    font-weight: bold;
     color: black;
 
     column-gap: 8px;
