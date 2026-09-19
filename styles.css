@@ -201,3 +201,22 @@ button {
     margin: 0 0 15px 0;
     white-space: pre-line !important;
 }
+
+#scoresDisplay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    flex-wrap: nowrap;
+
+    width: 100%;
+    margin: 10px auto 20px auto;
+
+    font-size: 18px;
+    font-weight: bold;
+    color: black;
+}
+
+.scorePlayer {
+    white-space: nowrap;
+}
