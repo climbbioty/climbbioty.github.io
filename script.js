@@ -648,6 +648,7 @@ watchJudge();
 watchWinner();
 watchRoundResults();
 watchAllSubmitted();
+watchScores();
 
 } catch (error) {
 
