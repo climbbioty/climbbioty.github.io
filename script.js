@@ -44,6 +44,8 @@ let playerName = "";
 let playerId = "";
 let lastPrompt = "";
 let allSubmitted = false;
+let mobileDraggedMagnet = null;
+let mobileDragging = false;
 
 // ======================================================
 // WORDS
@@ -1253,6 +1255,27 @@ let mobileOriginalNextSibling = null;
 
 function mobileDragStart(event) {
 
+const magnet = event.currentTarget;
+
+const now = Date.now();
+
+if (
+    lastTapMagnet === magnet &&
+    now - lastTapTime < 400
+) {
+    event.preventDefault();
+
+    moveMagnetToAnswerArea(magnet);
+
+    lastTapMagnet = null;
+    lastTapTime = 0;
+
+    return;
+}
+
+lastTapMagnet = magnet;
+lastTapTime = now;
+
 if (
 event.pointerType !== "touch"
 ) {
@@ -1337,6 +1360,29 @@ magnet.style.pointerEvents =
 magnet.setPointerCapture(
 event.pointerId
 );
+
+}
+
+//teleport
+function moveMagnetToAnswerArea(magnet) {
+
+    if (allSubmitted === true) {
+        return;
+    }
+
+    if (!answerArea) {
+        return;
+    }
+
+    answerArea.appendChild(magnet);
+
+    magnet.style.position = "absolute";
+    magnet.style.left = "10px";
+    magnet.style.top = "10px";
+    magnet.style.margin = "0";
+
+    magnet.style.pointerEvents = "";
+    magnet.style.cursor = "grab";
 
 }
 
