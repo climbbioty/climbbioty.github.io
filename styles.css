@@ -218,7 +218,7 @@ button {
     font-size: 18px;
     font-weight: bold;
 
-    gap: 5px;
+    gap: 15px;
 }
 
 #scoresDisplay .scorePlayer {
