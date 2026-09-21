@@ -44,7 +44,6 @@ let playerName = "";
 let playerId = "";
 let lastPrompt = "";
 let allSubmitted = false;
-let mobileDraggedMagnet = null;
 let mobileDragging = false;
 
 // ======================================================
