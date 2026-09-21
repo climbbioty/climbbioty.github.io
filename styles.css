@@ -207,12 +207,14 @@ button {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    width: fit-content;
+
 
     width: 100%;
     margin: 10px auto 20px auto;
 
     font-size: 18px;
-    color: blue;
+    font-color: blue;
 
     column-gap: 3px;
     font-weight: bold;
