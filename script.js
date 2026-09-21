@@ -1238,7 +1238,6 @@ null;
 // ======================================================
 
 let mobileDraggedMagnet = null;
-let mobileDragging = false;
 let mobilePointerId = null;
 
 let mobileOffsetX = 0;
