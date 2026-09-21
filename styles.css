@@ -207,20 +207,20 @@ button {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    width: fit-content;
-
 
     width: 100%;
     margin: 10px auto 20px auto;
 
     font-size: 18px;
-    font-color: blue;
+    color: blue;
+    font-weight: bold;
 
     column-gap: 3px;
-    font-weight: bold;
     row-gap: 5px;
 }
 
 .scorePlayer {
     white-space: nowrap;
+    margin: 0;
+    padding: 0;
 }
