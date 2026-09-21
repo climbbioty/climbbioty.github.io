@@ -209,11 +209,9 @@ button {
     flex-wrap: wrap;
 
     width: 100%;
-    margin: 10px auto 20px auto;
+    margin: 10px auto 10px auto;
 
     font-size: 18px;
-    color: blue;
-    font-weight: bold;
 
     column-gap: 3px;
     row-gap: 5px;
