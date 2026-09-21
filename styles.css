@@ -210,9 +210,10 @@ button {
 
     width: fit-content;
     max-width: 100%;
-    margin: 10px 10px 10px 10px;
+    margin: 10px auto 10px auto;
 
     font-size: 18px;
+    font-weight: bold;
 
     column-gap: 3px;
     row-gap: 5px;
