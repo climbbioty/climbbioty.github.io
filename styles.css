@@ -204,21 +204,29 @@ button {
 
 #scoresDisplay {
     display: flex;
-    align-content: center;
+    flex-direction: row;
     flex-wrap: wrap;
 
-    width: fit-content;
-    max-width: 100%;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    box-sizing: border-box;
+
     margin: 10px auto;
 
     font-size: 18px;
     font-weight: bold;
 
-    column-gap: 3px;
-    row-gap: 5px;
+    gap: 5px;
 }
 
-.scorePlayer {
+#scoresDisplay .scorePlayer {
+    display: block;
+    position: static;
+    width: auto;
+    height: auto;
+
     white-space: nowrap;
     margin: 0;
     padding: 0;
