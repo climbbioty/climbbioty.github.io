@@ -2968,10 +2968,7 @@ title
 const contestants =
 Object.entries(
 room.players
-).filter(
-([id]) =>
-id !== room.judgeId
-);
+)
 
 
 contestants.forEach(
