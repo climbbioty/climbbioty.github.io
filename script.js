@@ -2892,160 +2892,74 @@ winningPlayer.answer
 
 function watchRoundResults() {
 
-if (currentRoom === "") {
-return;
-}
+    if (currentRoom === "") return;
 
-const roomRef =
-ref(
-database,
-`rooms/${currentRoom}`
-);
+    const roomRef = ref(
+        database,
+        `rooms/${currentRoom}`
+    );
 
-onValue(
-roomRef,
-(snapshot) => {
+    onValue(roomRef, (snapshot) => {
 
-const room =
-snapshot.val();
+        const room = snapshot.val();
 
-if (!room) {
-return;
-}
+        if (!room) return;
 
-const results =
-document.getElementById(
-"roundResults"
-);
+        const resultsDisplay =
+            document.getElementById("roundResults");
 
-if (!results) {
-return;
-}
+        if (!resultsDisplay) return;
 
+        // Only show results when the round is over
+        if (room.state !== "winner") {
+            resultsDisplay.innerHTML = "";
+            return;
+        }
 
-// New round has started
-if (room.state === "answering") {
+        const players = room.players || {};
+        const winnerId = room.winner;
 
-results.innerHTML = "";
+        resultsDisplay.innerHTML = "";
 
-results.style.display =
-"none";
+        Object.entries(players).forEach(
+            ([playerId, player]) => {
 
-return;
-}
+                // Don't show the judge as a contestant result
+                if (playerId === room.judgeId) {
+                    return;
+                }
 
+                const result = document.createElement("div");
+                result.className = "roundResult";
 
-// Don't show results yet
-if (
-room.state !== "winner" ||
-!room.winner ||
-!room.players
-) {
+                const name = document.createElement("span");
+                name.textContent = player.name;
 
-return;
-}
+                const answer = document.createElement("span");
+                answer.textContent =
+                    player.answer || "(No answer)";
 
+                if (playerId === winnerId) {
+                    result.classList.add("winner");
 
-// Show results
-results.innerHTML = "";
+                    const winnerText =
+                        document.createElement("strong");
 
-results.style.display =
-"block";
+                    winnerText.textContent = " WINNER";
 
+                    result.appendChild(name);
+                    result.appendChild(answer);
+                    result.appendChild(winnerText);
 
-const title =
-document.createElement("h2");
+                } else {
+                    result.appendChild(name);
+                    result.appendChild(answer);
+                }
 
-title.textContent =
-"Round Results";
-
-results.appendChild(
-title
-);
-
-
-// Get all players except the judge
-const contestants =
-Object.entries(
-room.players
-)
-
-
-contestants.forEach(
-([playerId, player]) => {
-
-const answerCard =
-document.createElement(
-"div"
-);
-
-answerCard.classList.add(
-"roundResultCard"
-);
-
-
-const name =
-document.createElement(
-"h3"
-);
-
-name.textContent =
-player.name;
-
-
-const answer =
-document.createElement(
-"p"
-);
-
-answer.textContent =
-player.answer ||
-"No answer";
-
-
-// Highlight winner
-if (
-playerId === room.winner
-) {
-
-answerCard.classList.add(
-"winningAnswer"
-);
-
-const winnerLabel =
-document.createElement(
-"strong"
-);
-
-winnerLabel.textContent =
-"WINNER";
-
-answerCard.appendChild(
-winnerLabel
-);
-
-}
-
-
-answerCard.appendChild(
-name
-);
-
-answerCard.appendChild(
-answer
-);
-
-
-results.appendChild(
-answerCard
-);
-
-}
-);
-
-}
-);
-
+                resultsDisplay.appendChild(result);
+            }
+        );
+    });
 }
 
 
