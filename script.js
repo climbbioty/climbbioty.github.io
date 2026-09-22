@@ -1259,6 +1259,8 @@ function mobileDragStart(event) {
         return;
     }
 
+    event.preventDefault();
+
     const magnet = event.currentTarget;
 
     const now = Date.now();
@@ -1269,7 +1271,6 @@ function mobileDragStart(event) {
         now - lastTapTime < 400
     ) {
 
-        event.preventDefault();
 
         moveMagnetToAnswerArea(magnet);
 
@@ -2699,10 +2700,6 @@ answerCard
 
 }
 
-
-// ======================================================
-// CHOOSE WINNER
-// ======================================================
 
 // ======================================================
 // CHOOSE WINNER
