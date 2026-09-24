@@ -1260,6 +1260,7 @@ function mobileDragStart(event) {
     }
 
     event.preventDefault();
+    event.stopPropagation();
 
     const magnet = event.currentTarget;
 
@@ -1271,77 +1272,47 @@ function mobileDragStart(event) {
         now - lastTapTime < 400
     ) {
 
-
-        moveMagnetToAnswerArea(magnet);
-
         lastTapMagnet = null;
         lastTapTime = 0;
+
+        // Make sure any previous drag is completely stopped
+        mobileDragging = false;
+        mobileDraggedMagnet = null;
+        mobilePointerId = null;
+
+        moveMagnetToAnswerArea(magnet);
 
         return;
     }
 
-    // Remember this tap
     lastTapMagnet = magnet;
     lastTapTime = now;
-
-    event.preventDefault();
 
     magnet.draggable = false;
 
     mobileDraggedMagnet = magnet;
-
     mobileDragging = true;
+    mobilePointerId = event.pointerId;
 
-    mobilePointerId =
-        event.pointerId;
+    const rect = magnet.getBoundingClientRect();
 
-    const rect =
-        magnet.getBoundingClientRect();
+    mobileOffsetX = event.clientX - rect.left;
+    mobileOffsetY = event.clientY - rect.top;
 
-    mobileOffsetX =
-        event.clientX -
-        rect.left;
+    mobileOriginalParent = magnet.parentNode;
+    mobileOriginalNextSibling = magnet.nextSibling;
 
-    mobileOffsetY =
-        event.clientY -
-        rect.top;
+    magnet.style.position = "fixed";
+    magnet.style.left = rect.left + "px";
+    magnet.style.top = rect.top + "px";
+    magnet.style.width = rect.width + "px";
+    magnet.style.height = rect.height + "px";
+    magnet.style.margin = "0";
+    magnet.style.zIndex = "10000";
+    magnet.style.opacity = "1";
+    magnet.style.pointerEvents = "none";
 
-    mobileOriginalParent =
-        magnet.parentNode;
-
-    mobileOriginalNextSibling =
-        magnet.nextSibling;
-
-    magnet.style.position =
-        "fixed";
-
-    magnet.style.left =
-        rect.left + "px";
-
-    magnet.style.top =
-        rect.top + "px";
-
-    magnet.style.width =
-        rect.width + "px";
-
-    magnet.style.height =
-        rect.height + "px";
-
-    magnet.style.margin =
-        "0";
-
-    magnet.style.zIndex =
-        "10000";
-
-    magnet.style.opacity =
-        "1";
-
-    magnet.style.pointerEvents =
-        "none";
-
-    magnet.setPointerCapture(
-        event.pointerId
-    );
+    magnet.setPointerCapture(event.pointerId);
 }
 
 //teleport
