@@ -2972,7 +2972,6 @@ room.players
 ([id]) =>
 id !== room.judgeId
 );
-)
 
 
 contestants.forEach(
