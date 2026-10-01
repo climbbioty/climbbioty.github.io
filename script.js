@@ -1259,7 +1259,7 @@ if (event.pointerType !== "touch") {
 return;
 }
 
-event.preventDefault();
+    event.preventDefault();
 
 const magnet = event.currentTarget;
 
@@ -1271,6 +1271,7 @@ lastTapMagnet === magnet &&
 now - lastTapTime < 400
 ) {
 
+        event.preventDefault();
 
 moveMagnetToAnswerArea(magnet);
 
@@ -2705,6 +2706,10 @@ answerCard
 // CHOOSE WINNER
 // ======================================================
 
+// ======================================================
+// CHOOSE WINNER
+// ======================================================
+
 async function chooseWinner(
 judgeRoomCode,
 winningPlayerId
@@ -2963,13 +2968,15 @@ results.appendChild(
 title
 );
 
-    if (currentRoom === "") return;
 
 // Get all players except the judge
 const contestants =
 Object.entries(
 room.players
-)
+).filter(
+([id]) =>
+id !== room.judgeId
+);
 
 
 contestants.forEach(
@@ -2989,111 +2996,64 @@ const name =
 document.createElement(
 "h3"
 );
-    const roomRef = ref(
-        database,
-        `rooms/${currentRoom}`
-    );
 
 name.textContent =
 player.name;
-    onValue(roomRef, (snapshot) => {
 
-        const room = snapshot.val();
 
 const answer =
 document.createElement(
 "p"
 );
-        if (!room) return;
 
 answer.textContent =
 player.answer ||
 "No answer";
-        const resultsDisplay =
-            document.getElementById("roundResults");
 
-        if (!resultsDisplay) return;
 
 // Highlight winner
 if (
 playerId === room.winner
 ) {
-        // Only show results when the round is over
-        if (room.state !== "winner") {
-            resultsDisplay.innerHTML = "";
-            return;
-        }
 
 answerCard.classList.add(
 "winningAnswer"
 );
-        const players = room.players || {};
-        const winnerId = room.winner;
 
 const winnerLabel =
 document.createElement(
 "strong"
 );
-        resultsDisplay.innerHTML = "";
 
 winnerLabel.textContent =
 "WINNER";
-        Object.entries(players).forEach(
-            ([playerId, player]) => {
 
 answerCard.appendChild(
 winnerLabel
 );
-                // Don't show the judge as a contestant result
-                if (playerId === room.judgeId) {
-                    return;
-                }
 
 }
-                const result = document.createElement("div");
-                result.className = "roundResult";
 
-                const name = document.createElement("span");
-                name.textContent = player.name;
 
 answerCard.appendChild(
 name
 );
-                const answer = document.createElement("span");
-                answer.textContent =
-                    player.answer || "(No answer)";
 
 answerCard.appendChild(
 answer
 );
-                if (playerId === winnerId) {
-                    result.classList.add("winner");
 
-                    const winnerText =
-                        document.createElement("strong");
 
 results.appendChild(
 answerCard
 );
-                    winnerText.textContent = " WINNER";
 
 }
 );
-                    result.appendChild(name);
-                    result.appendChild(answer);
-                    result.appendChild(winnerText);
 
 }
 );
-                } else {
-                    result.appendChild(name);
-                    result.appendChild(answer);
-                }
 
-                resultsDisplay.appendChild(result);
-            }
-        );
-    });
 }
 
 
