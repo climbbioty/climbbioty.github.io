@@ -1238,7 +1238,6 @@ null;
 // PHONE DRAGGING
 // ======================================================
 
-let mobileDragging = false;
 let mobilePointerId = null;
 
 let mobileOffsetX = 0;
