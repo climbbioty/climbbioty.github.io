@@ -2386,6 +2386,9 @@ onValue(
         }
 
         if (room.state === "submitted") {
+            if (allSubmitted === true){
+                return;
+            }
 
             update(
                 ref(database, `rooms/${judgeRoomCode}`),
