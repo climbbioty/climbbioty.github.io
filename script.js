@@ -2850,7 +2850,7 @@ console.log(
 winningPlayer.answer
 );
 
-showWinner(
+resultsDisplay(
 winningPlayer.name,
 winningPlayer.answer
 );
