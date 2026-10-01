@@ -44,9 +44,8 @@ let playerName = "";
 let playerId = "";
 let lastPrompt = "";
 let allSubmitted = false;
+let mobileDraggedMagnet = null;
 let mobileDragging = false;
-let lastTapMagnet = null;
-let lastTapTime = 0;
 
 // ======================================================
 // WORDS
@@ -1240,6 +1239,7 @@ null;
 // ======================================================
 
 let mobileDraggedMagnet = null;
+let mobileDragging = false;
 let mobilePointerId = null;
 
 let mobileOffsetX = 0;
@@ -1255,23 +1255,15 @@ let mobileOriginalNextSibling = null;
 
 function mobileDragStart(event) {
 
-if (event.pointerType !== "touch") {
-return;
-}
-
-    event.preventDefault();
-
 const magnet = event.currentTarget;
 
 const now = Date.now();
 
-// Double tap
 if (
 lastTapMagnet === magnet &&
 now - lastTapTime < 400
 ) {
-
-        event.preventDefault();
+event.preventDefault();
 
 moveMagnetToAnswerArea(magnet);
 
@@ -1281,23 +1273,43 @@ lastTapTime = 0;
 return;
 }
 
-// Remember this tap
 lastTapMagnet = magnet;
 lastTapTime = now;
 
+if (
+event.pointerType !== "touch"
+) {
+return;
+}
+
+
 event.preventDefault();
 
-magnet.draggable = false;
 
-mobileDraggedMagnet = magnet;
+const magnet =
+event.currentTarget;
 
-mobileDragging = true;
+
+// Prevent native HTML dragging
+magnet.draggable =
+false;
+
+
+mobileDraggedMagnet =
+magnet;
+
+mobileDragging =
+true;
 
 mobilePointerId =
 event.pointerId;
 
+
+// Remember exactly where
+// the finger grabbed the magnet
 const rect =
 magnet.getBoundingClientRect();
+
 
 mobileOffsetX =
 event.clientX -
@@ -1307,12 +1319,16 @@ mobileOffsetY =
 event.clientY -
 rect.top;
 
+
+// Remember original location
 mobileOriginalParent =
 magnet.parentNode;
 
 mobileOriginalNextSibling =
 magnet.nextSibling;
 
+
+// Take magnet out of normal layout
 magnet.style.position =
 "fixed";
 
@@ -1340,9 +1356,11 @@ magnet.style.opacity =
 magnet.style.pointerEvents =
 "none";
 
+
 magnet.setPointerCapture(
 event.pointerId
 );
+
 }
 
 //teleport
