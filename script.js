@@ -2850,7 +2850,7 @@ console.log(
 winningPlayer.answer
 );
 
-resultsDisplay(
+watchRoundResults(
 winningPlayer.name,
 winningPlayer.answer
 );
