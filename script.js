@@ -44,8 +44,6 @@ let playerName = "";
 let playerId = "";
 let lastPrompt = "";
 let allSubmitted = false;
-let mobileDraggedMagnet = null;
-let mobileDragging = false;
 
 // ======================================================
 // WORDS
@@ -391,8 +389,7 @@ database,
 ),
 {
 name: playerName,
-answer: null,
-score: 0
+answer: null
 }
 );
 
@@ -524,8 +521,7 @@ database,
 ),
 {
 name: playerName,
-answer: null,
-score: 0
+answer: null
 }
 );
 
@@ -650,7 +646,6 @@ watchJudge();
 watchWinner();
 watchRoundResults();
 watchAllSubmitted();
-watchScores();
 
 } catch (error) {
 
@@ -822,7 +817,7 @@ submitAnswerButton.disabled =
 false;
 
 submitAnswerButton.textContent =
-"Submit Answer";
+    "Submit Answer";
 
 }
 }
@@ -1038,7 +1033,7 @@ submitAnswerButton.disabled =
 false;
 
 submitAnswerButton.textContent =
-"Submit Answer";
+    "Submit Answer";
 
 });
 }
@@ -1238,6 +1233,8 @@ null;
 // PHONE DRAGGING
 // ======================================================
 
+let mobileDraggedMagnet = null;
+let mobileDragging = false;
 let mobilePointerId = null;
 
 let mobileOffsetX = 0;
@@ -1253,27 +1250,6 @@ let mobileOriginalNextSibling = null;
 
 function mobileDragStart(event) {
 
-const magnet = event.currentTarget;
-
-const now = Date.now();
-
-if (
-lastTapMagnet === magnet &&
-now - lastTapTime < 400
-) {
-event.preventDefault();
-
-moveMagnetToAnswerArea(magnet);
-
-lastTapMagnet = null;
-lastTapTime = 0;
-
-return;
-}
-
-lastTapMagnet = magnet;
-lastTapTime = now;
-
 if (
 event.pointerType !== "touch"
 ) {
@@ -1282,6 +1258,10 @@ return;
 
 
 event.preventDefault();
+
+
+const magnet =
+event.currentTarget;
 
 
 // Prevent native HTML dragging
@@ -1354,29 +1334,6 @@ magnet.style.pointerEvents =
 magnet.setPointerCapture(
 event.pointerId
 );
-
-}
-
-//teleport
-function moveMagnetToAnswerArea(magnet) {
-
-if (allSubmitted === true) {
-return;
-}
-
-if (!answerArea) {
-return;
-}
-
-answerArea.appendChild(magnet);
-
-magnet.style.position = "absolute";
-magnet.style.left = "10px";
-magnet.style.top = "10px";
-magnet.style.margin = "0";
-
-magnet.style.pointerEvents = "";
-magnet.style.cursor = "grab";
 
 }
 
@@ -1772,67 +1729,6 @@ playersRef,
 console.log(
 "Players:",
 snapshot.val()
-);
-
-}
-);
-
-}
-
-// ======================================================
-// WATCH SCORES
-// ======================================================
-
-function watchScores() {
-
-if (currentRoom === "") {
-return;
-}
-
-const playersRef =
-ref(
-database,
-`rooms/${currentRoom}/players`
-);
-
-onValue(
-playersRef,
-(snapshot) => {
-
-const players =
-snapshot.val();
-
-const scoresDisplay =
-document.getElementById(
-"scoresDisplay"
-);
-
-if (
-!scoresDisplay ||
-!players
-) {
-return;
-}
-
-scoresDisplay.innerHTML = "";
-
-Object.values(players).forEach(
-(player) => {
-
-const scorePlayer =
-document.createElement("span");
-
-scorePlayer.className =
-"scorePlayer";
-
-scorePlayer.textContent =
-`${player.name}: ${player.score || 0}`;
-
-scoresDisplay.appendChild(
-scorePlayer
-);
-
-}
 );
 
 }
@@ -2718,10 +2614,6 @@ answerCard
 // CHOOSE WINNER
 // ======================================================
 
-// ======================================================
-// CHOOSE WINNER
-// ======================================================
-
 async function chooseWinner(
 judgeRoomCode,
 winningPlayerId
@@ -2729,79 +2621,28 @@ winningPlayerId
 
 try {
 
-// Get the winning player's current score
-const playerRef =
+await update(
 ref(
 database,
-`rooms/${judgeRoomCode}/players/${winningPlayerId}`
-);
-
-const playerSnapshot =
-await get(playerRef);
-
-if (!playerSnapshot.exists()) {
-
-console.error(
-"Winning player not found."
-);
-
-return;
+`rooms/${judgeRoomCode}`
+),
+{
+winner: winningPlayerId,
+state: "winner"
 }
-
-const player =
-playerSnapshot.val();
-
-const currentScore =
-player.score || 0;
-
-const newScore =
-currentScore + 1;
-
-
-// Update winner, state, and score together
-const updates = {};
-
-updates[
-`rooms/${judgeRoomCode}/winner`
-] = winningPlayerId;
-
-updates[
-`rooms/${judgeRoomCode}/state`
-] = "winner";
-
-updates[
-`rooms/${judgeRoomCode}/players/${winningPlayerId}/score`
-] = newScore;
-
-
-await update(
-ref(database),
-updates
 );
-
 
 console.log(
 "Winner selected:",
 winningPlayerId
 );
 
-console.log(
-"New score:",
-newScore
-);
-
-
-// Disable judge buttons
 document
 .querySelectorAll(".chooseAnswer")
-.forEach(
-(button) => {
+.forEach((button) => {
 button.disabled = true;
-}
-);
+});
 
-
-// Return judge to game
 window.location.replace(
 `game.html?room=${judgeRoomCode}` +
 `&name=${encodeURIComponent(playerName)}` +
