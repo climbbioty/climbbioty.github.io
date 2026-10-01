@@ -646,6 +646,7 @@ watchJudge();
 watchWinner();
 watchRoundResults();
 watchAllSubmitted();
+watchScores();
 
 } catch (error) {
 
@@ -2934,6 +2935,67 @@ function showWinner(name, answer) {
 
     winnerDisplay.appendChild(winnerTitle);
     winnerDisplay.appendChild(winnerAnswer);
+}
+
+// ======================================================
+// WATCH SCORES
+// ======================================================
+
+function watchScores() {
+
+    if (currentRoom === "") {
+        return;
+    }
+
+    const playersRef =
+        ref(
+            database,
+            `rooms/${currentRoom}/players`
+        );
+
+    onValue(
+        playersRef,
+        (snapshot) => {
+
+            const players =
+                snapshot.val();
+
+            const scoresDisplay =
+                document.getElementById(
+                    "scoresDisplay"
+                );
+
+            if (
+                !scoresDisplay ||
+                !players
+            ) {
+                return;
+            }
+
+            scoresDisplay.innerHTML = "";
+
+            Object.values(players).forEach(
+                (player) => {
+
+                    const scorePlayer =
+                        document.createElement("span");
+
+                    scorePlayer.className =
+                        "scorePlayer";
+
+                    scorePlayer.textContent =
+                        `${player.name}: ${player.score || 0}`;
+
+                    scoresDisplay.appendChild(
+                        scorePlayer
+                    );
+
+                }
+            );
+
+        }
+    );
+
 }
 
 
