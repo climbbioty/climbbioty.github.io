@@ -1284,10 +1284,6 @@ return;
 event.preventDefault();
 
 
-const magnet =
-event.currentTarget;
-
-
 // Prevent native HTML dragging
 magnet.draggable =
 false;
