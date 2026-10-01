@@ -2909,6 +2909,33 @@ answerCard
 
 }
 
+function showWinner(name, answer) {
+
+    const winnerDisplay =
+        document.getElementById("winnerDisplay");
+
+    if (!winnerDisplay) {
+        return;
+    }
+
+    winnerDisplay.innerHTML = "";
+
+    const winnerTitle =
+        document.createElement("h2");
+
+    winnerTitle.textContent =
+        `${name} won!`;
+
+    const winnerAnswer =
+        document.createElement("p");
+
+    winnerAnswer.textContent =
+        answer || "(No answer)";
+
+    winnerDisplay.appendChild(winnerTitle);
+    winnerDisplay.appendChild(winnerAnswer);
+}
+
 
 // ======================================================
 // BUTTONS
