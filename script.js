@@ -54,96 +54,96 @@ let lastTapTime = 0;
 
 const words = [
 
-    // ======================================================
-    // NOUNS - 200
-    // ======================================================
+// ======================================================
+// NOUNS - 200
+// ======================================================
 
-    "apple", "banana", "orange", "pizza", "cookie", "cake", "sandwich", "cheese",
-    "bread", "carrot", "potato", "burger", "taco", "candy", "chocolate", "coffee",
-    "water", "house", "castle", "school", "church", "store", "office", "room",
-    "kitchen", "bedroom", "garden", "street", "road", "bridge", "mountain", "river",
-    "ocean", "beach", "island", "forest", "desert", "cave", "volcano", "planet",
-    "moon", "star", "sun", "space", "rocket", "ship", "boat", "submarine",
-    "airplane", "helicopter", "train", "truck", "bicycle", "motorcycle", "bus", "robot",
-    "computer", "phone", "camera", "television", "radio", "clock", "book", "paper",
-    "pencil", "pen", "teacher", "student", "friend", "family", "brother", "sister",
-    "parent", "king", "queen", "prince", "princess", "wizard", "witch", "dragon",
-    "pirate", "knight", "monster", "ghost", "vampire", "hero", "villain", "soldier",
-    "captain", "doctor", "nurse", "chef", "farmer", "artist", "musician", "singer",
-    "actor", "detective", "scientist", "engineer", "builder", "hammer", "sword", "shield",
-    "rope", "key", "door", "window", "table", "chair", "bed", "lamp",
-    "box", "bag", "hat", "shirt", "shoe", "jacket", "crown", "ring",
-    "diamond", "gold", "treasure", "money", "coin", "map", "letter", "message",
-    "question", "answer", "idea", "story", "song", "movie", "game", "picture",
-    "joke", "secret", "plan", "problem", "solution", "battle", "war", "army",
-    "team", "race", "party", "festival", "holiday", "birthday", "trip", "adventure",
-    "journey", "dream", "night", "morning", "day", "week", "year", "time",
-    "place", "thing", "animal", "dog", "cat", "horse", "bird", "fish",
-    "shark", "whale", "lion", "tiger", "bear", "wolf", "monkey", "snake",
-    "frog", "mouse", "rabbit", "spider", "bee", "butterfly", "tree", "flower",
-    "cloud", "storm", "fire", "ice", "rain", "wind", "snow", "thunder",
+"apple", "banana", "orange", "pizza", "cookie", "cake", "sandwich", "cheese",
+"bread", "carrot", "potato", "burger", "taco", "candy", "chocolate", "coffee",
+"water", "house", "castle", "school", "church", "store", "office", "room",
+"kitchen", "bedroom", "garden", "street", "road", "bridge", "mountain", "river",
+"ocean", "beach", "island", "forest", "desert", "cave", "volcano", "planet",
+"moon", "star", "sun", "space", "rocket", "ship", "boat", "submarine",
+"airplane", "helicopter", "train", "truck", "bicycle", "motorcycle", "bus", "robot",
+"computer", "phone", "camera", "television", "radio", "clock", "book", "paper",
+"pencil", "pen", "teacher", "student", "friend", "family", "brother", "sister",
+"parent", "king", "queen", "prince", "princess", "wizard", "witch", "dragon",
+"pirate", "knight", "monster", "ghost", "vampire", "hero", "villain", "soldier",
+"captain", "doctor", "nurse", "chef", "farmer", "artist", "musician", "singer",
+"actor", "detective", "scientist", "engineer", "builder", "hammer", "sword", "shield",
+"rope", "key", "door", "window", "table", "chair", "bed", "lamp",
+"box", "bag", "hat", "shirt", "shoe", "jacket", "crown", "ring",
+"diamond", "gold", "treasure", "money", "coin", "map", "letter", "message",
+"question", "answer", "idea", "story", "song", "movie", "game", "picture",
+"joke", "secret", "plan", "problem", "solution", "battle", "war", "army",
+"team", "race", "party", "festival", "holiday", "birthday", "trip", "adventure",
+"journey", "dream", "night", "morning", "day", "week", "year", "time",
+"place", "thing", "animal", "dog", "cat", "horse", "bird", "fish",
+"shark", "whale", "lion", "tiger", "bear", "wolf", "monkey", "snake",
+"frog", "mouse", "rabbit", "spider", "bee", "butterfly", "tree", "flower",
+"cloud", "storm", "fire", "ice", "rain", "wind", "snow", "thunder",
 
-    // ======================================================
-    // VERBS - 200
-    // ======================================================
+// ======================================================
+// VERBS - 200
+// ======================================================
 
-    "run", "walk", "jump", "climb", "swim", "fly", "fall", "stand",
-    "sit", "sleep", "wake", "eat", "drink", "cook", "bake", "cut",
-    "build", "break", "fix", "make", "create", "draw", "paint", "write",
-    "read", "sing", "dance", "play", "laugh", "cry", "smile", "shout",
-    "whisper", "talk", "speak", "listen", "hear", "see", "watch", "look",
-    "find", "lose", "search", "hide", "seek", "open", "close", "push",
-    "pull", "lift", "drop", "throw", "catch", "kick", "hit", "punch",
-    "fight", "attack", "defend", "chase", "escape", "drive", "ride", "sail",
-    "steer", "travel", "arrive", "leave", "enter", "exit", "visit", "explore",
-    "discover", "follow", "lead", "save", "rescue", "protect", "destroy", "burn",
-    "freeze", "melt", "boil", "wash", "clean", "grab", "hold", "carry",
-    "move", "stop", "start", "wait", "begin", "finish", "win", "guess",
-    "choose", "pick", "decide", "think", "know", "understand", "remember", "forget",
-    "learn", "teach", "ask", "answer", "tell", "explain", "promise", "agree",
-    "argue", "believe", "hope", "want", "need", "like", "love", "hate",
-    "fear", "trust", "doubt", "plan", "try", "practice", "work", "rest",
-    "clap", "wave", "point", "touch", "feel", "smell", "taste", "count",
-    "measure", "weigh", "add", "subtract", "multiply", "divide", "change", "turn",
-    "spin", "roll", "slide", "drag", "place", "wear", "use", "give",
-    "take", "buy", "sell", "pay", "steal", "borrow", "return", "send",
-    "receive", "bring", "keep", "share", "show", "call", "text", "email",
-    "press", "click", "type", "download", "upload", "connect", "disconnect", "design",
-    "invent", "repair", "collect", "gather", "hunt", "survive", "celebrate", "compete",
-    "win", "capture", "release", "cross", "reach", "follow", "greet", "knock",
+"run", "walk", "jump", "climb", "swim", "fly", "fall", "stand",
+"sit", "sleep", "wake", "eat", "drink", "cook", "bake", "cut",
+"build", "break", "fix", "make", "create", "draw", "paint", "write",
+"read", "sing", "dance", "play", "laugh", "cry", "smile", "shout",
+"whisper", "talk", "speak", "listen", "hear", "see", "watch", "look",
+"find", "lose", "search", "hide", "seek", "open", "close", "push",
+"pull", "lift", "drop", "throw", "catch", "kick", "hit", "punch",
+"fight", "attack", "defend", "chase", "escape", "drive", "ride", "sail",
+"steer", "travel", "arrive", "leave", "enter", "exit", "visit", "explore",
+"discover", "follow", "lead", "save", "rescue", "protect", "destroy", "burn",
+"freeze", "melt", "boil", "wash", "clean", "grab", "hold", "carry",
+"move", "stop", "start", "wait", "begin", "finish", "win", "guess",
+"choose", "pick", "decide", "think", "know", "understand", "remember", "forget",
+"learn", "teach", "ask", "answer", "tell", "explain", "promise", "agree",
+"argue", "believe", "hope", "want", "need", "like", "love", "hate",
+"fear", "trust", "doubt", "plan", "try", "practice", "work", "rest",
+"clap", "wave", "point", "touch", "feel", "smell", "taste", "count",
+"measure", "weigh", "add", "subtract", "multiply", "divide", "change", "turn",
+"spin", "roll", "slide", "drag", "place", "wear", "use", "give",
+"take", "buy", "sell", "pay", "steal", "borrow", "return", "send",
+"receive", "bring", "keep", "share", "show", "call", "text", "email",
+"press", "click", "type", "download", "upload", "connect", "disconnect", "design",
+"invent", "repair", "collect", "gather", "hunt", "survive", "celebrate", "compete",
+"win", "capture", "release", "cross", "reach", "follow", "greet", "knock",
 
-    // ======================================================
-    // ADJECTIVES - 100
-    // ======================================================
+// ======================================================
+// ADJECTIVES - 100
+// ======================================================
 
-    "big", "small", "tiny", "huge", "tall", "short", "long", "fast",
-    "slow", "loud", "quiet", "hot", "cold", "warm", "cool", "wet",
-    "dry", "heavy", "light", "strong", "weak", "smart", "stupid", "funny",
-    "serious", "happy", "sad", "angry", "scared", "brave", "calm", "wild",
-    "crazy", "strange", "weird", "normal", "good", "bad", "great", "terrible",
-    "amazing", "awful", "beautiful", "ugly", "pretty", "handsome", "shiny", "dark",
-    "bright", "clean", "dirty", "rich", "poor", "old", "young", "new",
-    "ancient", "modern", "fresh", "stale", "soft", "hard", "sharp", "dull",
-    "smooth", "rough", "sweet", "sour", "salty", "bitter", "spicy", "friendly",
-    "mean", "kind", "rude", "polite", "lazy", "busy", "empty", "full",
-    "open", "closed", "broken", "perfect", "wrong", "right", "safe", "dangerous",
-    "famous", "mysterious", "powerful", "giant", "miniature", "electric", "magical", "invisible",
-    "ancient", "clever", "brilliant", "helpless",
+"big", "small", "tiny", "huge", "tall", "short", "long", "fast",
+"slow", "loud", "quiet", "hot", "cold", "warm", "cool", "wet",
+"dry", "heavy", "light", "strong", "weak", "smart", "stupid", "funny",
+"serious", "happy", "sad", "angry", "scared", "brave", "calm", "wild",
+"crazy", "strange", "weird", "normal", "good", "bad", "great", "terrible",
+"amazing", "awful", "beautiful", "ugly", "pretty", "handsome", "shiny", "dark",
+"bright", "clean", "dirty", "rich", "poor", "old", "young", "new",
+"ancient", "modern", "fresh", "stale", "soft", "hard", "sharp", "dull",
+"smooth", "rough", "sweet", "sour", "salty", "bitter", "spicy", "friendly",
+"mean", "kind", "rude", "polite", "lazy", "busy", "empty", "full",
+"open", "closed", "broken", "perfect", "wrong", "right", "safe", "dangerous",
+"famous", "mysterious", "powerful", "giant", "miniature", "electric", "magical", "invisible",
+"ancient", "clever", "brilliant", "helpless",
 
-    // ======================================================
-    // CONNECTORS - 100
-    // ======================================================
+// ======================================================
+// CONNECTORS - 100
+// ======================================================
 
-    "the", "a", "an", "my", "your", "his", "her", "our", "their", "this",
-    "that", "these", "those", "some", "any", "all", "every", "each", "no", "not",
-    "and", "or", "but", "because", "so", "if", "then", "than", "when", "while",
-    "before", "after", "until", "since", "although", "though", "unless", "where", "wherever", "why",
-    "how", "what", "who", "which", "whose", "with", "without", "for", "from", "to",
-    "into", "onto", "over", "under", "above", "below", "behind", "beside", "between", "through",
-    "around", "near", "inside", "outside", "against", "about", "like", "as", "at", "by",
-    "on", "off", "up", "down", "in", "out", "together", "again", "also", "just",
-    "only", "even", "still", "already", "always", "never", "ever", "very", "really",
-    "almost", "maybe", "perhaps", "instead", "however", "therefore", "finally", "too", "either", "neither"
+"the", "a", "an", "my", "your", "his", "her", "our", "their", "this",
+"that", "these", "those", "some", "any", "all", "every", "each", "no", "not",
+"and", "or", "but", "because", "so", "if", "then", "than", "when", "while",
+"before", "after", "until", "since", "although", "though", "unless", "where", "wherever", "why",
+"how", "what", "who", "which", "whose", "with", "without", "for", "from", "to",
+"into", "onto", "over", "under", "above", "below", "behind", "beside", "between", "through",
+"around", "near", "inside", "outside", "against", "about", "like", "as", "at", "by",
+"on", "off", "up", "down", "in", "out", "together", "again", "also", "just",
+"only", "even", "still", "already", "always", "never", "ever", "very", "really",
+"almost", "maybe", "perhaps", "instead", "however", "therefore", "finally", "too", "either", "neither"
 
 ];
 
@@ -493,23 +493,23 @@ const roomData =
 snapshot.val();
 
 const players =
-    roomData.players || {};
+roomData.players || {};
 
 const nameAlreadyTaken =
-    Object.values(players).some(
-        (player) =>
-            player.name &&
-            player.name.trim().toLowerCase() ===
-            playerName.trim().toLowerCase()
-    );
+Object.values(players).some(
+(player) =>
+player.name &&
+player.name.trim().toLowerCase() ===
+playerName.trim().toLowerCase()
+);
 
 if (nameAlreadyTaken) {
 
-    alert(
-        "That name is already being used in this room."
-    );
+alert(
+"That name is already being used in this room."
+);
 
-    return;
+return;
 }
 
 currentRoom =
@@ -773,7 +773,7 @@ updates[
 ] = "answering";
 
 updates[
-    `rooms/${currentRoom}/allSubmitted`
+`rooms/${currentRoom}/allSubmitted`
 ] = false;
 
 
@@ -807,24 +807,24 @@ error
 );
 
 document.querySelectorAll(".magnet").forEach(
-    (magnet) => {
-        magnet.style.pointerEvents = "";
-    }
+(magnet) => {
+magnet.style.pointerEvents = "";
+}
 );
 
 await update(
-    ref(database, `rooms/${currentRoom}`),
-    {
-        allSubmitted: false
-    }
+ref(database, `rooms/${currentRoom}`),
+{
+allSubmitted: false
+}
 );
 
 submitAnswerButton.disabled =
-                    false;
+false;
 
 submitAnswerButton.textContent =
-    "Submit Answer";
-    
+"Submit Answer";
+
 }
 }
 
@@ -914,61 +914,61 @@ error
 
 function watchPrompt() {
 
-    if (currentRoom === "") {
-        return;
-    }
+if (currentRoom === "") {
+return;
+}
 
-    const promptRef =
-        ref(
-            database,
-            `rooms/${currentRoom}/prompt`
-        );
+const promptRef =
+ref(
+database,
+`rooms/${currentRoom}/prompt`
+);
 
-    onValue(
-        promptRef,
-        (snapshot) => {
+onValue(
+promptRef,
+(snapshot) => {
 
-            const promptText =
-                snapshot.val();
+const promptText =
+snapshot.val();
 
-            if (!promptText) {
-                return;
-            }
+if (!promptText) {
+return;
+}
 
-            const promptElement =
-                document.getElementById("promptBox") ||
-                document.getElementById("promptText") ||
-                document.getElementById("judgePrompt");
+const promptElement =
+document.getElementById("promptBox") ||
+document.getElementById("promptText") ||
+document.getElementById("judgePrompt");
 
-            if (promptElement) {
+if (promptElement) {
 
-                promptElement.textContent =
-                    promptText;
+promptElement.textContent =
+promptText;
 
-            }
+}
 
-            // Only generate new magnets
-            // when the prompt actually changes
-            if (promptText !== lastPrompt) {
+// Only generate new magnets
+// when the prompt actually changes
+if (promptText !== lastPrompt) {
 
-                lastPrompt =
-                    promptText;
+lastPrompt =
+promptText;
 
-                // Don't generate magnets on judge.html
-                if (
-                    !window.location.pathname.endsWith(
-                        "judge.html"
-                    )
-                ) {
+// Don't generate magnets on judge.html
+if (
+!window.location.pathname.endsWith(
+"judge.html"
+)
+) {
 
-                    generateWords();
+generateWords();
 
-                }
+}
 
-            }
+}
 
-        }
-    );
+}
+);
 
 }
 
@@ -1036,10 +1036,10 @@ desktopDragStart
 wordBank.appendChild(magnet);
 
 submitAnswerButton.disabled =
-                    false;
+false;
 
 submitAnswerButton.textContent =
-    "Submit Answer";
+"Submit Answer";
 
 });
 }
@@ -1255,86 +1255,115 @@ let mobileOriginalNextSibling = null;
 
 function mobileDragStart(event) {
 
-    if (event.pointerType !== "touch") {
-        return;
-    }
+if (event.pointerType !== "touch") {
+return;
+}
 
-    event.preventDefault();
-    event.stopPropagation();
+event.preventDefault();
 
-    const magnet = event.currentTarget;
+const magnet = event.currentTarget;
 
-    const now = Date.now();
+const now = Date.now();
 
-    // Double tap
-    if (
-        lastTapMagnet === magnet &&
-        now - lastTapTime < 400
-    ) {
+// Double tap
+if (
+lastTapMagnet === magnet &&
+now - lastTapTime < 400
+) {
 
-        lastTapMagnet = null;
-        lastTapTime = 0;
 
-        // Make sure any previous drag is completely stopped
-        mobileDragging = false;
-        mobileDraggedMagnet = null;
-        mobilePointerId = null;
+moveMagnetToAnswerArea(magnet);
 
-        moveMagnetToAnswerArea(magnet);
+lastTapMagnet = null;
+lastTapTime = 0;
 
-        return;
-    }
+return;
+}
 
-    lastTapMagnet = magnet;
-    lastTapTime = now;
+// Remember this tap
+lastTapMagnet = magnet;
+lastTapTime = now;
 
-    magnet.draggable = false;
+event.preventDefault();
 
-    mobileDraggedMagnet = magnet;
-    mobileDragging = true;
-    mobilePointerId = event.pointerId;
+magnet.draggable = false;
 
-    const rect = magnet.getBoundingClientRect();
+mobileDraggedMagnet = magnet;
 
-    mobileOffsetX = event.clientX - rect.left;
-    mobileOffsetY = event.clientY - rect.top;
+mobileDragging = true;
 
-    mobileOriginalParent = magnet.parentNode;
-    mobileOriginalNextSibling = magnet.nextSibling;
+mobilePointerId =
+event.pointerId;
 
-    magnet.style.position = "fixed";
-    magnet.style.left = rect.left + "px";
-    magnet.style.top = rect.top + "px";
-    magnet.style.width = rect.width + "px";
-    magnet.style.height = rect.height + "px";
-    magnet.style.margin = "0";
-    magnet.style.zIndex = "10000";
-    magnet.style.opacity = "1";
-    magnet.style.pointerEvents = "none";
+const rect =
+magnet.getBoundingClientRect();
 
-    magnet.setPointerCapture(event.pointerId);
+mobileOffsetX =
+event.clientX -
+rect.left;
+
+mobileOffsetY =
+event.clientY -
+rect.top;
+
+mobileOriginalParent =
+magnet.parentNode;
+
+mobileOriginalNextSibling =
+magnet.nextSibling;
+
+magnet.style.position =
+"fixed";
+
+magnet.style.left =
+rect.left + "px";
+
+magnet.style.top =
+rect.top + "px";
+
+magnet.style.width =
+rect.width + "px";
+
+magnet.style.height =
+rect.height + "px";
+
+magnet.style.margin =
+"0";
+
+magnet.style.zIndex =
+"10000";
+
+magnet.style.opacity =
+"1";
+
+magnet.style.pointerEvents =
+"none";
+
+magnet.setPointerCapture(
+event.pointerId
+);
 }
 
 //teleport
 function moveMagnetToAnswerArea(magnet) {
 
-    if (allSubmitted === true) {
-        return;
-    }
+if (allSubmitted === true) {
+return;
+}
 
-    if (!answerArea) {
-        return;
-    }
+if (!answerArea) {
+return;
+}
 
-    answerArea.appendChild(magnet);
+answerArea.appendChild(magnet);
 
-    magnet.style.position = "absolute";
-    magnet.style.left = "10px";
-    magnet.style.top = "10px";
-    magnet.style.margin = "0";
+magnet.style.position = "absolute";
+magnet.style.left = "10px";
+magnet.style.top = "10px";
+magnet.style.margin = "0";
 
-    magnet.style.pointerEvents = "";
-    magnet.style.cursor = "grab";
+magnet.style.pointerEvents = "";
+magnet.style.cursor = "grab";
 
 }
 
@@ -1355,7 +1384,7 @@ return;
 
 event.preventDefault();
 
-  autoScrollWhileDragging(event);
+autoScrollWhileDragging(event);
 
 
 // Move the ACTUAL magnet.
@@ -1676,34 +1705,34 @@ mobileDragCancel,
 
 function autoScrollWhileDragging(event) {
 
-    const edgeSize = 80;   // How close to edge before scrolling
-    const scrollSpeed = 8; // Pixels per movement event
+const edgeSize = 80;   // How close to edge before scrolling
+const scrollSpeed = 8; // Pixels per movement event
 
-    const screenHeight =
-        window.innerHeight;
+const screenHeight =
+window.innerHeight;
 
-    // Near top of screen
-    if (event.clientY < edgeSize) {
+// Near top of screen
+if (event.clientY < edgeSize) {
 
-        window.scrollBy(
-            0,
-            -scrollSpeed
-        );
+window.scrollBy(
+0,
+-scrollSpeed
+);
 
-    }
+}
 
-    // Near bottom of screen
-    else if (
-        event.clientY >
-        screenHeight - edgeSize
-    ) {
+// Near bottom of screen
+else if (
+event.clientY >
+screenHeight - edgeSize
+) {
 
-        window.scrollBy(
-            0,
-            scrollSpeed
-        );
+window.scrollBy(
+0,
+scrollSpeed
+);
 
-    }
+}
 
 }
 
@@ -1743,58 +1772,58 @@ snapshot.val()
 
 function watchScores() {
 
-    if (currentRoom === "") {
-        return;
-    }
+if (currentRoom === "") {
+return;
+}
 
-    const playersRef =
-        ref(
-            database,
-            `rooms/${currentRoom}/players`
-        );
+const playersRef =
+ref(
+database,
+`rooms/${currentRoom}/players`
+);
 
-    onValue(
-        playersRef,
-        (snapshot) => {
+onValue(
+playersRef,
+(snapshot) => {
 
-            const players =
-                snapshot.val();
+const players =
+snapshot.val();
 
-            const scoresDisplay =
-                document.getElementById(
-                    "scoresDisplay"
-                );
+const scoresDisplay =
+document.getElementById(
+"scoresDisplay"
+);
 
-            if (
-                !scoresDisplay ||
-                !players
-            ) {
-                return;
-            }
+if (
+!scoresDisplay ||
+!players
+) {
+return;
+}
 
-            scoresDisplay.innerHTML = "";
+scoresDisplay.innerHTML = "";
 
-            Object.values(players).forEach(
-                (player) => {
+Object.values(players).forEach(
+(player) => {
 
-                    const scorePlayer =
-                        document.createElement("span");
+const scorePlayer =
+document.createElement("span");
 
-                    scorePlayer.className =
-                        "scorePlayer";
+scorePlayer.className =
+"scorePlayer";
 
-                    scorePlayer.textContent =
-                        `${player.name}: ${player.score || 0}`;
+scorePlayer.textContent =
+`${player.name}: ${player.score || 0}`;
 
-                    scoresDisplay.appendChild(
-                        scorePlayer
-                    );
+scoresDisplay.appendChild(
+scorePlayer
+);
 
-                }
-            );
+}
+);
 
-        }
-    );
+}
+);
 
 }
 
@@ -1836,35 +1865,35 @@ return;
 }
 
 const magnets =
-    Array.from(
-        document.querySelectorAll(
-            "#answerArea .magnet"
-        )
-    );
+Array.from(
+document.querySelectorAll(
+"#answerArea .magnet"
+)
+);
 
 
 // Get position of every magnet
 const positionedMagnets =
-    magnets.map(
-        (magnet) => {
+magnets.map(
+(magnet) => {
 
-            const rect =
-                magnet.getBoundingClientRect();
+const rect =
+magnet.getBoundingClientRect();
 
-            return {
-                magnet: magnet,
-                x: rect.left,
-                y: rect.top,
-                word: magnet.textContent.trim()
-            };
+return {
+magnet: magnet,
+x: rect.left,
+y: rect.top,
+word: magnet.textContent.trim()
+};
 
-        }
-    );
+}
+);
 
 
 // Sort from top to bottom
 positionedMagnets.sort(
-    (a, b) => a.y - b.y
+(a, b) => a.y - b.y
 );
 
 
@@ -1876,84 +1905,84 @@ const rowTolerance = 25;
 
 // Put each magnet into a row
 for (
-    const item of positionedMagnets
+const item of positionedMagnets
 ) {
 
-    let row = null;
+let row = null;
 
 
-    // Find an existing row close
-    // to this magnet's vertical position
-    for (
-        const existingRow of rows
-    ) {
+// Find an existing row close
+// to this magnet's vertical position
+for (
+const existingRow of rows
+) {
 
-        if (
-            Math.abs(
-                item.y -
-                existingRow.y
-            ) <= rowTolerance
-        ) {
+if (
+Math.abs(
+item.y -
+existingRow.y
+) <= rowTolerance
+) {
 
-            row = existingRow;
-            break;
+row = existingRow;
+break;
 
-        }
+}
 
-    }
-
-
-    // No matching row -> create one
-    if (!row) {
-
-        row = {
-            y: item.y,
-            magnets: []
-        };
-
-        rows.push(row);
-
-    }
+}
 
 
-    row.magnets.push(item);
+// No matching row -> create one
+if (!row) {
+
+row = {
+y: item.y,
+magnets: []
+};
+
+rows.push(row);
+
+}
+
+
+row.magnets.push(item);
 
 }
 
 
 // Sort rows vertically
 rows.sort(
-    (a, b) => a.y - b.y
+(a, b) => a.y - b.y
 );
 
 
 // Sort magnets inside each row
 // from left to right
 rows.forEach(
-    (row) => {
+(row) => {
 
-        row.magnets.sort(
-            (a, b) =>
-                a.x - b.x
-        );
+row.magnets.sort(
+(a, b) =>
+a.x - b.x
+);
 
-    }
+}
 );
 
 
 // Create the final answer
 const answer =
-    rows
-        .map(
-            (row) =>
-                row.magnets
-                    .map(
-                        (item) =>
-                            item.word
-                    )
-                    .join(" ")
-        )
-        .join("\n");
+rows
+.map(
+(row) =>
+row.magnets
+.map(
+(item) =>
+item.word
+)
+.join(" ")
+)
+.join("\n");
 
 if (answer === "") {
 
@@ -1986,9 +2015,9 @@ submitAnswerButton.disabled =
 true;
 
 document.querySelectorAll(".magnet").forEach(
-    (magnet) => {
-        magnet.style.pointerEvents = "none";
-    }
+(magnet) => {
+magnet.style.pointerEvents = "none";
+}
 );
 
 submitAnswerButton.textContent =
@@ -2013,77 +2042,77 @@ error
 // ======================================================
 
 const editAnswerButton =
-    document.getElementById("editAnswerButton");
+document.getElementById("editAnswerButton");
 
 if (editAnswerButton) {
 
-    editAnswerButton.addEventListener(
-        "click",
-        async () => {
+editAnswerButton.addEventListener(
+"click",
+async () => {
 
-            // Check Firebase for the current value
-            const allSubmittedSnapshot =
-                await get(
-                    ref(
-                        database,
-                        `rooms/${currentRoom}/allSubmitted`
-                    )
-                );
+// Check Firebase for the current value
+const allSubmittedSnapshot =
+await get(
+ref(
+database,
+`rooms/${currentRoom}/allSubmitted`
+)
+);
 
-            const allSubmitted =
-                allSubmittedSnapshot.val();
-
-
-            // Don't allow editing after everyone submitted
-            if (allSubmitted === true) {
-
-                console.log(
-                    "Editing locked: everyone has submitted."
-                );
-
-                return;
-            }
+const allSubmitted =
+allSubmittedSnapshot.val();
 
 
-            // Enable Submit Answer
-            if (submitAnswerButton) {
+// Don't allow editing after everyone submitted
+if (allSubmitted === true) {
 
-                submitAnswerButton.disabled =
-                    false;
+console.log(
+"Editing locked: everyone has submitted."
+);
 
-                submitAnswerButton.textContent =
-                    "Submit Answer";
-
-            }
+return;
+}
 
 
-            // Enable the magnets
-            const magnets =
-                document.querySelectorAll(
-                    "#answerArea .magnet, #wordBank .magnet"
-                );
+// Enable Submit Answer
+if (submitAnswerButton) {
 
-            magnets.forEach(
-                (magnet) => {
+submitAnswerButton.disabled =
+false;
 
-                    magnet.style.pointerEvents =
-                        "";
+submitAnswerButton.textContent =
+"Submit Answer";
 
-                    magnet.style.cursor =
-                        "grab";
+}
 
-                    magnet.draggable =
-                        true;
 
-                }
-            );
+// Enable the magnets
+const magnets =
+document.querySelectorAll(
+"#answerArea .magnet, #wordBank .magnet"
+);
 
-            console.log(
-                "Answer editing enabled."
-            );
+magnets.forEach(
+(magnet) => {
 
-        }
-    );
+magnet.style.pointerEvents =
+"";
+
+magnet.style.cursor =
+"grab";
+
+magnet.draggable =
+true;
+
+}
+);
+
+console.log(
+"Answer editing enabled."
+);
+
+}
+);
 
 }
 
@@ -2370,36 +2399,33 @@ state
 ) {
 
 const roomRefer =
-        ref(
-            database,
-            `rooms/${judgeRoomCode}`
-        );
+ref(
+database,
+`rooms/${judgeRoomCode}`
+);
 
 onValue(
-    roomRefer,
-    (snapshot) => {
+roomRefer,
+(snapshot) => {
 
-        const room = snapshot.val();
+const room = snapshot.val();
 
-        if (!room) {
-            return;
-        }
+if (!room) {
+return;
+}
 
-        if (room.state === "submitted") {
-            if (allSubmitted === true){
-                return;
-            }
+if (room.state === "submitted") {
 
-            update(
-                ref(database, `rooms/${judgeRoomCode}`),
-                {
-                    allSubmitted: true
-                }
-            );
+update(
+ref(database, `rooms/${judgeRoomCode}`),
+{
+allSubmitted: true
+}
+);
 
-        }
+}
 
-    }
+}
 );
 
 console.log(allSubmitted);
@@ -2472,26 +2498,26 @@ return;
 }
 
 
-    const shuffledPlayers =
-    [...submittedPlayers];
+const shuffledPlayers =
+[...submittedPlayers];
 
 for (
-    let i = shuffledPlayers.length - 1;
-    i > 0;
-    i--
+let i = shuffledPlayers.length - 1;
+i > 0;
+i--
 ) {
-    const j =
-        Math.floor(
-            Math.random() * (i + 1)
-        );
+const j =
+Math.floor(
+Math.random() * (i + 1)
+);
 
-    [
-        shuffledPlayers[i],
-        shuffledPlayers[j]
-    ] = [
-        shuffledPlayers[j],
-        shuffledPlayers[i]
-    ];
+[
+shuffledPlayers[i],
+shuffledPlayers[j]
+] = [
+shuffledPlayers[j],
+shuffledPlayers[i]
+];
 }
 
 // Everyone answered
@@ -2501,10 +2527,10 @@ judgeRoomCode
 );
 
 update(
-    ref(database, `rooms/${currentRoom}`),
-    {
-        state: "submitted"
-    }
+ref(database, `rooms/${currentRoom}`),
+{
+state: "submitted"
+}
 );
 
 }
@@ -2541,11 +2567,11 @@ function displayJudgeAnswers(
 submittedPlayers,
 judgeRoomCode
 ) {
-    
+
 document.querySelectorAll(".magnet").forEach(
-    (magnet) => {
-        magnet.style.pointerEvents = "none";
-    }
+(magnet) => {
+magnet.style.pointerEvents = "none";
+}
 );
 
 const container =
@@ -2680,99 +2706,99 @@ answerCard
 // ======================================================
 
 async function chooseWinner(
-    judgeRoomCode,
-    winningPlayerId
+judgeRoomCode,
+winningPlayerId
 ) {
 
-    try {
+try {
 
-        // Get the winning player's current score
-        const playerRef =
-            ref(
-                database,
-                `rooms/${judgeRoomCode}/players/${winningPlayerId}`
-            );
+// Get the winning player's current score
+const playerRef =
+ref(
+database,
+`rooms/${judgeRoomCode}/players/${winningPlayerId}`
+);
 
-        const playerSnapshot =
-            await get(playerRef);
+const playerSnapshot =
+await get(playerRef);
 
-        if (!playerSnapshot.exists()) {
+if (!playerSnapshot.exists()) {
 
-            console.error(
-                "Winning player not found."
-            );
+console.error(
+"Winning player not found."
+);
 
-            return;
-        }
+return;
+}
 
-        const player =
-            playerSnapshot.val();
+const player =
+playerSnapshot.val();
 
-        const currentScore =
-            player.score || 0;
+const currentScore =
+player.score || 0;
 
-        const newScore =
-            currentScore + 1;
-
-
-        // Update winner, state, and score together
-        const updates = {};
-
-        updates[
-            `rooms/${judgeRoomCode}/winner`
-        ] = winningPlayerId;
-
-        updates[
-            `rooms/${judgeRoomCode}/state`
-        ] = "winner";
-
-        updates[
-            `rooms/${judgeRoomCode}/players/${winningPlayerId}/score`
-        ] = newScore;
+const newScore =
+currentScore + 1;
 
 
-        await update(
-            ref(database),
-            updates
-        );
+// Update winner, state, and score together
+const updates = {};
+
+updates[
+`rooms/${judgeRoomCode}/winner`
+] = winningPlayerId;
+
+updates[
+`rooms/${judgeRoomCode}/state`
+] = "winner";
+
+updates[
+`rooms/${judgeRoomCode}/players/${winningPlayerId}/score`
+] = newScore;
 
 
-        console.log(
-            "Winner selected:",
-            winningPlayerId
-        );
-
-        console.log(
-            "New score:",
-            newScore
-        );
+await update(
+ref(database),
+updates
+);
 
 
-        // Disable judge buttons
-        document
-            .querySelectorAll(".chooseAnswer")
-            .forEach(
-                (button) => {
-                    button.disabled = true;
-                }
-            );
+console.log(
+"Winner selected:",
+winningPlayerId
+);
+
+console.log(
+"New score:",
+newScore
+);
 
 
-        // Return judge to game
-        window.location.replace(
-            `game.html?room=${judgeRoomCode}` +
-            `&name=${encodeURIComponent(playerName)}` +
-            `&player=${playerId}`
-        );
+// Disable judge buttons
+document
+.querySelectorAll(".chooseAnswer")
+.forEach(
+(button) => {
+button.disabled = true;
+}
+);
 
-    } catch (error) {
 
-        console.error(
-            "Error selecting winner:",
-            error
-        );
+// Return judge to game
+window.location.replace(
+`game.html?room=${judgeRoomCode}` +
+`&name=${encodeURIComponent(playerName)}` +
+`&player=${playerId}`
+);
 
-    }
+} catch (error) {
+
+console.error(
+"Error selecting winner:",
+error
+);
+
+}
 
 }
 
@@ -2850,7 +2876,7 @@ console.log(
 winningPlayer.answer
 );
 
-watchRoundResults(
+showWinner(
 winningPlayer.name,
 winningPlayer.answer
 );
@@ -2866,74 +2892,164 @@ winningPlayer.answer
 
 function watchRoundResults() {
 
-    if (currentRoom === "") return;
+if (currentRoom === "") {
+return;
+}
 
-    const roomRef = ref(
-        database,
-        `rooms/${currentRoom}`
-    );
+const roomRef =
+ref(
+database,
+`rooms/${currentRoom}`
+);
 
-    onValue(roomRef, (snapshot) => {
+onValue(
+roomRef,
+(snapshot) => {
 
-        const room = snapshot.val();
+const room =
+snapshot.val();
 
-        if (!room) return;
+if (!room) {
+return;
+}
 
-        const resultsDisplay =
-            document.getElementById("roundResults");
+const results =
+document.getElementById(
+"roundResults"
+);
 
-        if (!resultsDisplay) return;
+if (!results) {
+return;
+}
 
-        // Only show results when the round is over
-        if (room.state !== "winner") {
-            resultsDisplay.innerHTML = "";
-            return;
-        }
 
-        const players = room.players || {};
-        const winnerId = room.winner;
+// New round has started
+if (room.state === "answering") {
 
-        resultsDisplay.innerHTML = "";
+results.innerHTML = "";
 
-        Object.entries(players).forEach(
-            ([playerId, player]) => {
+results.style.display =
+"none";
 
-                // Don't show the judge as a contestant result
-                if (playerId === room.judgeId) {
-                    return;
-                }
+return;
+}
 
-                const result = document.createElement("div");
-                result.className = "roundResult";
 
-                const name = document.createElement("span");
-                name.textContent = player.name;
+// Don't show results yet
+if (
+room.state !== "winner" ||
+!room.winner ||
+!room.players
+) {
 
-                const answer = document.createElement("span");
-                answer.textContent =
-                    player.answer || "(No answer)";
+return;
+}
 
-                if (playerId === winnerId) {
-                    result.classList.add("winner");
 
-                    const winnerText =
-                        document.createElement("strong");
+// Show results
+results.innerHTML = "";
 
-                    winnerText.textContent = " WINNER";
+results.style.display =
+"block";
 
-                    result.appendChild(name);
-                    result.appendChild(answer);
-                    result.appendChild(winnerText);
 
-                } else {
-                    result.appendChild(name);
-                    result.appendChild(answer);
-                }
+const title =
+document.createElement("h2");
 
-                resultsDisplay.appendChild(result);
-            }
-        );
-    });
+title.textContent =
+"Round Results";
+
+results.appendChild(
+title
+);
+
+
+// Get all players except the judge
+const contestants =
+Object.entries(
+room.players
+).filter(
+([id]) =>
+id !== room.judgeId
+);
+)
+
+
+contestants.forEach(
+([playerId, player]) => {
+
+const answerCard =
+document.createElement(
+"div"
+);
+
+answerCard.classList.add(
+"roundResultCard"
+);
+
+
+const name =
+document.createElement(
+"h3"
+);
+
+name.textContent =
+player.name;
+
+
+const answer =
+document.createElement(
+"p"
+);
+
+answer.textContent =
+player.answer ||
+"No answer";
+
+
+// Highlight winner
+if (
+playerId === room.winner
+) {
+
+answerCard.classList.add(
+"winningAnswer"
+);
+
+const winnerLabel =
+document.createElement(
+"strong"
+);
+
+winnerLabel.textContent =
+"WINNER";
+
+answerCard.appendChild(
+winnerLabel
+);
+
+}
+
+
+answerCard.appendChild(
+name
+);
+
+answerCard.appendChild(
+answer
+);
+
+
+results.appendChild(
+answerCard
+);
+
+}
+);
+
+}
+);
+
 }
 
 
@@ -3002,39 +3118,39 @@ getNewPrompt
 // ======================================================
 function watchAllSubmitted() {
 
-    const allSubmittedRef = ref(
-        database,
-        `rooms/${currentRoom}/allSubmitted`
-    );
+const allSubmittedRef = ref(
+database,
+`rooms/${currentRoom}/allSubmitted`
+);
 
-    onValue(
-        allSubmittedRef,
-        (snapshot) => {
+onValue(
+allSubmittedRef,
+(snapshot) => {
 
-            const allSubmitted =
-                snapshot.val();
+const allSubmitted =
+snapshot.val();
 
-            if (allSubmitted) {
+if (allSubmitted) {
 
-                document
-                    .querySelectorAll(".magnet")
-                    .forEach((magnet) => {
+document
+.querySelectorAll(".magnet")
+.forEach((magnet) => {
 
-                        magnet.style.pointerEvents =
-                            "none";
+magnet.style.pointerEvents =
+"none";
 
-                        magnet.style.cursor =
-                            "default";
+magnet.style.cursor =
+"default";
 
-                        magnet.draggable =
-                            false;
+magnet.draggable =
+false;
 
-                    });
+});
 
-            }
+}
 
-        }
-    );
+}
+);
 
 }
 
@@ -3071,49 +3187,49 @@ loadJudgeRoom();
 // ======================================================
 
 const exitRoomButton =
-    document.getElementById("exitRoomButton");
+document.getElementById("exitRoomButton");
 
 if (exitRoomButton) {
 
-    exitRoomButton.addEventListener(
-        "click",
-        async () => {
+exitRoomButton.addEventListener(
+"click",
+async () => {
 
-            if (
-                currentRoom === "" ||
-                playerId === ""
-            ) {
-                window.location.href = "index.html";
-                return;
-            }
+if (
+currentRoom === "" ||
+playerId === ""
+) {
+window.location.href = "index.html";
+return;
+}
 
-            try {
+try {
 
-                await set(
-                    ref(
-                        database,
-                        `rooms/${currentRoom}/players/${playerId}`
-                    ),
-                    null
-                );
+await set(
+ref(
+database,
+`rooms/${currentRoom}/players/${playerId}`
+),
+null
+);
 
-                console.log(
-                    "Player left room."
-                );
+console.log(
+"Player left room."
+);
 
-                window.location.href =
-                    "index.html";
+window.location.href =
+"index.html";
 
-            } catch (error) {
+} catch (error) {
 
-                console.error(
-                    "Error leaving room:",
-                    error
-                );
+console.error(
+"Error leaving room:",
+error
+);
 
-            }
+}
 
-        }
-    );
+}
+);
 
 }
