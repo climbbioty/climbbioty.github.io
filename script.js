@@ -1215,11 +1215,7 @@ let mobileOriginalNextSibling = null;
 // ======================================================
 
 function mobileDragStart(event) {
-
-    // Only use this system for touch
-    if (event.pointerType !== "touch") {
-        return;
-    }
+    if (event.pointerType !== "touch") return;
 
     event.preventDefault();
 
@@ -1237,6 +1233,10 @@ function mobileDragStart(event) {
     mobileOriginalParent = magnet.parentNode;
     mobileOriginalNextSibling = magnet.nextSibling;
 
+    // Prevent the page from scrolling while dragging
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
     magnet.style.position = "fixed";
     magnet.style.left = rect.left + "px";
     magnet.style.top = rect.top + "px";
@@ -1247,9 +1247,9 @@ function mobileDragStart(event) {
     magnet.style.opacity = "1";
     magnet.style.pointerEvents = "none";
 
-    magnet.setPointerCapture(event.pointerId);
-
-    console.log("TOUCH DRAG STARTED");
+    if (magnet.setPointerCapture) {
+        magnet.setPointerCapture(event.pointerId);
+    }
 }
 
 // ======================================================
@@ -1291,6 +1291,9 @@ mobileOffsetY
 // ======================================================
 
 function mobileDragEnd(event) {
+
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
 
 if (
 !mobileDragging ||
@@ -1543,6 +1546,9 @@ mobileOffsetY =
 // ======================================================
 
 function mobileDragCancel(event) {
+
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
 
 if (
 !mobileDragging ||
