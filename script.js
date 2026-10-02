@@ -2355,6 +2355,18 @@ if (!players) {
 return;
 }
 
+const roomReference =
+ref(
+database,
+`rooms/${judgeRoomCode}`
+);
+
+onValue(
+roomReference,
+(snapshot) => {
+
+const room = snapshot.val();
+
 if (room.state !== "answering"){
     return;
 }
