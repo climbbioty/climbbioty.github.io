@@ -3088,41 +3088,30 @@ getNewPrompt
 // Watch All Submitted
 // ======================================================
 function watchAllSubmitted() {
+    const allSubmittedRef = ref(
+        database,
+        `rooms/${currentRoom}/allSubmitted`
+    );
 
-const allSubmittedRef = ref(
-database,
-`rooms/${currentRoom}/allSubmitted`
-);
+    onValue(allSubmittedRef, (snapshot) => {
+        allSubmitted = snapshot.val() === true;
 
-onValue(
-allSubmittedRef,
-(snapshot) => {
+        document.querySelectorAll(".magnet").forEach((magnet) => {
 
-const allSubmitted =
-snapshot.val();
+            if (allSubmitted) {
+                magnet.style.pointerEvents = "none";
+                magnet.style.cursor = "default";
+                magnet.draggable = false;
 
-if (allSubmitted) {
+            } else {
+                magnet.style.pointerEvents = "";
+                magnet.style.cursor = "grab";
 
-document
-.querySelectorAll(".magnet")
-.forEach((magnet) => {
-
-magnet.style.pointerEvents =
-"none";
-
-magnet.style.cursor =
-"default";
-
-magnet.draggable =
-false;
-
-});
-
-}
-
-}
-);
-
+                magnet.draggable =
+                    !window.matchMedia("(pointer: coarse)").matches;
+            }
+        });
+    });
 }
 
 
