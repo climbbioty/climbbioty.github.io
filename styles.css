@@ -47,6 +47,8 @@ span {
   overflow: hidden;
 
   color: white;
+
+  touch-action: none;
 }
 
 #wordBank {
@@ -62,6 +64,8 @@ span {
   min-height: 120px;
 
   padding: 10px;
+
+  touch-action: none;
 }
 
 #wordBank div {
