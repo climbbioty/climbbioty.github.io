@@ -1247,6 +1247,8 @@ function mobileDragStart(event) {
     magnet.style.opacity = "1";
     magnet.style.pointerEvents = "none";
 
+    magnet.setPointerCapture(event.pointerId);
+
     console.log("TOUCH DRAG STARTED");
 }
 
@@ -1265,8 +1267,6 @@ return;
 
 
 event.preventDefault();
-
-autoScrollWhileDragging(event);
 
 
 // Move the ACTUAL magnet.
