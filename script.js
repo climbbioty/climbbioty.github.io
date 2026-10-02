@@ -1250,91 +1250,34 @@ let mobileOriginalNextSibling = null;
 // ======================================================
 
 function mobileDragStart(event) {
-
     event.preventDefault();
 
-    const magnet =
-        event.currentTarget;
-
-    console.log(
-        "Mobile magnet touched:",
-        magnet.textContent,
-        "pointer type:",
-        event.pointerType
-    );
+    const magnet = event.currentTarget;
 
     magnet.draggable = false;
 
-    mobileDraggedMagnet =
-        magnet;
+    mobileDraggedMagnet = magnet;
+    mobileDragging = true;
+    mobilePointerId = event.pointerId;
 
-    mobileDragging =
-        true;
+    const rect = magnet.getBoundingClientRect();
 
-    mobilePointerId =
-        event.pointerId;
+    mobileOffsetX = event.clientX - rect.left;
+    mobileOffsetY = event.clientY - rect.top;
 
+    mobileOriginalParent = magnet.parentNode;
+    mobileOriginalNextSibling = magnet.nextSibling;
 
-    const rect =
-        magnet.getBoundingClientRect();
-
-
-    mobileOffsetX =
-        event.clientX -
-        rect.left;
-
-    mobileOffsetY =
-        event.clientY -
-        rect.top;
-
-
-    mobileOriginalParent =
-        magnet.parentNode;
-
-    mobileOriginalNextSibling =
-        magnet.nextSibling;
-
-
-    magnet.style.position =
-        "fixed";
-
-    magnet.style.left =
-        rect.left + "px";
-
-    magnet.style.top =
-        rect.top + "px";
-
-    magnet.style.width =
-        rect.width + "px";
-
-    magnet.style.height =
-        rect.height + "px";
-
-    magnet.style.margin =
-        "0";
-
-    magnet.style.zIndex =
-        "10000";
-
-    magnet.style.opacity =
-        "1";
-
-    magnet.style.pointerEvents =
-        "none";
-
-
-    if (
-        magnet.setPointerCapture
-    ) {
-
-        magnet.setPointerCapture(
-            event.pointerId
-        );
-
-    }
-
+    magnet.style.position = "fixed";
+    magnet.style.left = rect.left + "px";
+    magnet.style.top = rect.top + "px";
+    magnet.style.width = rect.width + "px";
+    magnet.style.height = rect.height + "px";
+    magnet.style.margin = "0";
+    magnet.style.zIndex = "10000";
+    magnet.style.opacity = "1";
+    magnet.style.pointerEvents = "none";
 }
-
 
 // ======================================================
 // MOVE MOBILE MAGNET
