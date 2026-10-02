@@ -1258,15 +1258,14 @@ function mobileDragStart(event) {
 
 function mobileDragMove(event) {
 
+event.preventDefault();
+
 if (
 !mobileDragging ||
 event.pointerId !== mobilePointerId
 ) {
 return;
 }
-
-
-event.preventDefault();
 
 
 // Move the ACTUAL magnet.
