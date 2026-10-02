@@ -2296,168 +2296,193 @@ promptText
 }
 
 
-// ======================================================
-// WATCH JUDGE ANSWERS
-// ======================================================
-
 function watchJudgeAnswers(
-judgeRoomCode,
-judgePlayerId,
-state
+    judgeRoomCode,
+    judgePlayerId
 ) {
 
-const roomRefer =
-ref(
-database,
-`rooms/${judgeRoomCode}`
-);
-
-onValue(
-roomRefer,
-(snapshot) => {
-
-const room = snapshot.val();
-
-if (!room) {
-return;
-}
-
-if (room.state === "submitted") {
-
-update(
-ref(database, `rooms/${judgeRoomCode}`),
-{
-allSubmitted: true
-}
-);
-
-}
-
-}
-);
-
-console.log(allSubmitted);
-
-const playersRef =
-ref(
-database,
-`rooms/${judgeRoomCode}/players`
-);
-
-onValue(
-playersRef,
-(snapshot) => {
-
-const players =
-snapshot.val();
-
-if (!players) {
-return;
-}
-
-const roomReference =
-ref(
-database,
-`rooms/${judgeRoomCode}`
-);
-
-roomReference,
-(snapshot) => {
-
-const room = snapshot.val();
-
-if (room.state !== "answering"){
-    return;
-}
-
-// Everyone except judge
-const contestants =
-Object.entries(
-players
-).filter(
-([id]) =>
-id !== judgePlayerId
-);
-
-// Only players with answers
-const submittedPlayers =
-contestants.filter(
-([id, player]) =>
-player.answer &&
-player.answer
-.toString()
-.trim() !== ""
-);
-
-const statusElement =
-document.getElementById(
-"answerStatus"
-);
-
-if (statusElement) {
-
-statusElement.textContent =
-`${submittedPlayers.length} of ` +
-`${contestants.length} players have submitted.`;
-
-}
-
-console.log(
-"Submitted:",
-submittedPlayers.length,
-"of",
-contestants.length
-);
-
-// Wait until everyone answers
-if (
-submittedPlayers.length <
-contestants.length
-) {
-
-clearJudgeAnswers();
-
-return;
-}
+    const roomRef =
+        ref(
+            database,
+            `rooms/${judgeRoomCode}`
+        );
 
 
-const shuffledPlayers =
-[...submittedPlayers];
+    // Watch the room state
+    onValue(
+        roomRef,
+        (snapshot) => {
 
-for (
-let i = shuffledPlayers.length - 1;
-i > 0;
-i--
-) {
-const j =
-Math.floor(
-Math.random() * (i + 1)
-);
+            const room =
+                snapshot.val();
 
-[
-shuffledPlayers[i],
-shuffledPlayers[j]
-] = [
-shuffledPlayers[j],
-shuffledPlayers[i]
-];
-}
+            if (!room) {
+                return;
+            }
 
-// Everyone answered
-displayJudgeAnswers(
-shuffledPlayers,
-judgeRoomCode
-);
+            if (room.state === "submitted") {
 
-update(
-ref(database, `rooms/${currentRoom}`),
-{
-state: "submitted"
-}
-);
+                update(
+                    ref(
+                        database,
+                        `rooms/${judgeRoomCode}`
+                    ),
+                    {
+                        allSubmitted: true
+                    }
+                );
 
-}
-);
+            }
+
+        }
+    );
+
+
+    const playersRef =
+        ref(
+            database,
+            `rooms/${judgeRoomCode}/players`
+        );
+
+
+    onValue(
+        playersRef,
+        async (snapshot) => {
+
+            const players =
+                snapshot.val();
+
+            if (!players) {
+                return;
+            }
+
+
+            // Check the current room state BEFORE doing anything
+            const roomSnapshot =
+                await get(
+                    ref(
+                        database,
+                        `rooms/${judgeRoomCode}`
+                    )
+                );
+
+            const room =
+                roomSnapshot.val();
+
+            if (!room) {
+                return;
+            }
+
+
+            // IMPORTANT:
+            // Once the winner has been selected,
+            // do not change the state anymore.
+            if (room.state !== "answering") {
+                return;
+            }
+
+
+            // Everyone except judge
+            const contestants =
+                Object.entries(
+                    players
+                ).filter(
+                    ([id]) =>
+                        id !== judgePlayerId
+                );
+
+
+            // Only players with answers
+            const submittedPlayers =
+                contestants.filter(
+                    ([id, player]) =>
+                        player.answer &&
+                        player.answer
+                            .toString()
+                            .trim() !== ""
+                );
+
+
+            const statusElement =
+                document.getElementById(
+                    "answerStatus"
+                );
+
+            if (statusElement) {
+
+                statusElement.textContent =
+                    `${submittedPlayers.length} of ` +
+                    `${contestants.length} players have submitted.`;
+
+            }
+
+
+            console.log(
+                "Submitted:",
+                submittedPlayers.length,
+                "of",
+                contestants.length
+            );
+
+
+            // Wait until everyone answers
+            if (
+                submittedPlayers.length <
+                contestants.length
+            ) {
+
+                clearJudgeAnswers();
+
+                return;
+            }
+
+
+            // Shuffle answers
+            const shuffledPlayers =
+                [...submittedPlayers];
+
+            for (
+                let i = shuffledPlayers.length - 1;
+                i > 0;
+                i--
+            ) {
+
+                const j =
+                    Math.floor(
+                        Math.random() * (i + 1)
+                    );
+
+                [
+                    shuffledPlayers[i],
+                    shuffledPlayers[j]
+                ] = [
+                    shuffledPlayers[j],
+                    shuffledPlayers[i]
+                ];
+
+            }
+
+
+            // Everyone answered
+            displayJudgeAnswers(
+                shuffledPlayers,
+                judgeRoomCode
+            );
+
+
+            // Mark the round as ready for judging
+            await update(
+                ref(
+                    database,
+                    `rooms/${judgeRoomCode}`
+                ),
+                {
+                    state: "submitted"
+                }
+            );
+
+        }
+    );
 
 }
 
