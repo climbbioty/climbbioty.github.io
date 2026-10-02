@@ -1215,9 +1215,11 @@ let mobileOriginalNextSibling = null;
 // ======================================================
 
 function mobileDragStart(event) {
+    event.preventDefault();
+
+    
     if (event.pointerType !== "touch") return;
 
-    event.preventDefault();
 
     const magnet = event.currentTarget;
 
