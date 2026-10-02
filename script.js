@@ -2355,6 +2355,10 @@ if (!players) {
 return;
 }
 
+if (room.state !== "answering"){
+    return;
+}
+
 // Everyone except judge
 const contestants =
 Object.entries(
