@@ -1257,7 +1257,6 @@ event.pointerType !== "touch"
 return;
 }
 
-
 event.preventDefault();
 
 
@@ -1267,8 +1266,7 @@ event.currentTarget;
 
 // Prevent native HTML dragging
 magnet.draggable =
-false;
-
+true;
 
 mobileDraggedMagnet =
 magnet;
