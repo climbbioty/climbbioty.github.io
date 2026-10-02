@@ -972,71 +972,34 @@ generateWords();
 // ======================================================
 
 function generateWords() {
+    if (!wordBank || !answerArea) return;
 
-if (!wordBank || !answerArea) {
-return;
-}
+    wordBank.innerHTML = "";
+    answerArea.innerHTML = "";
 
-wordBank.innerHTML = "";
-answerArea.innerHTML = "";
+    const shuffled = [...words];
+    shuffled.sort(() => Math.random() - 0.5);
 
-const shuffled = [...words];
+    const hand = shuffled.slice(0, 40);
 
-shuffled.sort(
-() => Math.random() - 0.5
-);
+    hand.forEach((word) => {
+        const magnet = document.createElement("div");
 
-const hand = shuffled.slice(0, 40);
+        magnet.textContent = word;
+        magnet.classList.add("magnet");
 
-hand.forEach((word) => {
+        // Desktop drag
+        magnet.draggable = true;
+        magnet.addEventListener("dragstart", desktopDragStart);
 
-const magnet =
-document.createElement("div");
+        // Mobile drag
+        magnet.addEventListener("pointerdown", mobileDragStart);
 
-magnet.textContent = word;
+        wordBank.appendChild(magnet);
+    });
 
-magnet.classList.add("magnet");
-
-const isTouchDevice =
-window.matchMedia("(pointer: coarse)").matches;
-
-if (
-window.matchMedia(
-"(pointer: coarse)"
-).matches
-) {
-
-// Phone/tablet
-magnet.draggable =
-false;
-
-magnet.addEventListener(
-"pointerdown",
-mobileDragStart
-);
-
-} else {
-
-// Computer
-magnet.draggable =
-true;
-
-magnet.addEventListener(
-"dragstart",
-desktopDragStart
-);
-
-}
-
-wordBank.appendChild(magnet);
-
-submitAnswerButton.disabled =
-false;
-
-submitAnswerButton.textContent =
-    "Submit Answer";
-
-});
+    submitAnswerButton.disabled = false;
+    submitAnswerButton.textContent = "Submit Answer";
 }
 
 // ======================================================
@@ -1250,11 +1213,15 @@ let mobileOriginalNextSibling = null;
 // ======================================================
 
 function mobileDragStart(event) {
+
+    // Only use this system for touch
+    if (event.pointerType !== "touch") {
+        return;
+    }
+
     event.preventDefault();
 
     const magnet = event.currentTarget;
-
-    magnet.draggable = false;
 
     mobileDraggedMagnet = magnet;
     mobileDragging = true;
@@ -1277,6 +1244,8 @@ function mobileDragStart(event) {
     magnet.style.zIndex = "10000";
     magnet.style.opacity = "1";
     magnet.style.pointerEvents = "none";
+
+    console.log("TOUCH DRAG STARTED");
 }
 
 // ======================================================
