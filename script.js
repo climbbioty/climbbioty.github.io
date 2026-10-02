@@ -2361,7 +2361,6 @@ database,
 `rooms/${judgeRoomCode}`
 );
 
-onValue(
 roomReference,
 (snapshot) => {
 
