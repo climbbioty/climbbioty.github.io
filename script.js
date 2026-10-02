@@ -1215,44 +1215,94 @@ let mobileOriginalNextSibling = null;
 // ======================================================
 
 function mobileDragStart(event) {
-    event.preventDefault();
 
-    
-    if (event.pointerType !== "touch") return;
-
-
-    const magnet = event.currentTarget;
-
-    mobileDraggedMagnet = magnet;
-    mobileDragging = true;
-    mobilePointerId = event.pointerId;
-
-    const rect = magnet.getBoundingClientRect();
-
-    mobileOffsetX = event.clientX - rect.left;
-    mobileOffsetY = event.clientY - rect.top;
-
-    mobileOriginalParent = magnet.parentNode;
-    mobileOriginalNextSibling = magnet.nextSibling;
-
-    // Prevent the page from scrolling while dragging
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-
-    magnet.style.position = "fixed";
-    magnet.style.left = rect.left + "px";
-    magnet.style.top = rect.top + "px";
-    magnet.style.width = rect.width + "px";
-    magnet.style.height = rect.height + "px";
-    magnet.style.margin = "0";
-    magnet.style.zIndex = "10000";
-    magnet.style.opacity = "1";
-    magnet.style.pointerEvents = "none";
-
-    if (magnet.setPointerCapture) {
-        magnet.setPointerCapture(event.pointerId);
-    }
+if (
+event.pointerType !== "touch"
+) {
+return;
 }
+
+
+event.preventDefault();
+
+
+const magnet =
+event.currentTarget;
+
+
+// Prevent native HTML dragging
+magnet.draggable =
+false;
+
+
+mobileDraggedMagnet =
+magnet;
+
+mobileDragging =
+true;
+
+mobilePointerId =
+event.pointerId;
+
+
+// Remember exactly where
+// the finger grabbed the magnet
+const rect =
+magnet.getBoundingClientRect();
+
+
+mobileOffsetX =
+event.clientX -
+rect.left;
+
+mobileOffsetY =
+event.clientY -
+rect.top;
+
+
+// Remember original location
+mobileOriginalParent =
+magnet.parentNode;
+
+mobileOriginalNextSibling =
+magnet.nextSibling;
+
+
+// Take magnet out of normal layout
+magnet.style.position =
+"fixed";
+
+magnet.style.left =
+rect.left + "px";
+
+magnet.style.top =
+rect.top + "px";
+
+magnet.style.width =
+rect.width + "px";
+
+magnet.style.height =
+rect.height + "px";
+
+magnet.style.margin =
+"0";
+
+magnet.style.zIndex =
+"10000";
+
+magnet.style.opacity =
+"1";
+
+magnet.style.pointerEvents =
+"none";
+
+
+magnet.setPointerCapture(
+event.pointerId
+);
+
+}
+
 
 // ======================================================
 // MOVE MOBILE MAGNET
@@ -1260,14 +1310,17 @@ function mobileDragStart(event) {
 
 function mobileDragMove(event) {
 
-event.preventDefault();
-
 if (
 !mobileDragging ||
 event.pointerId !== mobilePointerId
 ) {
 return;
 }
+
+
+event.preventDefault();
+
+  autoScrollWhileDragging(event);
 
 
 // Move the ACTUAL magnet.
@@ -1292,9 +1345,6 @@ mobileOffsetY
 // ======================================================
 
 function mobileDragEnd(event) {
-
-    document.body.style.overflow = "";
-    document.documentElement.style.overflow = "";
 
 if (
 !mobileDragging ||
@@ -1541,6 +1591,26 @@ mobileOffsetY =
 
 }
 
+
+// ======================================================
+// CANCEL MOBILE DRAG
+// ======================================================
+
+function mobileDragCancel(event) {
+
+if (
+!mobileDragging ||
+event.pointerId !== mobilePointerId
+) {
+return;
+}
+
+
+mobileDragEnd(event);
+
+}
+
+
 // ======================================================
 // MOBILE POINTER EVENTS
 // ======================================================
@@ -1558,40 +1628,47 @@ mobileDragEnd,
 { passive: false }
 );
 
+
+document.addEventListener(
+"pointercancel",
+mobileDragCancel,
+{ passive: false }
+);
+
 // ======================================================
 // AUTO SCROLL WHILE DRAGGING
 // ======================================================
 
 function autoScrollWhileDragging(event) {
 
-const edgeSize = 80;   // How close to edge before scrolling
-const scrollSpeed = 8; // Pixels per movement event
+    const edgeSize = 80;   // How close to edge before scrolling
+    const scrollSpeed = 8; // Pixels per movement event
 
-const screenHeight =
-window.innerHeight;
+    const screenHeight =
+        window.innerHeight;
 
-// Near top of screen
-if (event.clientY < edgeSize) {
+    // Near top of screen
+    if (event.clientY < edgeSize) {
 
-window.scrollBy(
-0,
--scrollSpeed
-);
+        window.scrollBy(
+            0,
+            -scrollSpeed
+        );
 
-}
+    }
 
-// Near bottom of screen
-else if (
-event.clientY >
-screenHeight - edgeSize
-) {
+    // Near bottom of screen
+    else if (
+        event.clientY >
+        screenHeight - edgeSize
+    ) {
 
-window.scrollBy(
-0,
-scrollSpeed
-);
+        window.scrollBy(
+            0,
+            scrollSpeed
+        );
 
-}
+    }
 
 }
 
