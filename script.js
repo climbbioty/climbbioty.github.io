@@ -1000,6 +1000,8 @@ function generateWords() {
 
     submitAnswerButton.disabled = false;
     submitAnswerButton.textContent = "Submit Answer";
+
+    mobileDragging = true;
 }
 
 // ======================================================
