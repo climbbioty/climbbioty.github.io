@@ -1541,29 +1541,6 @@ mobileOffsetY =
 
 }
 
-
-// ======================================================
-// CANCEL MOBILE DRAG
-// ======================================================
-
-function mobileDragCancel(event) {
-
-    document.body.style.overflow = "";
-    document.documentElement.style.overflow = "";
-
-if (
-!mobileDragging ||
-event.pointerId !== mobilePointerId
-) {
-return;
-}
-
-
-mobileDragEnd(event);
-
-}
-
-
 // ======================================================
 // MOBILE POINTER EVENTS
 // ======================================================
@@ -1578,13 +1555,6 @@ mobileDragMove,
 document.addEventListener(
 "pointerup",
 mobileDragEnd,
-{ passive: false }
-);
-
-
-document.addEventListener(
-"pointercancel",
-mobileDragCancel,
 { passive: false }
 );
 
