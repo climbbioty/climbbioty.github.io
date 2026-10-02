@@ -1266,7 +1266,7 @@ event.currentTarget;
 
 // Prevent native HTML dragging
 magnet.draggable =
-true;
+false;
 
 mobileDraggedMagnet =
 magnet;
@@ -2614,48 +2614,93 @@ answerCard
 // ======================================================
 
 async function chooseWinner(
-judgeRoomCode,
-winningPlayerId
+    judgeRoomCode,
+    winningPlayerId
 ) {
 
-try {
+    try {
 
-await update(
-ref(
-database,
-`rooms/${judgeRoomCode}`
-),
-{
-winner: winningPlayerId,
-state: "winner"
-}
-);
+        // Get the winning player's current score
+        const playerRef =
+            ref(
+                database,
+                `rooms/${judgeRoomCode}/players/${winningPlayerId}`
+            );
 
-console.log(
-"Winner selected:",
-winningPlayerId
-);
+        const playerSnapshot =
+            await get(playerRef);
 
-document
-.querySelectorAll(".chooseAnswer")
-.forEach((button) => {
-button.disabled = true;
-});
+        if (!playerSnapshot.exists()) {
+            console.error(
+                "Winning player not found."
+            );
+            return;
+        }
 
-window.location.replace(
-`game.html?room=${judgeRoomCode}` +
-`&name=${encodeURIComponent(playerName)}` +
-`&player=${playerId}`
-);
+        const player =
+            playerSnapshot.val();
 
-} catch (error) {
+        const currentScore =
+            player.score || 0;
 
-console.error(
-"Error selecting winner:",
-error
-);
+        const newScore =
+            currentScore + 1;
 
-}
+
+        // Update winner, state, and score
+        const updates = {};
+
+        updates[
+            `rooms/${judgeRoomCode}/winner`
+        ] = winningPlayerId;
+
+        updates[
+            `rooms/${judgeRoomCode}/state`
+        ] = "winner";
+
+        updates[
+            `rooms/${judgeRoomCode}/players/${winningPlayerId}/score`
+        ] = newScore;
+
+
+        await update(
+            ref(database),
+            updates
+        );
+
+
+        console.log(
+            "Winner selected:",
+            winningPlayerId
+        );
+
+        console.log(
+            "New score:",
+            newScore
+        );
+
+
+        document
+            .querySelectorAll(".chooseAnswer")
+            .forEach((button) => {
+                button.disabled = true;
+            });
+
+
+        window.location.replace(
+            `game.html?room=${judgeRoomCode}` +
+            `&name=${encodeURIComponent(playerName)}` +
+            `&player=${playerId}`
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Error selecting winner:",
+            error
+        );
+
+    }
 
 }
 
