@@ -44,6 +44,9 @@ let playerName = "";
 let playerId = "";
 let lastPrompt = "";
 let allSubmitted = false;
+let mobileTapMagnet = null;
+let mobileTapStartX = 0;
+let mobileTapStartY = 0;
 
 // ======================================================
 // WORDS
@@ -995,6 +998,14 @@ function generateWords() {
         // Mobile drag
         magnet.addEventListener("pointerdown", mobileDragStart);
 
+        magnet.addEventListener("touchstart", mobileTapStart, {
+    passive: true
+});
+
+magnet.addEventListener("touchend", mobileTapEnd, {
+    passive: true
+});
+
         wordBank.appendChild(magnet);
     });
 
@@ -1670,6 +1681,135 @@ function autoScrollWhileDragging(event) {
 
     }
 
+}
+
+
+function mobileTapStart(event) {
+    if (event.touches.length !== 1) return;
+
+    const touch = event.touches[0];
+
+    mobileTapMagnet = event.currentTarget;
+    mobileTapStartX = touch.clientX;
+    mobileTapStartY = touch.clientY;
+}
+
+// ======================================================
+// Teleport
+// ======================================================
+function mobileTapEnd(event) {
+    if (!mobileTapMagnet) return;
+
+    const touch = event.changedTouches[0];
+
+    const dx = touch.clientX - mobileTapStartX;
+    const dy = touch.clientY - mobileTapStartY;
+
+    // Only count it as a tap if the finger barely moved
+    const movedDistance = Math.sqrt(dx * dx + dy * dy);
+
+    if (movedDistance < 12) {
+        const magnet = mobileTapMagnet;
+
+        // Let your existing drag code finish first
+        setTimeout(() => {
+            mobileTeleportMagnet(magnet);
+        }, 0);
+    }
+
+    mobileTapMagnet = null;
+}
+
+function mobileTeleportMagnet(magnet) {
+
+    // If the magnet is in the word bank,
+    // move it into the answer area.
+    if (wordBank.contains(magnet)) {
+
+        answerArea.appendChild(magnet);
+
+        magnet.style.position = "absolute";
+        magnet.style.margin = "0";
+        magnet.style.pointerEvents = "";
+
+        const areaRect = answerArea.getBoundingClientRect();
+        const magnetRect = magnet.getBoundingClientRect();
+
+        const magnets =
+            answerArea.querySelectorAll(".magnet");
+
+        const index = magnets.length - 1;
+
+        // Two magnets per row
+        const pairIndex = Math.floor(index / 2);
+        const side = index % 2 === 0 ? -1 : 1;
+
+        // Horizontal distance from center
+        const pairOffset = 60;
+
+        const centerX = areaRect.width / 2;
+
+        let x =
+            centerX +
+            side * pairOffset -
+            magnetRect.width / 2;
+
+        // Move each pair to a different row.
+        const rowSpacing = magnetRect.height + 10;
+        const centerY =
+            (areaRect.height - magnetRect.height) / 2;
+
+        let verticalOffset = 0;
+
+        if (pairIndex > 0) {
+            const layer = Math.ceil(pairIndex / 2);
+
+            verticalOffset =
+                (pairIndex % 2 === 1 ? 1 : -1) *
+                layer *
+                rowSpacing;
+        }
+
+        let y = centerY + verticalOffset;
+
+        // Keep the magnet inside the answer area
+        x = Math.max(
+            0,
+            Math.min(
+                x,
+                areaRect.width - magnetRect.width
+            )
+        );
+
+        y = Math.max(
+            0,
+            Math.min(
+                y,
+                areaRect.height - magnetRect.height
+            )
+        );
+
+        magnet.style.left = x + "px";
+        magnet.style.top = y + "px";
+
+    }
+
+    // If the magnet is already in the answer area,
+    // put it at the end of the word bank.
+    else if (answerArea.contains(magnet)) {
+
+        wordBank.appendChild(magnet);
+
+        magnet.style.position = "";
+        magnet.style.left = "";
+        magnet.style.top = "";
+        magnet.style.width = "";
+        magnet.style.height = "";
+        magnet.style.margin = "";
+        magnet.style.zIndex = "";
+        magnet.style.opacity = "";
+        magnet.style.pointerEvents = "";
+    }
 }
 
 // ======================================================
